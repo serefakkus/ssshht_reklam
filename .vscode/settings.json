@@ -1,0 +1,5 @@
+{
+"dart.previewCommitCharacters": true,
+"cmake.sourceDirectory": "${workspaceFolder}/linux"
+
+}
