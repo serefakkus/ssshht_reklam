@@ -7,7 +7,8 @@ import 'package:ssshht_reklam/model/cafe.dart';
 
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-sendDataSignIn(BuildContext cnt, dynamic json, WebSocketChannel channel) {
+sendDataSignIn(
+    BuildContext cnt, dynamic json, WebSocketChannel channel, Cafe mus) {
   channel.sink.add(json);
   channel.stream.listen(
     (data) {
@@ -17,7 +18,7 @@ sendDataSignIn(BuildContext cnt, dynamic json, WebSocketChannel channel) {
 
       if (musteri.status == true) {
         tokensIntert(musteri.tokens!.tokenDetails!);
-        phoneAndPassIntert(musteri);
+        phoneAndPassIntert(mus);
         tokensIntert(musteri.tokens!.tokenDetails!);
         Navigator.pushNamed(cnt, '/HomePage', arguments: musteri);
       } else if (musteri.status == false) {

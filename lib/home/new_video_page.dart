@@ -12,6 +12,7 @@ import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../main.dart';
 
 TextEditingController _namecontroller = TextEditingController();
@@ -40,6 +41,7 @@ class _NewVideoPageState extends State<NewVideoPage> {
   @override
   void initState() {
     _isWaiting = false;
+    _isFullScreen = false;
     // ignore: todo
     // TODO: implement initState
     super.initState();
@@ -90,6 +92,22 @@ class _NewVideoPageState extends State<NewVideoPage> {
     Navigator.pushNamedAndRemoveUntil(
         context, '/HomePage', (route) => route.settings.name == '/HomePage');
   }
+
+  @override
+  void dispose() {
+    _isFullScreen = false;
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    try {
+      _videoPlayerController.dispose();
+    } catch (e) {
+      //print(e);
+    }
+
+    // ignore: todo
+    // TODO: implement dispose
+    super.dispose();
+  }
 }
 
 class NameInput extends StatelessWidget {
@@ -100,7 +118,7 @@ class NameInput extends StatelessWidget {
     return Column(
       children: [
         const Text(
-          'İSİM',
+          'VIDEO İSMİ',
           style: TextStyle(fontSize: 20),
           textAlign: TextAlign.center,
         ),
@@ -330,14 +348,20 @@ class _UrunImgState extends State<UrunImg> {
             ],
           ),
           onTap: () {
-            _pickVideo();
+            _pickVideo(context);
           },
         ),
       );
     }
   }
 
-  _pickVideo() async {
+  _pickVideo(BuildContext context) async {
+    bool ok = await _permissonReq(context, _setS);
+
+    if (!ok) {
+      return;
+    }
+
     XFile? pickedFile = await picker.pickVideo(source: ImageSource.gallery);
     if (pickedFile != null) {
       _isAsset = true;
@@ -364,11 +388,118 @@ class _UrunImgState extends State<UrunImg> {
     }
   }
 
+  _setS() {
+    setState(() {});
+  }
+
   @override
   void dispose() {
-    _videoPlayerController.dispose();
+    //_videoPlayerController.dispose();
     // ignore: todo
     // TODO: implement dispose
     super.dispose();
+  }
+}
+
+Future<bool> _permissonReq(BuildContext context, Function setS) async {
+  bool ok = false;
+  if (await Permission.mediaLibrary.request().isGranted) {
+    return true;
+  } else {
+    try {
+      XFile? pickedFile = await picker.pickVideo(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        _isAsset = true;
+        _video = File(pickedFile.path);
+        _imagebit = _video!.readAsBytesSync();
+        for (var i = 0; i < _video!.path.length; i++) {
+          if (_video!.path[i] == '.') {
+            _imgtip = _video!.path.substring(i + 1);
+          }
+        }
+
+        try {
+          await _videoPlayerController.dispose();
+        } catch (e) {
+          //print(e);
+        }
+
+        _videoPlayerController = VideoPlayerController.file(_video!)
+          ..initialize().then((_) {
+            setS();
+            _videoPlayerController.play();
+            _videoPlayerController.setLooping(true);
+          });
+      }
+      ok = true;
+    } catch (e) {
+      //print(e);
+    }
+  }
+  if (ok) {
+    return true;
+  }
+
+  await showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+            title: const Text('LÜTFEN AYARLARDAN GALERİ ERİŞİM İZNİ VERİN'),
+            content: Row(
+              children: const [
+                MediaLibraryPermissionBackButon(),
+                MediaLibraryPermissionButon(),
+              ],
+            ),
+          ));
+  ok = await Permission.mediaLibrary.request().isGranted;
+  if (!ok) {
+    // ignore: use_build_context_synchronously
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      '/HomePage',
+      (route) => route.settings.name == '/HomePage',
+    );
+  }
+  return ok;
+}
+
+class MediaLibraryPermissionButon extends StatelessWidget {
+  const MediaLibraryPermissionButon({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(left: _width / 20),
+      child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              elevation: 10,
+              fixedSize: Size((_width * 0.3), (_height / 15)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20))),
+          child: const Text('AYARLAR'),
+          onPressed: () async {
+            await openAppSettings();
+          }),
+    );
+  }
+}
+
+class MediaLibraryPermissionBackButon extends StatelessWidget {
+  const MediaLibraryPermissionBackButon({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+          primary: Colors.red,
+          elevation: 10,
+          fixedSize: Size((_width * 0.3), (_height / 15)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
+      child: const Text('VAZGEÇ'),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
   }
 }

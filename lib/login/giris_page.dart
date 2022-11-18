@@ -116,7 +116,7 @@ sendLogin(BuildContext context) async {
     _pers.istekTip = 'login';
 
     var json = jsonEncode(_pers.toMap());
-    sendDataSignIn(context, json, channel);
+    sendDataSignIn(context, json, channel, _pers);
   }
 }
 

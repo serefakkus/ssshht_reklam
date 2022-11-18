@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:ssshht_reklam/helpers/database.dart';
@@ -476,9 +475,9 @@ Future _downloadVideoRemote(String videoId) async {
     ok = true;
   } catch (e) {
     ok = false;
-    if (kDebugMode) {
-      print(e.toString());
-    }
+
+    //  print(e.toString());
+
     EasyLoading.showToast('Internet bağlantınızı kontrol edin',
         duration: const Duration(seconds: 5));
   }
@@ -497,8 +496,7 @@ Future _delvideo(String videoId) async {
   try {
     await file.delete();
   } catch (e) {
-    if (kDebugMode) {
-      print(e);
-    }
+    //  print(e);
+
   }
 }

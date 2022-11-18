@@ -175,49 +175,51 @@ class CodeButon extends StatelessWidget {
 }
 
 _sendCode(BuildContext context) async {
-  WebSocketChannel _channel = IOWebSocketChannel.connect(url);
+  WebSocketChannel channel = IOWebSocketChannel.connect(url);
 
   if (_phonecontroller.text.isNotEmpty && _phonecontroller.text.length == 10) {
-    var _tok = await getToken(context);
+    var tok = await getToken(context);
     //data.sign?.phone = _phonecontroller.text;
     //data.sign?.pass = _passcontroller.text;
-    Tokens _token = Tokens();
-    _token.tokenDetails = _tok;
-    var _pho = Phone();
-    _pho.no = _phonecontroller.text;
-    Cafe _cafe = Cafe();
-    _cafe.phone = _pho;
-    _cafe.tokens = _token;
-    _cafe.istekTip = 'new_user';
+    Tokens token = Tokens();
+    token.tokenDetails = tok;
+    var pho = Phone();
+    pho.no = _phonecontroller.text;
+    Cafe cafe = Cafe();
+    cafe.phone = pho;
+    cafe.tokens = token;
+    cafe.istekTip = 'new_user';
 
-    var json = jsonEncode(_cafe.toMap());
-    sendDataCode(json, _channel, context);
+    var json = jsonEncode(cafe.toMap());
+    // ignore: use_build_context_synchronously
+    sendDataCode(json, channel, context);
   } else {
     EasyLoading.showToast('numara 10 hane olmali');
   }
 }
 
 _sendSignUp(BuildContext context) async {
-  WebSocketChannel _channel = IOWebSocketChannel.connect(url);
+  WebSocketChannel channel = IOWebSocketChannel.connect(url);
 
   if (_phonecontroller.text.isNotEmpty && _phonecontroller.text.length == 10) {
     if (_codecontroller.text.length == 5) {
-      var _tok = await getToken(context);
+      var tok = await getToken(context);
       //data.sign?.phone = _phonecontroller.text;
       //data.sign?.pass = _passcontroller.text;
-      var _pho = Phone();
-      Tokens _token = Tokens();
-      _token.tokenDetails = _tok;
-      _pho.no = _phonecontroller.text;
-      _pho.code = _codecontroller.text;
-      Cafe _cafe = Cafe();
-      _cafe.phone = _pho;
-      _cafe.tokens = _token;
+      var pho = Phone();
+      Tokens token = Tokens();
+      token.tokenDetails = tok;
+      pho.no = _phonecontroller.text;
+      pho.code = _codecontroller.text;
+      Cafe cafe = Cafe();
+      cafe.phone = pho;
+      cafe.tokens = token;
 
-      _cafe.istekTip = 'ref_user';
+      cafe.istekTip = 'ref_user';
 
-      var json = jsonEncode(_cafe.toMap());
-      sendDataNewMusteri(json, _channel, context);
+      var json = jsonEncode(cafe.toMap());
+      // ignore: use_build_context_synchronously
+      sendDataNewMusteri(json, channel, context);
     } else {
       EasyLoading.showToast('kod 5 hane olmali');
     }

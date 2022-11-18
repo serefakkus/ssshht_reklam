@@ -59,7 +59,7 @@ Future<TokenDetails> tokenGet() async {
 void phoneAndPassIntert(Cafe sign) async {
   final preferences = await SharedPreferences.getInstance();
 
-  preferences.setString('phone', sign.name!);
+  preferences.setString('phone', sign.phone!.no!);
   preferences.setString('pass', sign.pass!);
 }
 
