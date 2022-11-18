@@ -112,14 +112,14 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class LogoHomePage extends StatefulWidget {
-  const LogoHomePage({Key? key}) : super(key: key);
+class LogoGirisPage extends StatefulWidget {
+  const LogoGirisPage({Key? key}) : super(key: key);
 
   @override
-  State<LogoHomePage> createState() => _LogoHomePageState();
+  State<LogoGirisPage> createState() => _LogoGirisPageState();
 }
 
-class _LogoHomePageState extends State<LogoHomePage> {
+class _LogoGirisPageState extends State<LogoGirisPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -134,6 +134,150 @@ class _LogoHomePageState extends State<LogoHomePage> {
         image: AssetImage("assets/images/logo.png"),
         fit: BoxFit.contain,
       )),
+    );
+  }
+}
+
+class LogoHomePage extends StatefulWidget {
+  const LogoHomePage({Key? key}) : super(key: key);
+
+  @override
+  State<LogoHomePage> createState() => _LogoHomePageState();
+}
+
+class _LogoHomePageState extends State<LogoHomePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          margin: EdgeInsets.only(
+            top: _height / 15,
+          ),
+          alignment: Alignment.topCenter,
+          height: _height / 10,
+          width: _width / 1,
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+            image: AssetImage("assets/images/logo.png"),
+            fit: BoxFit.contain,
+          )),
+        ),
+        Align(
+          alignment: Alignment.centerRight,
+          child: CikisButon(),
+        ),
+      ],
+    );
+  }
+}
+
+class CikisButon extends StatefulWidget {
+  const CikisButon({Key? key}) : super(key: key);
+
+  @override
+  State<CikisButon> createState() => _CikisButonState();
+}
+
+class _CikisButonState extends State<CikisButon> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: EdgeInsets.only(top: _height / 20, right: _width / 20),
+        child: IconButton(
+          icon: Icon(
+            Icons.logout,
+            size: _width / 10,
+            color: Colors.red,
+          ),
+          onPressed: () async {
+            return showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                      title: const Text(
+                          'OTURUMU KAPATMAK İSTEDİĞİNİZE EMİN MİSİNİZ?'),
+                      content: Row(
+                        children: const [
+                          CikisBackButon(),
+                          CikisOnayButon(),
+                        ],
+                      ),
+                    ));
+          },
+        ));
+  }
+}
+
+class CikisBackButon extends StatelessWidget {
+  const CikisBackButon({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+          elevation: 10,
+          fixedSize: Size((_width * 0.3), (_height / 15)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20))),
+      child: const Text('VAZGEÇ'),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+  }
+}
+
+class CikisOnayButon extends StatelessWidget {
+  const CikisOnayButon({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(left: _width / 20),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            elevation: 10,
+            fixedSize: Size((_width * 0.3), (_height / 15)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20))),
+        child: const Text('ÇIKIŞ YAP'),
+        onPressed: () {
+          _cikisYap(context);
+        },
+      ),
+    );
+  }
+
+  _cikisYap(BuildContext context) async {
+    WebSocketChannel channel = IOWebSocketChannel.connect(url);
+    var tok = await getToken(context);
+    var token = Tokens();
+    token.tokenDetails = tok;
+    _cafe.tokens = token;
+    _cafe.istekTip = 'log_out';
+
+    var json = jsonEncode(_cafe.toMap());
+    channel.sink.add(json);
+
+    channel.stream.listen(
+      (data) {
+        var jsonobject = jsonDecode(data);
+        _cafe = Cafe.fromMap(jsonobject);
+        if (_cafe.status == true || _cafe.status == false) {
+          print('status = ${_cafe.status}');
+          tokensDel();
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            '/FirstPage',
+            (route) => route.settings.name == '/FirstPage',
+          );
+        } else {
+          EasyLoading.showToast('BİR HATA OLDU');
+        }
+        channel.sink.close();
+      },
+      onError: (error) => EasyLoading.showToast('BAĞLANTI HATASI'),
+      onDone: () => {},
     );
   }
 }
