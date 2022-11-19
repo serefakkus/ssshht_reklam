@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:ssshht_reklam/helpers/database.dart';
-import 'package:ssshht_reklam/home/home_page.dart';
+
 import 'package:ssshht_reklam/model/cafe.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -42,6 +42,7 @@ class _NewVideoPageState extends State<NewVideoPage> {
   void initState() {
     _isWaiting = false;
     _isFullScreen = false;
+    _video = null;
     // ignore: todo
     // TODO: implement initState
     super.initState();
@@ -74,7 +75,7 @@ class _NewVideoPageState extends State<NewVideoPage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          const Logo(),
+          const LogoNewVideoPage(),
           const NameInput(),
           UrunImg(_setS),
           Container()
@@ -107,6 +108,58 @@ class _NewVideoPageState extends State<NewVideoPage> {
     // ignore: todo
     // TODO: implement dispose
     super.dispose();
+  }
+}
+
+class LogoNewVideoPage extends StatefulWidget {
+  const LogoNewVideoPage({Key? key}) : super(key: key);
+
+  @override
+  State<LogoNewVideoPage> createState() => _LogoNewVideoPageState();
+}
+
+class _LogoNewVideoPageState extends State<LogoNewVideoPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          margin: EdgeInsets.only(
+            top: _height / 15,
+          ),
+          alignment: Alignment.topCenter,
+          height: _height / 10,
+          width: _width / 1,
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+            image: AssetImage("assets/images/logo.png"),
+            fit: BoxFit.contain,
+          )),
+        ),
+        const Align(
+          alignment: Alignment.topLeft,
+          child: GeriButonNewVideoPage(),
+        ),
+      ],
+    );
+  }
+}
+
+class GeriButonNewVideoPage extends StatelessWidget {
+  const GeriButonNewVideoPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: _height / 15),
+      child: IconButton(
+        icon: Icon(Icons.arrow_back_ios_new, size: _width / 8),
+        onPressed: () {
+          _video = null;
+          Navigator.pop(context);
+        },
+      ),
+    );
   }
 }
 

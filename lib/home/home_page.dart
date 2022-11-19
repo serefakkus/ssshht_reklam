@@ -264,7 +264,6 @@ class CikisOnayButon extends StatelessWidget {
         var jsonobject = jsonDecode(data);
         _cafe = Cafe.fromMap(jsonobject);
         if (_cafe.status == true || _cafe.status == false) {
-          print('status = ${_cafe.status}');
           tokensDel();
           Navigator.pushNamedAndRemoveUntil(
             context,

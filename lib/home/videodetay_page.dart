@@ -114,6 +114,7 @@ Future _getVideoIds(Function setS) async {
   videoController = VideoPlayerController.file(_file);
   await videoController.initialize();
   videoController.setLooping(true);
+  videoController.setVolume(0);
   _isDownloadedVideo = true;
   setS();
 }

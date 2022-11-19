@@ -1,5 +1,6 @@
 {
 "dart.previewCommitCharacters": true,
-"cmake.sourceDirectory": "${workspaceFolder}/linux"
+"cmake.sourceDirectory": "${workspaceFolder}/linux",
+"java.configuration.updateBuildConfiguration": "interactive"
 
 }

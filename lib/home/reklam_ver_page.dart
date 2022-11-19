@@ -116,6 +116,8 @@ Future _getVideoIds(Function setS) async {
   _file = File("${dir.path}/reklamvideo/$_videoid");
   videoController = VideoPlayerController.file(_file);
   await videoController.initialize();
+  videoController.setVolume(0);
+  videoController.setLooping(true);
   _isDownloadedVideo = true;
   setS();
 }
