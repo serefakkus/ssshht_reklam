@@ -1,6 +1,16 @@
 {
 "dart.previewCommitCharacters": true,
 "cmake.sourceDirectory": "${workspaceFolder}/linux",
-"java.configuration.updateBuildConfiguration": "interactive"
+"java.configuration.updateBuildConfiguration": "interactive",
+"yaml.customTags": [
+    "!upload scalar",
+    "!remove scalar",
+    "!keep scalar",
+    "!erase scalar",
+    "!jwt scalar"
+],
+"yaml.schemas": {
+    "https://raw.githubusercontent.com/doanthuanthanh88/testapi6/main/schema.json": "*.yaml"
+}
 
 }

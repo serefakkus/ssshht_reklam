@@ -63,7 +63,20 @@ class _NewVideoPageState extends State<NewVideoPage> {
     }
 
     if (_isWaiting) {
-      return const Center(child: CircularProgressIndicator());
+      return Stack(
+        children: [
+          const Center(child: CircularProgressIndicator()),
+          Align(
+            alignment: Alignment.center,
+            child: Container(
+                margin: EdgeInsets.only(bottom: _height / 6),
+                child: Text(
+                  'Video karşıya yükleniyor lütfen bekleyiniz',
+                  style: TextStyle(fontSize: _width / 20),
+                )),
+          )
+        ],
+      );
     }
 
     if (_isFullScreen) {
@@ -225,6 +238,20 @@ class _OnayButonState extends State<OnayButon> {
 
 _sendImage(BuildContext context, Function setS, Function goHome) async {
   if (_isAsset && _namecontroller.text.isNotEmpty) {
+    if (_imgtip == 'MOV') {
+      _imgtip = 'mov';
+    }
+    if (!(_imgtip == 'mov' || _imgtip == 'mp4')) {
+      EasyLoading.showToast(
+          'Geçersiz video lütfen yeniden deneyin sorun devam ederse info@ssshht.com mail adresine bildiriniz',
+          duration: const Duration(seconds: 10));
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/HomePage',
+        (route) => route.settings.name == '/HomePage',
+      );
+      return;
+    }
     _isWaiting = true;
     setS();
     _cafe.video = _imagebit;
@@ -267,6 +294,8 @@ _sendImage(BuildContext context, Function setS, Function goHome) async {
       }
 
       channel2.sink.close();
+    }).onError((e) {
+      goHome();
     });
   } else if (!_isAsset) {
     EasyLoading.showToast('LÜTFEN VİDEO SEÇİNİZ');
@@ -419,11 +448,28 @@ class _UrunImgState extends State<UrunImg> {
     if (pickedFile != null) {
       _isAsset = true;
       _video = File(pickedFile.path);
-      _imagebit = _video!.readAsBytesSync();
+      _imagebit = await _video!.readAsBytes();
       for (var i = 0; i < _video!.path.length; i++) {
         if (_video!.path[i] == '.') {
           _imgtip = _video!.path.substring(i + 1);
         }
+      }
+      if (!Platform.isIOS) {
+        if (_imgtip != 'mp4') {
+          EasyLoading.showToast('Lütfen "mp4" uzantılı bir dosya yükleyiniz!');
+          _video = null;
+          return;
+        }
+      }
+
+      if (Platform.isIOS) {
+        _imgtip = 'mov';
+      }
+
+      if (_imagebit.length > 1024 * 1024 * 49) {
+        EasyLoading.showToast('Lütfen 50 MB`tan küçük bir dosya yükleyiniz!');
+        _video = null;
+        return;
       }
 
       try {

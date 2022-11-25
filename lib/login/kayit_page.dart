@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:ssshht_reklam/helpers/send.dart';
 import 'package:ssshht_reklam/login/giris_page.dart';
 import 'package:ssshht_reklam/model/cafe.dart';
@@ -77,6 +78,17 @@ class _KayitState extends State<Kayit> {
 sendCode(BuildContext context) async {
   WebSocketChannel channel = IOWebSocketChannel.connect(url);
   if (_phonecontroller.text.isNotEmpty) {
+    if (_phonecontroller.text.length != 10) {
+      EasyLoading.showToast('Telefon numarası 10 hane olmalıdır!',
+          duration: const Duration(seconds: 4));
+      return;
+    }
+    var sayi = int.tryParse(_phonecontroller.text);
+    if (sayi == null) {
+      EasyLoading.showToast('Telefon numarası rakamlardan oluşmalıdır!',
+          duration: const Duration(seconds: 4));
+      return;
+    }
     Phone ph = Phone();
     Cafe pers = Cafe();
     ph.no = _phonecontroller.text;
@@ -85,12 +97,31 @@ sendCode(BuildContext context) async {
     var json = jsonEncode(pers.toMap());
 
     sendDataCode(json, channel, context);
+  } else {
+    EasyLoading.showToast('Telefon numarası giriniz!');
   }
 }
 
 sendSignUp(BuildContext context) async {
   WebSocketChannel channel = IOWebSocketChannel.connect(url);
   if (_phonecontroller.text.isNotEmpty || _codecontroller.text.isNotEmpty) {
+    if (_phonecontroller.text.length != 10) {
+      EasyLoading.showToast('Telefon numarası 10 hane olmalıdır!',
+          duration: const Duration(seconds: 4));
+      return;
+    }
+    var sayi = int.tryParse(_phonecontroller.text);
+    if (sayi == null) {
+      EasyLoading.showToast('Telefon numarası rakamlardan oluşmalıdır!',
+          duration: const Duration(seconds: 4));
+      return;
+    }
+    var codesayi = int.tryParse(_codecontroller.text);
+    if (codesayi == null) {
+      EasyLoading.showToast('Kod rakamlardan oluşmalıdır!',
+          duration: const Duration(seconds: 4));
+      return;
+    }
     Phone ph = Phone();
     Cafe pers = Cafe();
     ph.no = _phonecontroller.text;
@@ -101,6 +132,8 @@ sendSignUp(BuildContext context) async {
     _codeandphone[1] = ph.code!;
     var json = jsonEncode(pers.toMap());
     sendDataNewSignup(context, json, channel, _codeandphone);
+  } else {
+    EasyLoading.showToast('Tüm alanları doldurunuz!');
   }
 }
 

@@ -223,7 +223,7 @@ class Name extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(top: _height / 20),
       child: const Text(
-        'İSİM',
+        'İSİM VE SOYAD',
         textAlign: TextAlign.center,
         style: TextStyle(fontSize: 20),
       ),
