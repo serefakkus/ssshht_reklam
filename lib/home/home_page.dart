@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ssshht_reklam/helpers/database.dart';
 import 'package:ssshht_reklam/main.dart';
 import 'package:ssshht_reklam/model/cafe.dart';
@@ -18,7 +19,7 @@ int _videoCount = 0;
 String _tel = '';
 String? _name;
 bool _isFirstBakiyeSor = true;
-Color _backGround = Colors.blueGrey.shade100;
+Color _backGround = Color(0XFF0017FF);
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -340,7 +341,7 @@ class MusteriInfo extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(left: _width / 20, right: _width / 20),
       decoration: BoxDecoration(
-          color: Colors.grey.shade300,
+          color: Color(0XFFA6D7E7),
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(30),
             topLeft: Radius.circular(30),
@@ -351,7 +352,7 @@ class MusteriInfo extends StatelessWidget {
       child: Center(
         // ignore: duplicate_ignore
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.center,
           // ignore: prefer_const_literals_to_create_immutables, duplicate_ignore,
           children: [
             // ignore:
@@ -376,25 +377,29 @@ class MusteriName extends StatelessWidget {
     _name ??= '';
     return Column(
       children: [
-        const Text(
+        Text(
           'KULLANICI İSMİ',
-          style: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
-          ),
+          style: GoogleFonts.farro(
+              fontSize: _width / 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.white),
         ),
-        Container(
-          margin: EdgeInsets.only(top: _height / 30),
-          child: Card(
-            color: Colors.white,
-            child: Container(
-              width: _width / 1.5,
-              margin: EdgeInsets.only(top: _height / 50, bottom: _height / 50),
-              child: Center(
-                child: Text(
-                  _name.toString(),
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
+        Card(
+          elevation: 30,
+          shape: RoundedRectangleBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(30)),
+          ),
+          color: const Color(0XFFA6D7E7),
+          child: Container(
+            width: _width / 1.5,
+            margin: EdgeInsets.only(top: _height / 50, bottom: _height / 50),
+            child: Center(
+              child: Text(
+                _name.toString(),
+                style: GoogleFonts.farro(
+                    fontSize: _width / 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
             ),
           ),
@@ -409,32 +414,39 @@ class MusteriPhone extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Text(
-          'KULLANICI TELEFON',
-          style: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
+    return Container(
+      margin: EdgeInsets.only(top: _height / 100),
+      child: Column(
+        children: [
+          Text(
+            'KULLANICI TELEFON',
+            style: GoogleFonts.farro(
+                fontSize: _width / 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white),
           ),
-        ),
-        Container(
-          margin: EdgeInsets.only(top: _height / 30),
-          child: Card(
-            color: Colors.white,
+          Card(
+            elevation: 30,
+            shape: RoundedRectangleBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(30)),
+            ),
+            color: const Color(0XFFA6D7E7),
             child: Container(
               width: _width / 1.5,
               margin: EdgeInsets.only(top: _height / 50, bottom: _height / 50),
               child: Center(
                 child: Text(
                   _tel,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: GoogleFonts.farro(
+                      fontSize: _width / 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
               ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -449,31 +461,38 @@ class MusteriBakiye extends StatefulWidget {
 class _MusteriBakiyeState extends State<MusteriBakiye> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Text(
-          'VIDEO YÜKLEME HAKKI',
-          style: TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
+    return Container(
+      margin: EdgeInsets.only(top: _height / 100),
+      child: Column(
+        children: [
+          Text(
+            'VIDEO YÜKLEME HAKKI',
+            style: GoogleFonts.farro(
+                fontSize: _width / 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white),
           ),
-        ),
-        Container(
-          margin: EdgeInsets.only(top: _height / 30),
-          child: Card(
-            color: Colors.white,
+          Card(
+            elevation: 30,
+            shape: RoundedRectangleBorder(
+              borderRadius: const BorderRadius.all(Radius.circular(30)),
+            ),
+            color: const Color(0XFFA6D7E7),
             child: Container(
               width: _width / 1.5,
               margin: EdgeInsets.only(top: _height / 50, bottom: _height / 50),
               child: Center(
                   child: Text(
                 '$_videoCount ADET',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: GoogleFonts.farro(
+                    fontSize: _width / 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               )),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -494,7 +513,7 @@ class HomePageButtons extends StatelessWidget {
       height: (_height / 13) * 4,
       width: _width,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: const [
           ReklamVer(),
           NewVideo(),
@@ -512,14 +531,14 @@ class ReklamVer extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
           side: BorderSide(
-            color: Colors.white54,
+            color: Color(0XFF4D5262),
             width: 1.5,
           ),
-          primary: Colors.grey.withOpacity(0.8),
+          backgroundColor: Color(0XFF4D5262),
           elevation: 20,
-          fixedSize: Size((_width * 0.4), (_height / 6)),
+          fixedSize: Size((_width * 0.35), (_height / 6)),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(70))),
       child: Column(
         children: [
           Container(
@@ -532,13 +551,14 @@ class ReklamVer extends StatelessWidget {
           ),
           Container(
             margin: EdgeInsets.only(top: _height / 50),
-            child: Text('REKLAM\nVER',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.blueAccent.shade700,
-                    fontSize: 17,
-                    height: 1,
-                    fontWeight: FontWeight.bold)),
+            child: Text(
+              'REKLAM\nVER',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.farro(
+                  fontSize: _width / 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
           ),
         ],
       ),
@@ -587,14 +607,14 @@ class NewVideo extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
           side: BorderSide(
-            color: Colors.white54,
+            color: Color(0XFF4D5262),
             width: 1.5,
           ),
-          primary: Colors.grey.withOpacity(0.8),
-          elevation: 20,
-          fixedSize: Size((_width * 0.4), (_height / 6)),
+          backgroundColor: Color(0XFF4D5262),
+          elevation: 50,
+          fixedSize: Size((_width * 0.35), (_height / 6)),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(70))),
       child: Column(
         children: [
           Container(
@@ -608,13 +628,14 @@ class NewVideo extends StatelessWidget {
               size: _width / 5,
             ),
           ),
-          Text('VİDEO\nEKLE',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.blueAccent.shade700,
-                  fontSize: 17,
-                  height: 1,
-                  fontWeight: FontWeight.bold)),
+          Text(
+            'VİDEO\nEKLE',
+            textAlign: TextAlign.center,
+            style: GoogleFonts.farro(
+                fontSize: _width / 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white),
+          ),
         ],
       ),
       onPressed: () {
