@@ -27,15 +27,18 @@ class _WelcomePageState extends State<WelcomePage> {
     _height = _size.height;
     _width = _size.width;
     return Scaffold(
-      body: ListView(
-        children: const [
-          QrImg(),
-          GirisButon(),
-          KayitButon(),
-          GirissizButon(),
-          _IyzicoLogo(),
-          _BottomBarHakkimizda(),
-        ],
+      body: Container(
+        color: const Color(0XFF0017FF),
+        child: ListView(
+          children: const [
+            QrImg(),
+            GirisButon(),
+            KayitButon(),
+            GirissizButon(),
+            _IyzicoLogo(),
+            _BottomBarHakkimizda(),
+          ],
+        ),
       ),
     );
   }
@@ -75,6 +78,7 @@ class GirisButon extends StatelessWidget {
       alignment: Alignment.center,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0XFF4D5262),
             elevation: 10,
             fixedSize: Size((_width * 0.8), (_height / 15)),
             shape: RoundedRectangleBorder(
@@ -98,6 +102,7 @@ class KayitButon extends StatelessWidget {
       alignment: Alignment.center,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0XFF4D5262),
             elevation: 10,
             fixedSize: Size((_width * 0.8), (_height / 15)),
             shape: RoundedRectangleBorder(
@@ -119,7 +124,10 @@ class GirissizButon extends StatelessWidget {
     return TextButton(
       onPressed: () =>
           {Navigator.pushNamed(context, '/KodGirisPage', arguments: 'seref')},
-      child: const Text("ŞİFREMİ UNUTTUM"),
+      child: const Text(
+        "ŞİFREMİ UNUTTUM",
+        style: TextStyle(color: Colors.lightBlueAccent),
+      ),
     );
   }
 }
@@ -244,12 +252,15 @@ class _Ayrac extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('|');
+    return const Text(
+      '|',
+      style: TextStyle(color: Colors.black),
+    );
   }
 }
 
 class _IyzicoLogo extends StatelessWidget {
-  const _IyzicoLogo({super.key});
+  const _IyzicoLogo();
 
   @override
   Widget build(BuildContext context) {
@@ -259,6 +270,7 @@ class _IyzicoLogo extends StatelessWidget {
       width: _width,
       height: _height / 10,
       decoration: const BoxDecoration(
+          //color: Colors.blueAccent,
           image: DecorationImage(
         image: AssetImage("assets/images/iyzico-logo.png"),
         fit: BoxFit.contain,

@@ -8,6 +8,7 @@ import 'package:ssshht_reklam/model/cafe.dart';
 
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../main.dart';
 
@@ -51,23 +52,26 @@ class _KayitState extends State<Kayit> {
     _size = MediaQuery.of(context).size;
     _height = _size.height;
     _width = _size.width;
-    return ListView(
-      children: [
-        Column(
-          children: [
-            const TelefonNumarasi(),
-            Row(
-              children: const [PhoneInput(), CodeSendButton()],
-            ),
-            const Code(),
-            const CodeInput(),
-            const SignUpButton(),
-            const GirisButon(),
-            const _IyzicoLogo(),
-            const _BottomBarHakkimizda(),
-          ],
-        ),
-      ],
+    return Container(
+      color: const Color(0XFF0017FF),
+      child: ListView(
+        children: [
+          Column(
+            children: [
+              const TelefonNumarasi(),
+              Row(
+                children: const [PhoneInput(), CodeSendButton()],
+              ),
+              const Code(),
+              const CodeInput(),
+              const SignUpButton(),
+              const GirisButon(),
+              const _IyzicoLogo(),
+              const _BottomBarHakkimizda(),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -144,11 +148,13 @@ class TelefonNumarasi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: (_height / 20), right: (_width / 5)),
-      child: const Text(
+      margin: EdgeInsets.only(top: (_height / 10)),
+      child: Text(
         'TELEFON NUMARASI',
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 20),
+        style: GoogleFonts.farro(
+            fontSize: _width / 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white),
       ),
     );
   }
@@ -165,10 +171,12 @@ class PhoneInput extends StatelessWidget {
         height: (_height / 15),
         width: (_width / 1.65),
         child: TextField(
-          decoration: InputDecoration(
-              border: const OutlineInputBorder(),
-              filled: true,
-              fillColor: Colors.blue.shade50),
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+            filled: true,
+            fillColor: Color(0XFFA6D7E7),
+          ),
           controller: _phonecontroller,
           cursorColor: Colors.blue,
           keyboardType: const TextInputType.numberWithOptions(
@@ -186,11 +194,13 @@ class Code extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: (_height / 7)),
-      child: const Text(
+      margin: EdgeInsets.only(top: (_height / 20)),
+      child: Text(
         'KOD',
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 20),
+        style: GoogleFonts.farro(
+            fontSize: _width / 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white),
       ),
     );
   }
@@ -207,10 +217,12 @@ class CodeInput extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(),
         child: TextField(
-          decoration: InputDecoration(
-              border: const OutlineInputBorder(),
-              filled: true,
-              fillColor: Colors.blue.shade50),
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+            filled: true,
+            fillColor: Color(0XFFA6D7E7),
+          ),
           controller: _codecontroller,
           cursorColor: Colors.blue,
           keyboardType: const TextInputType.numberWithOptions(
@@ -278,10 +290,10 @@ class _SignUpButtonState extends State<SignUpButton> {
             fixedSize: Size((_width / 1.2), (_height / 15)),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50))),
-        child: const Text(
+        child: Text(
           'KAYIT OL',
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(fontSize: _width / 20),
         ),
         onPressed: () {
           setState(() {

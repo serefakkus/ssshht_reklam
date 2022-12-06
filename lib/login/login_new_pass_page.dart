@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ssshht_reklam/helpers/send.dart';
 import 'package:ssshht_reklam/model/cafe.dart';
 
@@ -32,14 +33,18 @@ class _NewPassLoginPageState extends State<NewPassLoginPage> {
 
     List<String> code =
         ModalRoute.of(context)!.settings.arguments as List<String>;
-    return Column(
-      children: [
-        const Flexible(child: Pass()),
-        const Flexible(child: PassInput()),
-        const Flexible(child: NewPass()),
-        const Flexible(child: NewPassInput()),
-        SendPassButton(code),
-      ],
+
+    return Container(
+      color: const Color(0XFF0017FF),
+      child: ListView(
+        children: [
+          const Center(child: Pass()),
+          const PassInput(),
+          const Center(child: NewPass()),
+          const NewPassInput(),
+          SendPassButton(code),
+        ],
+      ),
     );
   }
 }
@@ -72,9 +77,12 @@ class Pass extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: (_height / 7)),
-      child: const Text(
+      child: Text(
         'YENİ ŞİFRE',
-        style: TextStyle(fontSize: 20),
+        style: GoogleFonts.farro(
+            fontSize: _width / 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white),
       ),
     );
   }
@@ -107,9 +115,10 @@ class _PassInputState extends State<PassInput> {
                 setState(() {});
               },
             ),
-            border: const OutlineInputBorder(),
+            border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(30))),
             filled: true,
-            fillColor: Colors.blue.shade50,
+            fillColor: const Color(0XFFA6D7E7),
           ),
           controller: _passcontroller,
           textInputAction: TextInputAction.next,
@@ -138,10 +147,13 @@ class NewPass extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: (_height / 7)),
-      child: const Text(
-        'YENİ ŞİFRE',
-        style: TextStyle(fontSize: 20),
+      margin: EdgeInsets.only(top: (_height / 20)),
+      child: Text(
+        'TEKRAR YENİ ŞİFRE',
+        style: GoogleFonts.farro(
+            fontSize: _width / 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white),
       ),
     );
   }
@@ -174,9 +186,10 @@ class _NewPassInputState extends State<NewPassInput> {
                 setState(() {});
               },
             ),
-            border: const OutlineInputBorder(),
+            border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(30))),
             filled: true,
-            fillColor: Colors.blue.shade50,
+            fillColor: const Color(0XFFA6D7E7),
           ),
           controller: _newpasscontroller,
           textInputAction: TextInputAction.next,

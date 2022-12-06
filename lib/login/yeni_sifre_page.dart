@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ssshht_reklam/helpers/send.dart';
 import 'package:ssshht_reklam/main.dart';
 import 'package:ssshht_reklam/model/cafe.dart';
@@ -30,20 +31,24 @@ class _NewLoginPageState extends State<NewLoginPage> {
     _height = _size.height;
     _width = _size.width;
 
-    List<String> code =
-        ModalRoute.of(context)!.settings.arguments as List<String>;
-    return ListView(
-      children: [
-        const KimlikNumarasi(),
-        const KimlikInput(),
-        const Name(),
-        const NameInput(),
-        const Pass(),
-        const PassInput(),
-        const NewPass(),
-        const NewPassInput(),
-        SendPassButton(code),
-      ],
+    //List<String> code =
+    //  ModalRoute.of(context)!.settings.arguments as List<String>;
+    List<String> code = [];
+    return Container(
+      color: const Color(0XFF0017FF),
+      child: ListView(
+        children: [
+          const KimlikNumarasi(),
+          const KimlikInput(),
+          const Name(),
+          const NameInput(),
+          const Pass(),
+          const PassInput(),
+          const NewPass(),
+          const NewPassInput(),
+          SendPassButton(code),
+        ],
+      ),
     );
   }
 }
@@ -54,10 +59,15 @@ class Pass extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: (_height / 7)),
-      child: const Text(
-        'YENİ ŞİFRE',
-        style: TextStyle(fontSize: 20),
+      margin: EdgeInsets.only(top: (_height / 50)),
+      child: Center(
+        child: Text(
+          'YENİ ŞİFRE',
+          style: GoogleFonts.farro(
+              fontSize: _width / 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.white),
+        ),
       ),
     );
   }
@@ -75,7 +85,7 @@ class _PassInputState extends State<PassInput> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-          top: (_height / 30), left: (_width / 15), right: (_width / 15)),
+          top: (_height / 100), left: (_width / 15), right: (_width / 15)),
       child: Padding(
         padding: const EdgeInsets.only(),
         child: TextField(
@@ -90,7 +100,8 @@ class _PassInputState extends State<PassInput> {
                 setState(() {});
               },
             ),
-            border: const OutlineInputBorder(),
+            border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(30))),
             filled: true,
             fillColor: Colors.blue.shade50,
           ),
@@ -121,10 +132,15 @@ class NewPass extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: (_height / 7)),
-      child: const Text(
-        'YENİ ŞİFRE',
-        style: TextStyle(fontSize: 20),
+      margin: EdgeInsets.only(top: (_height / 50)),
+      child: Center(
+        child: Text(
+          'TEKRAR YENİ ŞİFRE',
+          style: GoogleFonts.farro(
+              fontSize: _width / 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.white),
+        ),
       ),
     );
   }
@@ -142,7 +158,7 @@ class _NewPassInputState extends State<NewPassInput> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-          top: (_height / 25), right: (_width / 15), left: (_width / 15)),
+          top: (_height / 100), right: (_width / 15), left: (_width / 15)),
       child: Padding(
         padding: const EdgeInsets.only(),
         child: TextField(
@@ -157,7 +173,8 @@ class _NewPassInputState extends State<NewPassInput> {
                 setState(() {});
               },
             ),
-            border: const OutlineInputBorder(),
+            border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(30))),
             filled: true,
             fillColor: Colors.blue.shade50,
           ),
@@ -180,10 +197,14 @@ class KimlikNumarasi extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(top: _height / 20),
       //margin: const EdgeInsets.only(top: 180),
-      child: const Text(
-        'KİMLİK NUMARASI\nVEYA\nVERGİ NUMARASI',
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 20),
+      child: Center(
+        child: Text(
+          'KİMLİK NUMARASI\nVEYA\nVERGİ NUMARASI',
+          style: GoogleFonts.farro(
+              fontSize: _width / 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.white),
+        ),
       ),
     );
   }
@@ -202,7 +223,8 @@ class KimlikInput extends StatelessWidget {
       ),
       child: TextField(
         decoration: InputDecoration(
-            border: const OutlineInputBorder(),
+            border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(30))),
             filled: true,
             fillColor: Colors.blue.shade50),
         controller: _kimlikcontroller,
@@ -221,11 +243,15 @@ class Name extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: _height / 20),
-      child: const Text(
-        'İSİM VE SOYAD',
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 20),
+      margin: EdgeInsets.only(top: _height / 5),
+      child: Center(
+        child: Text(
+          'İSİM VE SOYAD',
+          style: GoogleFonts.farro(
+              fontSize: _width / 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.white),
+        ),
       ),
     );
   }
@@ -244,7 +270,8 @@ class NameInput extends StatelessWidget {
       ),
       child: TextField(
         decoration: InputDecoration(
-            border: const OutlineInputBorder(),
+            border: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(30))),
             filled: true,
             fillColor: Colors.blue.shade50),
         controller: _namecontroller,
@@ -263,7 +290,7 @@ class SendPassButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-          top: (_height / 10),
+          top: (_height / 15),
           right: (_width / 10),
           left: (_width / 10),
           bottom: _height / 20),

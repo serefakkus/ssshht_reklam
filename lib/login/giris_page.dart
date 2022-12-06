@@ -8,6 +8,7 @@ import 'package:ssshht_reklam/main.dart';
 import 'package:ssshht_reklam/model/cafe.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:flutter/services.dart' show rootBundle;
 
@@ -75,18 +76,21 @@ class _GirisState extends State<Giris> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        children: const [
-          TelefonNumarasi(),
-          PhoneInput(),
-          Sifre(),
-          SifreInput(),
-          GirisButon(),
-          KayitButon(),
-          GirissizButon(),
-          _IyzicoLogo(),
-          _BottomBarHakkimizda(),
-        ],
+      body: Container(
+        color: const Color(0XFF0017FF),
+        child: ListView(
+          children: const [
+            TelefonNumarasi(),
+            PhoneInput(),
+            Sifre(),
+            SifreInput(),
+            GirisButon(),
+            KayitButon(),
+            GirissizButon(),
+            _IyzicoLogo(),
+            _BottomBarHakkimizda(),
+          ],
+        ),
       ),
     );
   }
@@ -127,12 +131,16 @@ class TelefonNumarasi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: (_height / 50)),
+      margin: EdgeInsets.only(top: (_height / 10)),
       //margin: const EdgeInsets.only(top: 180),
-      child: const Text(
-        'TELEFON\n NUMARASI',
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 20),
+      child: Center(
+        child: Text(
+          'TELEFON NUMARASI',
+          style: GoogleFonts.farro(
+              fontSize: _width / 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.white),
+        ),
       ),
     );
   }
@@ -145,14 +153,16 @@ class PhoneInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-          top: (_height / 90), left: (_width / 10), right: (_width / 10)),
+          top: (_height / 30), left: (_width / 10), right: (_width / 10)),
       child: TextField(
-        decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            filled: true,
-            fillColor: Colors.blue.shade50),
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30))),
+          filled: true,
+          fillColor: Color(0XFFA6D7E7),
+        ),
         controller: _phonecontroller,
-        cursorColor: Colors.blue,
+        cursorColor: Colors.black,
         keyboardType:
             const TextInputType.numberWithOptions(signed: true, decimal: true),
         textInputAction: TextInputAction.go,
@@ -167,11 +177,16 @@ class Sifre extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: (_height / 12)),
-      child: const Text(
-        'SIFRE',
-        style: TextStyle(fontSize: 20),
-        textAlign: TextAlign.center,
+      margin: EdgeInsets.only(top: (_height / 20)),
+      //margin: const EdgeInsets.only(top: 180),
+      child: Center(
+        child: Text(
+          'ŞİFRE',
+          style: GoogleFonts.farro(
+              fontSize: _width / 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.white),
+        ),
       ),
     );
   }
@@ -189,7 +204,7 @@ class _SifreInputState extends State<SifreInput> {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-          top: (_height / 120), left: (_width / 10), right: (_width / 10)),
+          top: (_height / 40), left: (_width / 10), right: (_width / 10)),
       child: TextField(
         decoration: InputDecoration(
           suffixIcon: IconButton(
@@ -202,10 +217,12 @@ class _SifreInputState extends State<SifreInput> {
               setState(() {});
             },
           ),
-          border: const OutlineInputBorder(),
+          border: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30))),
           filled: true,
-          fillColor: Colors.blue.shade50,
+          fillColor: const Color(0XFFA6D7E7),
         ),
+        cursorColor: Colors.black,
         controller: _passcontroller,
         textInputAction: TextInputAction.next,
         keyboardType: TextInputType.visiblePassword,
@@ -230,14 +247,14 @@ class GirisButon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-          top: (_height / 5), left: (_width / 10), right: (_width / 10)),
+          top: (_height / 7), left: (_width / 10), right: (_width / 10)),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             elevation: 10,
             fixedSize: Size((_width * 0.8), (_height / 15)),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50))),
-        child: const Text('GİRİŞ YAP'),
+        child: Text('GİRİŞ YAP', style: TextStyle(fontSize: _width / 20)),
         onPressed: () {
           sendLogin(context);
         },
@@ -257,7 +274,10 @@ class KayitButon extends StatelessWidget {
         onPressed: () => {
           Navigator.pushNamed(context, '/KayitPage'),
         },
-        child: const Text("KAYIT OL"),
+        child: const Text(
+          "KAYIT OL",
+          style: TextStyle(color: Colors.lightBlueAccent),
+        ),
       ),
     );
   }

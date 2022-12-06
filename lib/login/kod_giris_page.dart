@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ssshht_reklam/helpers/send.dart';
 import 'package:ssshht_reklam/main.dart';
 import 'package:ssshht_reklam/model/cafe.dart';
@@ -40,20 +41,26 @@ class KodGiris extends StatefulWidget {
 class _KodGirisState extends State<KodGiris> {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        Column(
-          children: [
-            const TelefonNumarasi(),
-            Row(
-              children: const [Flexible(child: PhoneInput()), CodeSendButton()],
-            ),
-            const Code(),
-            const CodeInput(),
-            const SignUpButton(),
-          ],
-        ),
-      ],
+    return Container(
+      color: const Color(0XFF0017FF),
+      child: ListView(
+        children: [
+          Column(
+            children: [
+              const TelefonNumarasi(),
+              Row(
+                children: const [
+                  Flexible(child: PhoneInput()),
+                  CodeSendButton()
+                ],
+              ),
+              const Code(),
+              const CodeInput(),
+              const SignUpButton(),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -95,10 +102,15 @@ class TelefonNumarasi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: (_height / 7), right: (_width / 3.5)),
-      child: const Text(
+      margin: EdgeInsets.only(
+        top: (_height / 7),
+      ),
+      child: Text(
         'TELEFON NUMARASI',
-        style: TextStyle(fontSize: 20),
+        style: GoogleFonts.farro(
+            fontSize: _width / 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white),
       ),
     );
   }
@@ -115,10 +127,12 @@ class PhoneInput extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(),
         child: TextField(
-          decoration: InputDecoration(
-              border: const OutlineInputBorder(),
-              filled: true,
-              fillColor: Colors.blue.shade50),
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+            filled: true,
+            fillColor: Color(0XFFA6D7E7),
+          ),
           controller: _phonecontroller,
           cursorColor: Colors.blue,
           keyboardType: const TextInputType.numberWithOptions(
@@ -136,10 +150,13 @@ class Code extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: (_height / 7)),
-      child: const Text(
+      margin: EdgeInsets.only(top: (_height / 20)),
+      child: Text(
         'KOD',
-        style: TextStyle(fontSize: 20),
+        style: GoogleFonts.farro(
+            fontSize: _width / 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white),
       ),
     );
   }
@@ -152,14 +169,16 @@ class CodeInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-          top: (_height / 25), right: (_width / 15), left: (_width / 15)),
+          top: (_height / 30), right: (_width / 15), left: (_width / 15)),
       child: Padding(
         padding: const EdgeInsets.only(),
         child: TextField(
-          decoration: InputDecoration(
-              border: const OutlineInputBorder(),
-              filled: true,
-              fillColor: Colors.blue.shade50),
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+            filled: true,
+            fillColor: Color(0XFFA6D7E7),
+          ),
           controller: _codecontroller,
           cursorColor: Colors.blue,
           keyboardType: const TextInputType.numberWithOptions(
@@ -187,6 +206,8 @@ class _CodeSendButtonState extends State<CodeSendButton> {
       alignment: Alignment.center,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
           elevation: 10,
           fixedSize: Size((_width / 4), (_height / 15)),
         ),
@@ -216,7 +237,7 @@ class _SignUpButtonState extends State<SignUpButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: (_height / 6), left: (_width / 25)),
+      margin: EdgeInsets.only(top: (_height / 4), left: (_width / 25)),
       alignment: Alignment.center,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
