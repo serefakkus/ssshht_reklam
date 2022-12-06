@@ -63,6 +63,7 @@ class _KayitState extends State<Kayit> {
             const CodeInput(),
             const SignUpButton(),
             const GirisButon(),
+            const _IyzicoLogo(),
             const _BottomBarHakkimizda(),
           ],
         ),
@@ -315,7 +316,7 @@ class _BottomBarHakkimizda extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: _height / 30),
+      //margin: EdgeInsets.only(top: _height / 15),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: const [
@@ -433,5 +434,24 @@ class _Ayrac extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Text('|');
+  }
+}
+
+class _IyzicoLogo extends StatelessWidget {
+  const _IyzicoLogo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.topCenter,
+      // margin: EdgeInsets.only(top: _height / 20),
+      width: _width,
+      height: _height / 10,
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+        image: AssetImage("assets/images/iyzico-logo.png"),
+        fit: BoxFit.contain,
+      )),
+    );
   }
 }

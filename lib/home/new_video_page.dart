@@ -20,7 +20,7 @@ Size _size = const Size(0, 0);
 double _height = 0;
 double _width = 0;
 Cafe _cafe = Cafe();
-bool _isFullScreen = false;
+
 bool _isWaiting = false;
 
 File? _video;
@@ -41,7 +41,6 @@ class _NewVideoPageState extends State<NewVideoPage> {
   @override
   void initState() {
     _isWaiting = false;
-    _isFullScreen = false;
     _video = null;
     // ignore: todo
     // TODO: implement initState
@@ -54,13 +53,9 @@ class _NewVideoPageState extends State<NewVideoPage> {
     _height = _size.height;
     _width = _size.width;
     _cafe = ModalRoute.of(context)!.settings.arguments as Cafe;
-    if (_isFullScreen) {
-      SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeLeft]);
-    } else {
-      SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    }
+
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
     if (_isWaiting) {
       return Stack(
@@ -76,12 +71,6 @@ class _NewVideoPageState extends State<NewVideoPage> {
                 )),
           )
         ],
-      );
-    }
-
-    if (_isFullScreen) {
-      return Scaffold(
-        body: UrunImg(_setS),
       );
     }
     return Scaffold(
@@ -109,9 +98,6 @@ class _NewVideoPageState extends State<NewVideoPage> {
 
   @override
   void dispose() {
-    _isFullScreen = false;
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     try {
       _videoPlayerController.dispose();
     } catch (e) {
@@ -332,78 +318,16 @@ class _UrunImgState extends State<UrunImg> {
   @override
   Widget build(BuildContext context) {
     if (_video != null) {
-      if (_isFullScreen) {
-        return SizedBox(
-          height: (_height),
-          width: _width,
-          child: Stack(
-            children: [
-              SizedBox(
-                height: (_height),
-                width: _width,
-                child: _videoPlayerController.value.isInitialized
-                    ? AspectRatio(
-                        aspectRatio: _videoPlayerController.value.aspectRatio,
-                        child: VideoPlayer(_videoPlayerController),
-                      )
-                    : Container(),
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Container(
-                  margin: EdgeInsets.only(
-                    bottom: _height / 20,
-                    right: _width / 20,
-                  ),
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.fullscreen_exit,
-                      size: _width / 15,
-                    ),
-                    onPressed: () {
-                      _isFullScreen = false;
-                      widget.resultCallback();
-                    },
-                  ),
-                ),
-              )
-            ],
-          ),
-        );
-      }
       return SizedBox(
         height: (_height / 2),
-        child: Stack(
-          children: [
-            SizedBox(
-              height: (_height / 2),
-              child: _videoPlayerController.value.isInitialized
-                  ? AspectRatio(
-                      aspectRatio: _videoPlayerController.value.aspectRatio,
-                      child: VideoPlayer(_videoPlayerController),
-                    )
-                  : Container(),
-            ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Container(
-                margin: EdgeInsets.only(
-                  bottom: _height / 30,
-                  right: _width / 30,
-                ),
-                child: IconButton(
-                  icon: Icon(
-                    Icons.fullscreen,
-                    size: _width / 15,
-                  ),
-                  onPressed: () {
-                    _isFullScreen = true;
-                    widget.resultCallback();
-                  },
-                ),
-              ),
-            )
-          ],
+        child: SizedBox(
+          height: (_height / 2),
+          child: _videoPlayerController.value.isInitialized
+              ? AspectRatio(
+                  aspectRatio: _videoPlayerController.value.aspectRatio,
+                  child: VideoPlayer(_videoPlayerController),
+                )
+              : Container(),
         ),
       );
     } else {

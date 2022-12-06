@@ -221,7 +221,8 @@ class _CafeSorBodyState extends State<CafeSorBody> {
               )),
         ),
         const Divider(color: Colors.black),
-        const OnayButon()
+        const OnayButon(),
+        const _IyzicoLogo(),
       ],
     );
   }
@@ -500,5 +501,24 @@ Future _delvideo(String videoId) async {
   } catch (e) {
     //  print(e);
 
+  }
+}
+
+class _IyzicoLogo extends StatelessWidget {
+  const _IyzicoLogo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.topCenter,
+      // margin: EdgeInsets.only(top: _height / 20),
+      width: _width,
+      height: _height / 10,
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+        image: AssetImage("assets/images/iyzico-logo.png"),
+        fit: BoxFit.contain,
+      )),
+    );
   }
 }

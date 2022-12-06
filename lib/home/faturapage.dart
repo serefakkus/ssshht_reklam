@@ -120,6 +120,13 @@ class _KayitState extends State<Kayit> {
           children: [
             const Logo(),
             Container(
+              margin: EdgeInsets.only(top: _height / 30),
+              child: Text(
+                'Fatura bilgileri',
+                style: TextStyle(fontSize: _width / 10),
+              ),
+            ),
+            Container(
               margin: EdgeInsets.only(top: _height / 20),
               child: Row(
                 children: [_kurumsalButon(), _bireyselButon()],

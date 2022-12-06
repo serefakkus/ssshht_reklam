@@ -84,6 +84,7 @@ class _GirisState extends State<Giris> {
           GirisButon(),
           KayitButon(),
           GirissizButon(),
+          _IyzicoLogo(),
           _BottomBarHakkimizda(),
         ],
       ),
@@ -268,7 +269,7 @@ class _BottomBarHakkimizda extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: _height / 30),
+      //margin: EdgeInsets.only(top: _height / 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: const [
@@ -400,4 +401,23 @@ getTextS(Function setS) async {
   teslimatIadeText =
       await getFileData('assets/texts/teslimat_ve_iade_sartlari.txt');
   setS();
+}
+
+class _IyzicoLogo extends StatelessWidget {
+  const _IyzicoLogo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.topCenter,
+      // margin: EdgeInsets.only(top: _height / 20),
+      width: _width,
+      height: _height / 10,
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+        image: AssetImage("assets/images/iyzico-logo.png"),
+        fit: BoxFit.contain,
+      )),
+    );
+  }
 }

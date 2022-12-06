@@ -3,6 +3,7 @@ import 'package:ssshht_reklam/home/home_page.dart';
 
 Size _size = const Size(0, 0);
 double _height = 0;
+double _width = 0;
 
 class CreditCardPage extends StatefulWidget {
   const CreditCardPage({Key? key}) : super(key: key);
@@ -16,6 +17,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
   Widget build(BuildContext context) {
     _size = MediaQuery.of(context).size;
     _height = _size.height;
+    _width = _size.width;
     return const WebViewExample();
   }
 }
@@ -42,7 +44,27 @@ class WebViewExampleState extends State<WebViewExample> {
             ),
           ),
         ),
+        const _IyzicoLogo(),
       ],
+    );
+  }
+}
+
+class _IyzicoLogo extends StatelessWidget {
+  const _IyzicoLogo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.topCenter,
+      margin: EdgeInsets.only(top: _height / 3),
+      width: _width,
+      height: _height / 10,
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+        image: AssetImage("assets/images/iyzico-logo.png"),
+        fit: BoxFit.contain,
+      )),
     );
   }
 }
