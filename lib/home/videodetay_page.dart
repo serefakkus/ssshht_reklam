@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ssshht_reklam/helpers/database.dart';
 import 'package:ssshht_reklam/home/home_page.dart';
 import 'package:ssshht_reklam/model/cafe.dart';
@@ -65,7 +66,7 @@ class _VideoDetayPageState extends State<VideoDetayPage> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: const Color(0XFF0017FF),
       body: ListView(
         // ignore: prefer_const_literals_to_create_immutables
         children: [
@@ -130,8 +131,10 @@ class DurationSec extends StatelessWidget {
         children: [
           Text(
             'SÜRE = ${_videoDur.toString()} saniye',
-            style: const TextStyle(fontSize: 20),
-            textAlign: TextAlign.center,
+            style: GoogleFonts.farro(
+                fontSize: _width / 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white),
           ),
           Container(
             margin: EdgeInsets.only(

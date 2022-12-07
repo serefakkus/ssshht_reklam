@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ssshht_reklam/helpers/database.dart';
 import 'package:ssshht_reklam/home/home_page.dart';
 import 'package:ssshht_reklam/home/videodetay_page.dart';
@@ -78,7 +79,10 @@ class _ReklamVerPageState extends State<ReklamVerPage> {
       _getVideoIds(_setS);
     }
     // ignore: prefer_const_constructors
-    return CafeSorBody();
+    return Container(
+      color: const Color(0XFF0017FF),
+      child: const CafeSorBody(),
+    );
   }
 
   _setS() {
@@ -138,9 +142,12 @@ class _CafeSorBodyState extends State<CafeSorBody> {
         Center(
           child: Container(
               margin: EdgeInsets.only(top: (_height / 30)),
-              child: const Text(
+              child: Text(
                 'KAFELER',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: GoogleFonts.farro(
+                    fontSize: _width / 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               )),
         ),
         Center(
@@ -148,31 +155,39 @@ class _CafeSorBodyState extends State<CafeSorBody> {
               margin: EdgeInsets.only(top: (_height / 60)),
               child: Text(
                 _infoString(_info),
-                style: const TextStyle(
-                    fontSize: 20, fontWeight: FontWeight.normal),
+                style: GoogleFonts.farro(
+                    fontSize: _width / 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               )),
         ),
-        const Divider(color: Colors.black),
+        const Divider(color: Colors.white),
         Center(
           child: Container(
               margin: EdgeInsets.only(top: (_height / 40)),
-              child: const Text(
+              child: Text(
                 'VİDEO',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: GoogleFonts.farro(
+                    fontSize: _width / 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               )),
         ),
         // ignore: prefer_const_constructors
         Video(_setState),
-        const Divider(color: Colors.black),
+        const Divider(color: Colors.white),
         Container(
             margin: EdgeInsets.only(left: _width / 3, right: _width / 3),
             child: TarihSec(_setState)),
         Center(
           child: Container(
               margin: EdgeInsets.only(top: (_height / 15)),
-              child: const Text(
+              child: Text(
                 'BAŞLANGIÇ TARİHİ',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: GoogleFonts.farro(
+                    fontSize: _width / 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               )),
         ),
         Center(
@@ -180,17 +195,22 @@ class _CafeSorBodyState extends State<CafeSorBody> {
               margin: EdgeInsets.only(top: (_height / 60)),
               child: Text(
                 _ilkTarih.toString(),
-                style: const TextStyle(
-                    fontSize: 20, fontWeight: FontWeight.normal),
+                style: GoogleFonts.farro(
+                    fontSize: _width / 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               )),
         ),
-        const Divider(color: Colors.black),
+        const Divider(color: Colors.white),
         Center(
           child: Container(
               margin: EdgeInsets.only(top: (_height / 15)),
-              child: const Text(
+              child: Text(
                 'BİTİŞ TARİHİ',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: GoogleFonts.farro(
+                    fontSize: _width / 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               )),
         ),
         Center(
@@ -198,17 +218,22 @@ class _CafeSorBodyState extends State<CafeSorBody> {
               margin: EdgeInsets.only(top: (_height / 60)),
               child: Text(
                 _sonTarih.toString(),
-                style: const TextStyle(
-                    fontSize: 20, fontWeight: FontWeight.normal),
+                style: GoogleFonts.farro(
+                    fontSize: _width / 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               )),
         ),
-        const Divider(color: Colors.black),
+        const Divider(color: Colors.white),
         Center(
           child: Container(
               margin: EdgeInsets.only(top: (_height / 15)),
-              child: const Text(
+              child: Text(
                 'TOPLAM FİYAT',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: GoogleFonts.farro(
+                    fontSize: _width / 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               )),
         ),
         Center(
@@ -216,11 +241,13 @@ class _CafeSorBodyState extends State<CafeSorBody> {
               margin: EdgeInsets.only(top: (_height / 60)),
               child: Text(
                 '${_fiyatString(_fiyat)} TL',
-                style: const TextStyle(
-                    fontSize: 20, fontWeight: FontWeight.normal),
+                style: GoogleFonts.farro(
+                    fontSize: _width / 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               )),
         ),
-        const Divider(color: Colors.black),
+        const Divider(color: Colors.white),
         const OnayButon(),
         const _IyzicoLogo(),
       ],

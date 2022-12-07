@@ -42,7 +42,10 @@ class _GunSorPageState extends State<GunSorPage> {
       _gunList = uniqGun.toList();
     }
 
-    return const PaketBody();
+    return Container(
+      color: const Color(0XFF0017FF),
+      child: const PaketBody(),
+    );
   }
 }
 

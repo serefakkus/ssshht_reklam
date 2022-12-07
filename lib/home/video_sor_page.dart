@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ssshht_reklam/helpers/database.dart';
 import 'package:ssshht_reklam/home/home_page.dart';
 import 'package:ssshht_reklam/main.dart';
@@ -11,10 +12,11 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 Size _size = const Size(0, 0);
 double _height = 0;
+double _width = 0;
 
 Cafe _cafe = Cafe();
-TextStyle _nameStyle =
-    const TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
+TextStyle _nameStyle = GoogleFonts.farro(
+    fontSize: _width / 22, fontWeight: FontWeight.bold, color: Colors.black);
 
 int _count = 0;
 bool _busy = false;
@@ -31,13 +33,17 @@ class _VideoSorPageState extends State<VideoSorPage> {
   Widget build(BuildContext context) {
     _size = MediaQuery.of(context).size;
     _height = _size.height;
+    _width = _size.width;
     _cafe = Cafe();
     _cafe = ModalRoute.of(context)!.settings.arguments as Cafe;
-    return Column(
-      children: const [
-        Logo(),
-        Flexible(child: VideoBody()),
-      ],
+    return Container(
+      color: const Color(0XFF0017FF),
+      child: Column(
+        children: const [
+          Logo(),
+          Flexible(child: VideoBody()),
+        ],
+      ),
     );
   }
 }
@@ -99,21 +105,21 @@ class VideoList extends StatelessWidget {
 SizedBox _baslikCard() {
   return SizedBox(
     height: _height / 10,
-    child: const Card(
+    child: Card(
       child: ListTile(
         leading: Text(
           'AD',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25,
-          ),
+          style: GoogleFonts.farro(
+              fontSize: _width / 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black),
         ),
         trailing: Text(
           'ONAY',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25,
-          ),
+          style: GoogleFonts.farro(
+              fontSize: _width / 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black),
         ),
       ),
     ),

@@ -37,7 +37,10 @@ class _SehirSorPageState extends State<SehirSorPage> {
     _cafe = _gelen[0];
     _videoId = _gelen[1];
     _videoDur = _gelen[2];
-    return const SehirBody();
+    return Container(
+      color: const Color(0XFF0017FF),
+      child: const SehirBody(),
+    );
   }
 }
 

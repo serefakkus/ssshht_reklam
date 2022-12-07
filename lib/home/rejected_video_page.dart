@@ -31,10 +31,9 @@ class _RejectedVideoPageState extends State<RejectedVideoPage> {
     _size = MediaQuery.of(context).size;
     _height = _size.height;
     _width = _size.width;
-
     if (_video.waiting == false && _video.verify == false) {
       _uyari = 'VIDEO TOPLULUK KURALLARINA\nUYMADIĞI İÇİN ONAYLANMADI';
-    } else if (_video.waiting == false) {
+    } else if (_video.waiting == true) {
       _uyari = 'VIDEO ONAY BEKLİYOR';
     }
 
@@ -62,6 +61,7 @@ class _RejectVideoBodyState extends State<RejectVideoBody> {
         // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
         setState(() {});
         _controller.play();
+        _controller.setVolume(0);
       });
   }
 
@@ -79,7 +79,6 @@ class _RejectVideoBodyState extends State<RejectVideoBody> {
           const Logo(),
           Container(
             margin: EdgeInsets.only(
-              top: _height / 20,
               left: _width / 5,
               right: _width / 5,
             ),
@@ -133,7 +132,7 @@ class Not extends StatelessWidget {
     if (_video.not != null && _video.not != '') {
       return Center(
         child: Text(
-          'AÇIKLAMA\n\n${_video.not}',
+          'AÇIKLAMA\n${_video.not}',
           style: const TextStyle(
             color: Colors.black,
             fontSize: 23,
@@ -152,7 +151,6 @@ class Uyari extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: (_height / 5),
       child: Center(
         child: Text(
           _uyari,
@@ -184,7 +182,7 @@ class OnayButon extends StatelessWidget {
                 color: Colors.white54,
                 width: 1.5,
               ),
-              primary: Colors.blueAccent.withOpacity(0.8),
+              backgroundColor: Colors.blueAccent.withOpacity(0.8),
               elevation: 20,
               fixedSize: Size((_width * 0.4), (_height / 16)),
               shape: RoundedRectangleBorder(

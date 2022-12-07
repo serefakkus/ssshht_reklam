@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ssshht_reklam/helpers/database.dart';
 import 'package:ssshht_reklam/home/home_page.dart';
 import 'package:ssshht_reklam/login/giris_page.dart';
@@ -70,6 +71,7 @@ class _FaturaPageState extends State<FaturaPage> {
     _videoDur = _gelen[4];
 
     return const Scaffold(
+      backgroundColor: Color(0XFF0017FF),
       body: Kayit(),
     );
   }
@@ -123,7 +125,10 @@ class _KayitState extends State<Kayit> {
               margin: EdgeInsets.only(top: _height / 30),
               child: Text(
                 'Fatura bilgileri',
-                style: TextStyle(fontSize: _width / 10),
+                style: GoogleFonts.farro(
+                    fontSize: _width / 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
               ),
             ),
             Container(
@@ -163,7 +168,7 @@ class _KayitState extends State<Kayit> {
   _kurumsalButon() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        primary: _color(_isKurumsal),
+        backgroundColor: _color(_isKurumsal),
         fixedSize: Size((_width * 0.5), (_height / 15)),
       ),
       child: const Text(
@@ -180,7 +185,7 @@ class _KayitState extends State<Kayit> {
   _bireyselButon() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        primary: _color(!_isKurumsal),
+        backgroundColor: _color(!_isKurumsal),
         fixedSize: Size((_width * 0.5), (_height / 15)),
       ),
       child: const Text(
@@ -197,9 +202,9 @@ class _KayitState extends State<Kayit> {
 
 _color(bool ok) {
   if (ok) {
-    return Colors.blue;
+    return Colors.white;
   }
-  return Colors.white;
+  return Colors.blueAccent;
 }
 
 _sendCode(BuildContext context) async {
@@ -283,16 +288,22 @@ class Kimlik extends StatelessWidget {
         children: [
           Container(
             margin: EdgeInsets.only(top: (_height / 20)),
-            child: const Text(
+            child: Text(
               "KİMLİK NUMARASI",
-              style: TextStyle(fontSize: 20),
+              style: GoogleFonts.farro(
+                  fontSize: _width / 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
           ),
           Container(
             margin: EdgeInsets.only(top: (_height / 20)),
             child: Text(
               _fatura.kimlik.toString(),
-              style: const TextStyle(fontSize: 20),
+              style: GoogleFonts.farro(
+                  fontSize: _width / 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
           ),
         ],
@@ -302,16 +313,22 @@ class Kimlik extends StatelessWidget {
       children: [
         Container(
           margin: EdgeInsets.only(top: (_height / 20)),
-          child: const Text(
+          child: Text(
             "VERGİ NUMARASI",
-            style: TextStyle(fontSize: 20),
+            style: GoogleFonts.farro(
+                fontSize: _width / 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white),
           ),
         ),
         Container(
           margin: EdgeInsets.only(top: (_height / 20)),
           child: Text(
             _fatura.kimlik.toString(),
-            style: const TextStyle(fontSize: 20),
+            style: GoogleFonts.farro(
+                fontSize: _width / 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white),
           ),
         ),
       ],
@@ -326,10 +343,12 @@ class Mail extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: (_height / 20)),
-      child: const Text(
+      child: Text(
         'MAİL ADRESİ',
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 20),
+        style: GoogleFonts.farro(
+            fontSize: _width / 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white),
       ),
     );
   }
@@ -367,10 +386,12 @@ class Name extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: (_height / 20)),
-      child: const Text(
+      child: Text(
         'İSİM',
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 20),
+        style: GoogleFonts.farro(
+            fontSize: _width / 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white),
       ),
     );
   }
@@ -407,10 +428,12 @@ class Adres extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: (_height / 20)),
-      child: const Text(
+      child: Text(
         'ADRES',
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 20),
+        style: GoogleFonts.farro(
+            fontSize: _width / 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white),
       ),
     );
   }
@@ -454,10 +477,12 @@ class VergiDairesi extends StatelessWidget {
     }
     return Container(
       margin: EdgeInsets.only(top: (_height / 20)),
-      child: const Text(
+      child: Text(
         'VERGİ DAİRESİ',
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 20),
+        style: GoogleFonts.farro(
+            fontSize: _width / 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white),
       ),
     );
   }
@@ -500,10 +525,12 @@ class Ilce extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: (_height / 20)),
-      child: const Text(
+      child: Text(
         'İLÇE',
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 20),
+        style: GoogleFonts.farro(
+            fontSize: _width / 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white),
       ),
     );
   }
@@ -543,10 +570,12 @@ class Il extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: (_height / 20)),
-      child: const Text(
+      child: Text(
         'ŞEHİR',
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 20),
+        style: GoogleFonts.farro(
+            fontSize: _width / 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white),
       ),
     );
   }
@@ -709,7 +738,10 @@ class __SozlesmeState extends State<_Sozlesme> {
             _isOnay = !_isOnay;
             setState(() {});
           },
-          child: const Text('Mesafeli satış sözleşmesini onaylıyorum.'),
+          child: const Text(
+            'Mesafeli satış sözleşmesini onaylıyorum.',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ],
     );
@@ -890,7 +922,10 @@ class _TeslimatVeIadeState extends State<_TeslimatVeIade> {
             _isOnay2 = !_isOnay2;
             setState(() {});
           },
-          child: const Text('Teslimat ve iade sözleşmesini onaylıyorum.'),
+          child: const Text(
+            'Teslimat ve iade sözleşmesini onaylıyorum.',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ],
     );

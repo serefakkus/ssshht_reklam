@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ssshht_reklam/home/home_page.dart';
 
 Size _size = const Size(0, 0);
@@ -18,7 +19,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
     _size = MediaQuery.of(context).size;
     _height = _size.height;
     _width = _size.width;
-    return const WebViewExample();
+    return Container(
+        color: const Color(0XFF0017FF), child: const WebViewExample());
   }
 }
 
@@ -37,10 +39,13 @@ class WebViewExampleState extends State<WebViewExample> {
         const Logo(),
         Container(
           margin: EdgeInsets.only(top: _height / 3),
-          child: const Center(
+          child: Center(
             child: Text(
               'Kredi karti ödeme sistemimiz yakında sizlerle',
-              style: TextStyle(fontSize: 18),
+              style: GoogleFonts.farro(
+                  fontSize: _width / 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
             ),
           ),
         ),

@@ -30,7 +30,10 @@ class _PaketSorPageState extends State<PaketSorPage> {
     _videoId = _gelen[1];
     _videoDur = _gelen[2];
 
-    return const PaketBody();
+    return Container(
+      color: const Color(0XFF0017FF),
+      child: const PaketBody(),
+    );
   }
 }
 

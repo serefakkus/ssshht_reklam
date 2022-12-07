@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ssshht_reklam/helpers/database.dart';
 
 import 'package:ssshht_reklam/model/cafe.dart';
@@ -74,20 +75,23 @@ class _NewVideoPageState extends State<NewVideoPage> {
       );
     }
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          const LogoNewVideoPage(),
-          const NameInput(),
-          UrunImg(_setS),
-          Container()
-        ],
+      body: Container(
+        color: const Color(0XFF0017FF),
+        child: ListView(
+          children: [
+            const LogoNewVideoPage(),
+            const NameInput(),
+            UrunImg(_setS),
+            OnayButon(_setS, _goHome),
+            Container()
+          ],
+        ),
       ),
-      bottomNavigationBar: OnayButon(_setS, _goHome),
     );
   }
 
   _setS() {
+    print('sets');
     setState(() {});
   }
 
@@ -167,26 +171,35 @@ class NameInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Text(
-          'VIDEO İSMİ',
-          style: TextStyle(fontSize: 20),
-          textAlign: TextAlign.center,
-        ),
-        Container(
-          margin: EdgeInsets.only(
-              top: (_height / 120), left: (_width / 10), right: (_width / 10)),
-          child: TextField(
-            decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                filled: true,
-                fillColor: Colors.blue.shade50),
-            controller: _namecontroller,
-            textInputAction: TextInputAction.go,
+    return Container(
+      margin: EdgeInsets.only(top: _height / 20),
+      child: Column(
+        children: [
+          Text(
+            'VIDEO İSMİ',
+            style: GoogleFonts.farro(
+                fontSize: _width / 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.white),
           ),
-        ),
-      ],
+          Container(
+            margin: EdgeInsets.only(
+                top: (_height / 120),
+                left: (_width / 10),
+                right: (_width / 10)),
+            child: TextField(
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(30))),
+                filled: true,
+                fillColor: Color(0XFFA6D7E7),
+              ),
+              controller: _namecontroller,
+              textInputAction: TextInputAction.go,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -205,6 +218,7 @@ class _OnayButonState extends State<OnayButon> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: const Color(0XFF0017FF),
       margin: EdgeInsets.only(
           bottom: (_height / 18), left: (_width / 10), right: (_width / 10)),
       child: ElevatedButton(
@@ -318,44 +332,52 @@ class _UrunImgState extends State<UrunImg> {
   @override
   Widget build(BuildContext context) {
     if (_video != null) {
-      return SizedBox(
-        height: (_height / 2),
+      return Container(
+        margin: EdgeInsets.only(bottom: _height / 50, top: _height / 20),
         child: SizedBox(
           height: (_height / 2),
-          child: _videoPlayerController.value.isInitialized
-              ? AspectRatio(
-                  aspectRatio: _videoPlayerController.value.aspectRatio,
-                  child: VideoPlayer(_videoPlayerController),
-                )
-              : Container(),
+          child: SizedBox(
+            height: (_height / 2),
+            child: _videoPlayerController.value.isInitialized
+                ? AspectRatio(
+                    aspectRatio: _videoPlayerController.value.aspectRatio,
+                    child: VideoPlayer(_videoPlayerController),
+                  )
+                : Container(),
+          ),
         ),
       );
     } else {
-      return Center(
-        child: GestureDetector(
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(bottom: _height / 20),
-                child: const Text(
-                  'VİDEO YÜKLEMEK İÇİN TIKLAYIN',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
+      return Container(
+        margin: EdgeInsets.only(bottom: _height / 5),
+        child: Center(
+          child: GestureDetector(
+            child: Column(
+              children: [
+                Container(
+                  margin:
+                      EdgeInsets.only(bottom: _height / 20, top: _height / 7),
+                  child: Text(
+                    'VİDEO YÜKLEMEK İÇİN TIKLAYIN',
+                    style: GoogleFonts.farro(
+                        fontSize: _width / 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                 ),
-              ),
-              ClipRRect(
-                  borderRadius: BorderRadius.circular(60),
-                  child: const Icon(
-                    Icons.add_a_photo,
-                    size: 50,
-                  )),
-            ],
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(60),
+                    child: const Icon(
+                      Icons.add_a_photo,
+                      size: 50,
+                      color: Colors.white,
+                    )),
+              ],
+            ),
+            onTap: () {
+              _pickVideo(context);
+            },
           ),
-          onTap: () {
-            _pickVideo(context);
-          },
         ),
       );
     }
@@ -407,6 +429,7 @@ class _UrunImgState extends State<UrunImg> {
           setState(() {});
           _videoPlayerController.play();
           _videoPlayerController.setLooping(true);
+          _videoPlayerController.setVolume(0);
         });
     }
   }
@@ -452,6 +475,7 @@ Future<bool> _permissonReq(BuildContext context, Function setS) async {
             setS();
             _videoPlayerController.play();
             _videoPlayerController.setLooping(true);
+            _videoPlayerController.setVolume(0);
           });
       }
       ok = true;
