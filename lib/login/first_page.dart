@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:ssshht_reklam/helpers/database.dart';
 import 'package:ssshht_reklam/helpers/send.dart';
 import 'package:ssshht_reklam/main.dart';
@@ -31,6 +32,10 @@ class _FirstPageState extends State<FirstPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
+      supportedLocales: const [
+        Locale('tr', 'TR'),
+      ],
       builder: EasyLoading.init(),
       onGenerateRoute: RouteGenerator.routeGenerator,
       home: const islogin(),

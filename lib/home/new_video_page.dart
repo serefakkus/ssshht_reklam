@@ -76,7 +76,7 @@ class _NewVideoPageState extends State<NewVideoPage> {
     }
     return Scaffold(
       body: Container(
-        color: const Color(0XFF0017FF),
+        color: backGroundColor,
         child: ListView(
           children: [
             const LogoNewVideoPage(),
@@ -91,7 +91,6 @@ class _NewVideoPageState extends State<NewVideoPage> {
   }
 
   _setS() {
-    print('sets');
     setState(() {});
   }
 
@@ -218,7 +217,7 @@ class _OnayButonState extends State<OnayButon> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0XFF0017FF),
+      color: backGroundColor,
       margin: EdgeInsets.only(
           bottom: (_height / 18), left: (_width / 10), right: (_width / 10)),
       child: ElevatedButton(

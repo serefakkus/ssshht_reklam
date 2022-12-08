@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ssshht_reklam/login/giris_page.dart';
+import 'package:ssshht_reklam/main.dart';
 
 Size _size = const Size(0, 0);
 double _height = 0;
@@ -28,7 +30,7 @@ class _WelcomePageState extends State<WelcomePage> {
     _width = _size.width;
     return Scaffold(
       body: Container(
-        color: const Color(0XFF0017FF),
+        color: backGroundColor,
         child: ListView(
           children: const [
             QrImg(),
@@ -78,8 +80,8 @@ class GirisButon extends StatelessWidget {
       alignment: Alignment.center,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0XFF4D5262),
-            elevation: 10,
+            backgroundColor: Colors.blue,
+            elevation: 20,
             fixedSize: Size((_width * 0.8), (_height / 15)),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50))),
@@ -102,8 +104,8 @@ class KayitButon extends StatelessWidget {
       alignment: Alignment.center,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0XFF4D5262),
-            elevation: 10,
+            backgroundColor: Colors.green,
+            elevation: 20,
             fixedSize: Size((_width * 0.8), (_height / 15)),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50))),
@@ -124,9 +126,14 @@ class GirissizButon extends StatelessWidget {
     return TextButton(
       onPressed: () =>
           {Navigator.pushNamed(context, '/KodGirisPage', arguments: 'seref')},
-      child: const Text(
+      child: Text(
         "ŞİFREMİ UNUTTUM",
-        style: TextStyle(color: Colors.lightBlueAccent),
+        style: GoogleFonts.farro(
+          fontSize: _width / 25,
+          fontWeight: FontWeight.normal,
+          color: Colors.white,
+          fontStyle: FontStyle.italic,
+        ),
       ),
     );
   }
@@ -158,7 +165,7 @@ class _Hakkimizda extends StatelessWidget {
     return TextButton(
       child: const Text(
         'HAKKIMIZDA',
-        style: TextStyle(color: Colors.green),
+        style: TextStyle(color: Colors.white),
       ),
       onPressed: () {
         showModalBottomSheet(
@@ -190,7 +197,7 @@ class _Iletisim extends StatelessWidget {
     return TextButton(
       child: const Text(
         'İLETİŞİM',
-        style: TextStyle(color: Colors.green),
+        style: TextStyle(color: Colors.white),
       ),
       onPressed: () {
         showModalBottomSheet(
@@ -223,7 +230,7 @@ class _GizlilikPolitikasi extends StatelessWidget {
       child: const Text(
         'GİZLİLİK\nPOLİTİKASI',
         textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.green),
+        style: TextStyle(color: Colors.white),
       ),
       onPressed: () {
         showModalBottomSheet(

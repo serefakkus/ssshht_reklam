@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,6 +32,7 @@ double _width = 0;
 String _ilkTarih = '';
 String _sonTarih = '';
 int _videoDur = 0;
+String _selectedDay = '';
 
 List<String>? _videoList;
 File _file = File('');
@@ -56,6 +58,7 @@ class _ReklamVerPageState extends State<ReklamVerPage> {
     _isTarihSelect = false;
     _ilkTarih = '';
     _sonTarih = '';
+    _selectedDay = '';
   }
 
   @override
@@ -80,7 +83,7 @@ class _ReklamVerPageState extends State<ReklamVerPage> {
     }
     // ignore: prefer_const_constructors
     return Container(
-      color: const Color(0XFF0017FF),
+      color: backGroundColor,
       child: const CafeSorBody(),
     );
   }
@@ -284,36 +287,99 @@ class _TarihSecState extends State<TarihSec> {
     return ElevatedButton(
       child: const Text('TARİH SEÇ'),
       onPressed: () {
-        showDatePicker(
-                context: context,
-                initialDate: _suan,
-                firstDate: _suan,
-                lastDate: _last)
-            .then((value) {
-          _cafe.day = [];
-          _isTarihSelect = true;
-          for (var i = 0; i < _day; i++) {
-            var strm = value!.month.toString();
-            var strd = value.day.toString();
-            if (strd.length != 2) {
-              strd = '0$strd';
-            }
-            if (strm.length != 2) {
-              strm = '0$strm';
-            }
+        showCupertinoModalPopup(
+          context: context,
+          builder: (context) => Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton(
+                  onPressed: () {
+                    var thisDay = _suan;
+                    if (_selectedDay == '') {
+                      _cafe.day = [];
+                      _isTarihSelect = true;
+                      for (var i = 0; i < _day; i++) {
+                        var strm = thisDay.month.toString();
+                        var strd = thisDay.day.toString();
+                        if (strd.length != 2) {
+                          strd = '0$strd';
+                        }
+                        if (strm.length != 2) {
+                          strm = '0$strm';
+                        }
 
-            var day = '$strd-$strm-${value.year}';
-            if (i == 0) {
-              _ilkTarih = day;
-            }
-            if (i == _day - 1) {
-              _sonTarih = day;
-            }
-            _cafe.day!.add(day);
-            value = value.add(const Duration(days: 1));
-          }
-          widget.resultCallback();
-        });
+                        var day = '$strd-$strm-${thisDay.year}';
+                        _selectedDay = day;
+                        if (i == 0) {
+                          _ilkTarih = day;
+                        }
+                        if (i == _day - 1) {
+                          _sonTarih = day;
+                        }
+                        _cafe.day!.add(day);
+                        thisDay = thisDay.add(const Duration(days: 1));
+                      }
+                    }
+                    widget.resultCallback();
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey,
+                      elevation: 10,
+                      fixedSize: Size((_width * 0.3), (_height / 15)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10))),
+                  child: Text(
+                    'BİTTİ',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: _width / 15,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 250,
+                child: CupertinoDatePicker(
+                  mode: CupertinoDatePickerMode.date,
+                  backgroundColor: Colors.white,
+                  initialDateTime: _suan,
+                  maximumDate: _last,
+                  minimumDate: _suan,
+                  onDateTimeChanged: (value) {
+                    _cafe.day = [];
+                    _isTarihSelect = true;
+                    for (var i = 0; i < _day; i++) {
+                      var strm = value.month.toString();
+                      var strd = value.day.toString();
+                      if (strd.length != 2) {
+                        strd = '0$strd';
+                      }
+                      if (strm.length != 2) {
+                        strm = '0$strm';
+                      }
+
+                      var day = '$strd-$strm-${value.year}';
+                      _selectedDay = day;
+                      if (i == 0) {
+                        _ilkTarih = day;
+                      }
+                      if (i == _day - 1) {
+                        _sonTarih = day;
+                      }
+                      _cafe.day!.add(day);
+                      value = value.add(const Duration(days: 1));
+                    }
+                    widget.resultCallback();
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
       },
     );
   }

@@ -37,7 +37,7 @@ class _VideoSorPageState extends State<VideoSorPage> {
     _cafe = Cafe();
     _cafe = ModalRoute.of(context)!.settings.arguments as Cafe;
     return Container(
-      color: const Color(0XFF0017FF),
+      color: backGroundColor,
       child: Column(
         children: const [
           Logo(),
@@ -106,20 +106,21 @@ SizedBox _baslikCard() {
   return SizedBox(
     height: _height / 10,
     child: Card(
+      color: const Color(0XFFA6D7E7),
       child: ListTile(
         leading: Text(
           'AD',
           style: GoogleFonts.farro(
               fontSize: _width / 18,
               fontWeight: FontWeight.bold,
-              color: Colors.black),
+              color: Colors.white),
         ),
         trailing: Text(
           'ONAY',
           style: GoogleFonts.farro(
               fontSize: _width / 18,
               fontWeight: FontWeight.bold,
-              color: Colors.black),
+              color: Colors.white),
         ),
       ),
     ),
@@ -128,6 +129,7 @@ SizedBox _baslikCard() {
 
 Card _verifyedCard(Video video, BuildContext context) {
   return Card(
+    color: const Color(0XFFA6D7E7),
     child: ListTile(
         onTap: () async {
           var tok = await getToken(context);
@@ -180,6 +182,7 @@ void _err(BuildContext context) {
 
 Card _waitingCard(Video video, BuildContext context) {
   return Card(
+    color: const Color(0XFFA6D7E7),
     child: ListTile(
         onTap: () async {
           if (video.waiting == null || video.verify == null) {
@@ -204,6 +207,7 @@ Card _waitingCard(Video video, BuildContext context) {
 
 Card _rejectedCard(Video video, BuildContext context) {
   return Card(
+    color: const Color(0XFFA6D7E7),
     child: ListTile(
         onTap: () async {
           if (video.verify != true) {

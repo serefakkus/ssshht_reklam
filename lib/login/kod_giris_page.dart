@@ -42,7 +42,7 @@ class _KodGirisState extends State<KodGiris> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color(0XFF0017FF),
+      color: backGroundColor,
       child: ListView(
         children: [
           Column(

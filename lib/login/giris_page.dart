@@ -77,7 +77,7 @@ class _GirisState extends State<Giris> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: const Color(0XFF0017FF),
+        color: backGroundColor,
         child: ListView(
           children: const [
             TelefonNumarasi(),
@@ -274,9 +274,14 @@ class KayitButon extends StatelessWidget {
         onPressed: () => {
           Navigator.pushNamed(context, '/KayitPage'),
         },
-        child: const Text(
+        child: Text(
           "KAYIT OL",
-          style: TextStyle(color: Colors.lightBlueAccent),
+          style: GoogleFonts.farro(
+            fontSize: _width / 25,
+            fontWeight: FontWeight.normal,
+            color: Colors.white,
+            fontStyle: FontStyle.italic,
+          ),
         ),
       ),
     );
@@ -312,7 +317,7 @@ class _Hakkimizda extends StatelessWidget {
     return TextButton(
       child: const Text(
         'HAKKIMIZDA',
-        style: TextStyle(color: Colors.green),
+        style: TextStyle(color: Colors.white),
       ),
       onPressed: () {
         showModalBottomSheet(
@@ -344,7 +349,7 @@ class _Iletisim extends StatelessWidget {
     return TextButton(
       child: const Text(
         'İLETİŞİM',
-        style: TextStyle(color: Colors.green),
+        style: TextStyle(color: Colors.white),
       ),
       onPressed: () {
         showModalBottomSheet(
@@ -377,7 +382,7 @@ class _GizlilikPolitikasi extends StatelessWidget {
       child: const Text(
         'GİZLİLİK\nPOLİTİKASI',
         textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.green),
+        style: TextStyle(color: Colors.white),
       ),
       onPressed: () {
         showModalBottomSheet(

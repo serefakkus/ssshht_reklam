@@ -66,7 +66,7 @@ class _VideoDetayPageState extends State<VideoDetayPage> {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0XFF0017FF),
+      backgroundColor: backGroundColor,
       body: ListView(
         // ignore: prefer_const_literals_to_create_immutables
         children: [

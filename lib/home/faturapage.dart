@@ -70,9 +70,9 @@ class _FaturaPageState extends State<FaturaPage> {
     _isRef = _gelen[3];
     _videoDur = _gelen[4];
 
-    return const Scaffold(
-      backgroundColor: Color(0XFF0017FF),
-      body: Kayit(),
+    return Scaffold(
+      backgroundColor: backGroundColor,
+      body: const Kayit(),
     );
   }
 

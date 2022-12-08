@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ssshht_reklam/home/home_page.dart';
 
+import '../main.dart';
 import '../model/cafe.dart';
 
 Cafe _cafe = Cafe();
@@ -43,7 +44,7 @@ class _GunSorPageState extends State<GunSorPage> {
     }
 
     return Container(
-      color: const Color(0XFF0017FF),
+      color: backGroundColor,
       child: const PaketBody(),
     );
   }
@@ -62,7 +63,7 @@ class _PaketBodyState extends State<PaketBody> {
     int count = 0;
     bool busy = false;
     if (_gunList != null) {
-      count = _gunList!.length + 3;
+      count = _gunList!.length + 2;
     }
     if (count == 0) {
       busy = true;
@@ -81,6 +82,7 @@ class _PaketBodyState extends State<PaketBody> {
         } else {
           if (index == 0) {
             return Card(
+              color: const Color(0XFFA6D7E7),
               child: SizedBox(
                 height: _height / 10,
                 child: ListTile(
@@ -90,33 +92,25 @@ class _PaketBodyState extends State<PaketBody> {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: _width / 20,
+                      color: Colors.white,
                     ),
                   )),
                 ),
               ),
             );
           }
-          if (index == 1) {
-            return Container(
-              margin: EdgeInsets.only(bottom: _height / 30),
-              child: const Card(
-                child: ListTile(
-                  title: Text(
-                    'GÜN',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-            );
-          }
-          index--;
           index--;
           var gun = _gunList![index];
 
           return Card(
+            color: const Color(0XFFA6D7E7),
             child: ListTile(
-              title: Text('$gun GÜNLÜK'),
+              title: Text(
+                '$gun GÜNLÜK',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.bold),
+              ),
               onTap: () {
                 List<Paket> paketList = [];
                 for (var i = 0; i < _cafe.paketList!.length; i++) {

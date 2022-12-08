@@ -35,7 +35,7 @@ class _NewLoginPageState extends State<NewLoginPage> {
     //  ModalRoute.of(context)!.settings.arguments as List<String>;
     List<String> code = [];
     return Container(
-      color: const Color(0XFF0017FF),
+      color: backGroundColor,
       child: ListView(
         children: [
           const KimlikNumarasi(),

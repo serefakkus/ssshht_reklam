@@ -19,7 +19,6 @@ int _videoCount = 0;
 String _tel = '';
 String? _name;
 bool _isFirstBakiyeSor = true;
-Color _backGround = Color(0XFF0017FF);
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -48,7 +47,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     return Scaffold(
-      backgroundColor: _backGround,
+      backgroundColor: backGroundColor,
       body: Stack(
         children: [
           Column(
@@ -59,7 +58,7 @@ class _HomePageState extends State<HomePage> {
                 // ignore: prefer_const_literals_to_create_immutables
                 children: [
                   Container(
-                    color: _backGround,
+                    color: backGroundColor,
                     child: const LogoHomePage(),
                   ),
                   Align(

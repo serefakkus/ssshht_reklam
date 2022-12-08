@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ssshht_reklam/home/home_page.dart';
 import 'package:ssshht_reklam/model/cafe.dart';
 
+import '../main.dart';
+
 Cafe _cafe = Cafe();
 List<dynamic> _gelen = [];
 String _videoId = '';
@@ -31,7 +33,7 @@ class _PaketSorPageState extends State<PaketSorPage> {
     _videoDur = _gelen[2];
 
     return Container(
-      color: const Color(0XFF0017FF),
+      color: backGroundColor,
       child: const PaketBody(),
     );
   }
@@ -69,6 +71,7 @@ class _PaketBodyState extends State<PaketBody> {
         } else {
           if (index == 0) {
             return Card(
+              color: const Color(0XFFA6D7E7),
               child: SizedBox(
                 height: _height / 10,
                 child: ListTile(
@@ -78,6 +81,7 @@ class _PaketBodyState extends State<PaketBody> {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: _width / 20,
+                      color: Colors.white,
                     ),
                   )),
                 ),
@@ -88,19 +92,23 @@ class _PaketBodyState extends State<PaketBody> {
             return Container(
               margin: EdgeInsets.only(bottom: _height / 30),
               child: const Card(
+                color: Color(0XFFA6D7E7),
                 child: ListTile(
                   leading: Text(
                     'PAKET İSMİ',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                   trailing: Text(
                     'FİYAT (SANİYE)',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.white),
                   ),
                   title: Center(
                     child: Text(
                       'KAFELER',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ),
                 ),
@@ -112,6 +120,7 @@ class _PaketBodyState extends State<PaketBody> {
           var paket = _cafe.paketList![index];
           var dayCount = paket.day;
           return Card(
+            color: const Color(0XFFA6D7E7),
             child: ListTile(
               onTap: () {
                 _paketSor(

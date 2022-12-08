@@ -38,7 +38,7 @@ class _SehirSorPageState extends State<SehirSorPage> {
     _videoId = _gelen[1];
     _videoDur = _gelen[2];
     return Container(
-      color: const Color(0XFF0017FF),
+      color: backGroundColor,
       child: const SehirBody(),
     );
   }
@@ -83,6 +83,7 @@ class _SehirBodyState extends State<SehirBody> {
             return Container(
               margin: EdgeInsets.only(bottom: _height / 20),
               child: Card(
+                color: const Color(0XFFA6D7E7),
                 child: SizedBox(
                   height: _height / 10,
                   child: ListTile(
@@ -92,6 +93,7 @@ class _SehirBodyState extends State<SehirBody> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: _width / 20,
+                        color: Colors.white,
                       ),
                     )),
                   ),
@@ -103,6 +105,7 @@ class _SehirBodyState extends State<SehirBody> {
           index--;
           var video = _cafe.sehir![index];
           return Card(
+            color: const Color(0XFFA6D7E7),
             child: SizedBox(
               height: _height / 10,
               child: ListTile(
@@ -114,6 +117,7 @@ class _SehirBodyState extends State<SehirBody> {
                   video.toString(),
                   style: TextStyle(
                     fontSize: _width / 20,
+                    color: Colors.black,
                   ),
                 )),
               ),

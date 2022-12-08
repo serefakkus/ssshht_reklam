@@ -53,7 +53,7 @@ class _KayitState extends State<Kayit> {
     _height = _size.height;
     _width = _size.width;
     return Container(
-      color: const Color(0XFF0017FF),
+      color: backGroundColor,
       child: ListView(
         children: [
           Column(
@@ -316,7 +316,15 @@ class GirisButon extends StatelessWidget {
         onPressed: () => {
           Navigator.pushNamed(context, '/GirisPage'),
         },
-        child: const Text("GİRİŞ YAP"),
+        child: Text(
+          "GİRİŞ YAP",
+          style: GoogleFonts.farro(
+            fontSize: _width / 25,
+            fontWeight: FontWeight.normal,
+            color: Colors.white,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
       ),
     );
   }
@@ -351,7 +359,7 @@ class _Hakkimizda extends StatelessWidget {
     return TextButton(
       child: const Text(
         'HAKKIMIZDA',
-        style: TextStyle(color: Colors.green),
+        style: TextStyle(color: Colors.white),
       ),
       onPressed: () {
         showModalBottomSheet(
@@ -383,7 +391,7 @@ class _Iletisim extends StatelessWidget {
     return TextButton(
       child: const Text(
         'İLETİŞİM',
-        style: TextStyle(color: Colors.green),
+        style: TextStyle(color: Colors.white),
       ),
       onPressed: () {
         showModalBottomSheet(
@@ -416,7 +424,7 @@ class _GizlilikPolitikasi extends StatelessWidget {
       child: const Text(
         'GİZLİLİK\nPOLİTİKASI',
         textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.green),
+        style: TextStyle(color: Colors.white),
       ),
       onPressed: () {
         showModalBottomSheet(

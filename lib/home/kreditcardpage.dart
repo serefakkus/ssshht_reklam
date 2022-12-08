@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ssshht_reklam/home/home_page.dart';
 
+import '../main.dart';
+
 Size _size = const Size(0, 0);
 double _height = 0;
 double _width = 0;
@@ -19,8 +21,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
     _size = MediaQuery.of(context).size;
     _height = _size.height;
     _width = _size.width;
-    return Container(
-        color: const Color(0XFF0017FF), child: const WebViewExample());
+    return Container(color: backGroundColor, child: const WebViewExample());
   }
 }
 

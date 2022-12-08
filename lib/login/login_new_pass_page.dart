@@ -35,7 +35,7 @@ class _NewPassLoginPageState extends State<NewPassLoginPage> {
         ModalRoute.of(context)!.settings.arguments as List<String>;
 
     return Container(
-      color: const Color(0XFF0017FF),
+      color: backGroundColor,
       child: ListView(
         children: [
           const Center(child: Pass()),
