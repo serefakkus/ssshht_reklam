@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ssshht_reklam/home/home_page.dart';
 import 'package:ssshht_reklam/model/cafe.dart';
 
@@ -11,7 +12,6 @@ int? _videoDur;
 Size _size = const Size(0, 0);
 double _height = 0;
 double _width = 0;
-double _fiyat = 0;
 
 class PaketSorPage extends StatefulWidget {
   const PaketSorPage({Key? key}) : super(key: key);
@@ -70,18 +70,18 @@ class _PaketBodyState extends State<PaketBody> {
           );
         } else {
           if (index == 0) {
-            return Card(
-              color: const Color(0XFFA6D7E7),
+            return Container(
+              margin: EdgeInsets.only(top: _height / 30),
               child: SizedBox(
-                height: _height / 10,
+                height: _height / 15,
                 child: ListTile(
                   title: Center(
                       child: Text(
                     'PAKET SEÇ',
-                    style: TextStyle(
+                    style: GoogleFonts.bungeeShade(
                       fontWeight: FontWeight.bold,
-                      fontSize: _width / 20,
-                      color: Colors.white,
+                      fontSize: _width / 15,
+                      color: const Color(0xFF212F3C),
                     ),
                   )),
                 ),
@@ -91,9 +91,9 @@ class _PaketBodyState extends State<PaketBody> {
           if (index == 1) {
             return Container(
               margin: EdgeInsets.only(bottom: _height / 30),
-              child: const Card(
-                color: Color(0XFFA6D7E7),
-                child: ListTile(
+              child: Card(
+                color: Colors.white.withOpacity(0),
+                child: const ListTile(
                   leading: Text(
                     'PAKET İSMİ',
                     style: TextStyle(
@@ -119,18 +119,58 @@ class _PaketBodyState extends State<PaketBody> {
           index--;
           var paket = _cafe.paketList![index];
           var dayCount = paket.day;
-          return Card(
-            color: const Color(0XFFA6D7E7),
-            child: ListTile(
-              onTap: () {
-                _paketSor(
-                    context, paket.id!, dayCount!, paket.name!, paket.info!);
-              },
-              leading: Text(paket.name.toString()),
-              trailing: Text('${_fiyatString(paket.fiyat, _videoDur)} TL'),
-              title: Center(child: Text(_infoString(paket.info.toString()))),
-              subtitle: Center(child: Text('GÜN = ${paket.day}')),
-            ),
+          return Column(
+            children: [
+              Center(
+                child: Text(paket.name.toString(),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        fontSize: _width / 18)),
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                    bottom: _height / 30,
+                    left: _width / 30,
+                    right: _width / 30),
+                child: Card(
+                  color: const Color(0XFFA6D7E7),
+                  child: ListTile(
+                    onTap: () {
+                      double fiyat = paket.fiyat! * _videoDur!;
+                      _paketSor(context, paket.id!, dayCount!, paket.name!,
+                          paket.info!, fiyat);
+                    },
+                    leading: Text(paket.name.toString()),
+                    trailing:
+                        Text('${_fiyatString(paket.fiyat, _videoDur)} TL'),
+                    title:
+                        Center(child: Text(_infoString(paket.info.toString()))),
+                    subtitle: Container(
+                      margin: EdgeInsets.only(top: _height / 120),
+                      child: Column(
+                        children: [
+                          Text(
+                            'GÖRÜNTÜLEME =${_goruntuString(paket.goruntuleme)}',
+                            style: TextStyle(
+                                fontSize: _width / 25,
+                                fontWeight: FontWeight.normal),
+                          ),
+                          Container(
+                              margin: EdgeInsets.only(top: _height / 200),
+                              child: Text(
+                                'GÜN = ${paket.day}',
+                                style: TextStyle(
+                                    fontSize: _width / 25,
+                                    fontWeight: FontWeight.normal),
+                              )),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           );
         }
       },
@@ -153,8 +193,6 @@ class _PaketBodyState extends State<PaketBody> {
     if (videoDur == null) {
       return '0';
     }
-    fiyat = fiyat;
-    _fiyat = fiyat * videoDur;
     var str = fiyat.toString();
     for (var i = 0; i < str.length; i++) {
       if (str[i] == '.') {
@@ -166,9 +204,33 @@ class _PaketBodyState extends State<PaketBody> {
     return str;
   }
 
+  String _goruntuString(int? goruntuleme) {
+    if (goruntuleme == null) {
+      return '0';
+    }
+
+    String strOrginal = goruntuleme.toString();
+    strOrginal = '${strOrginal}00';
+    String str = strOrginal;
+    int sayac = 0;
+
+    for (var i = 0; i < strOrginal.length; i++) {
+      if ((i % 3) == 2) {
+        var strhelp = strOrginal.substring(0, strOrginal.length - i);
+        var strhelp2 = str.substring(str.length - (i + sayac), str.length);
+        str = '$strhelp,$strhelp2';
+        sayac++;
+      }
+    }
+
+    str = str.substring(0, str.length - 3);
+
+    return str;
+  }
+
   _paketSor(BuildContext context, int paketId, int day, String paketName,
-      String info) {
-    var giden = [_cafe, _videoId, paketId, day, _fiyat, info, _videoDur];
+      String info, double fiyat) {
+    var giden = [_cafe, _videoId, paketId, day, fiyat, info, _videoDur];
     Navigator.pushNamed(context, '/ReklamVerPage', arguments: giden);
   }
 }

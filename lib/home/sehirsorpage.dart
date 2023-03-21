@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ssshht_reklam/helpers/database.dart';
 import 'package:ssshht_reklam/home/home_page.dart';
 import 'package:ssshht_reklam/model/cafe.dart';
@@ -81,21 +82,19 @@ class _SehirBodyState extends State<SehirBody> {
         } else {
           if (index == 0) {
             return Container(
-              margin: EdgeInsets.only(bottom: _height / 20),
-              child: Card(
-                color: const Color(0XFFA6D7E7),
-                child: SizedBox(
-                  height: _height / 10,
-                  child: ListTile(
-                    title: Center(
-                        child: Text(
+              margin: EdgeInsets.only(bottom: _height / 30, top: _height / 15),
+              child: SizedBox(
+                height: _height / 15,
+                child: ListTile(
+                  title: Center(
+                    child: Text(
                       'ŞEHİR SEÇ',
-                      style: TextStyle(
+                      style: GoogleFonts.bungeeShade(
                         fontWeight: FontWeight.bold,
-                        fontSize: _width / 20,
-                        color: Colors.white,
+                        fontSize: _width / 15,
+                        color: const Color(0xFF212F3C),
                       ),
-                    )),
+                    ),
                   ),
                 ),
               ),
@@ -104,22 +103,32 @@ class _SehirBodyState extends State<SehirBody> {
 
           index--;
           var video = _cafe.sehir![index];
-          return Card(
-            color: const Color(0XFFA6D7E7),
-            child: SizedBox(
-              height: _height / 10,
-              child: ListTile(
-                onTap: () {
-                  _paketSor(context, video);
-                },
-                title: Center(
-                    child: Text(
-                  video.toString(),
-                  style: TextStyle(
-                    fontSize: _width / 20,
-                    color: Colors.black,
-                  ),
-                )),
+          return Container(
+            margin: EdgeInsets.only(
+              top: _height / 100,
+              left: _width / 50,
+              right: _width / 50,
+            ),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              color: const Color(0XFFA6D7E7),
+              child: SizedBox(
+                height: _height / 13,
+                child: ListTile(
+                  onTap: () {
+                    _paketSor(context, video);
+                  },
+                  title: Center(
+                      child: Text(
+                    video.toString(),
+                    style: TextStyle(
+                      fontSize: _width / 20,
+                      color: Colors.black,
+                    ),
+                  )),
+                ),
               ),
             ),
           );

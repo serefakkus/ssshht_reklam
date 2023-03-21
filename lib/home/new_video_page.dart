@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ssshht_reklam/helpers/database.dart';
+import 'package:ssshht_reklam/helpers/upload_video.dart';
 
 import 'package:ssshht_reklam/model/cafe.dart';
 import 'package:web_socket_channel/io.dart';
@@ -25,6 +26,7 @@ Cafe _cafe = Cafe();
 bool _isWaiting = false;
 
 File? _video;
+String _videoPath = '';
 ImagePicker picker = ImagePicker();
 
 File _file2 = File('');
@@ -260,7 +262,7 @@ _sendImage(BuildContext context, Function setS, Function goHome) async {
     tok.tokenDetails = await getToken(context);
     _cafe.tokens = tok;
 
-    _cafe.istekTip = 'video_ekle';
+    _cafe.istekTip = 'new_video_id';
 
     _cafe.videoTip = _imgtip;
 
@@ -270,12 +272,24 @@ _sendImage(BuildContext context, Function setS, Function goHome) async {
 
     channel2.sink.add(json);
 
-    channel2.stream.listen((data) {
+    channel2.stream.listen((data) async {
       var musteri = Cafe();
       var jsonobject = jsonDecode(data);
       musteri = Cafe.fromMap(jsonobject);
 
       if (musteri.status == true) {
+        bool ok = await uploadVideoToServer(
+          _videoPath,
+          musteri.videoid!,
+          _imgtip,
+        );
+        if (!ok) {
+          EasyLoading.showToast(
+              'VİDEO YÜKLERNİRKEN BİR HATA OLUŞTU\nTEKRAR DENEYİNİZ');
+          _isWaiting = false;
+          setS();
+          return;
+        }
         EasyLoading.showToast('KAYIT BAŞARILI');
         _isWaiting = false;
         goHome();
@@ -294,6 +308,12 @@ _sendImage(BuildContext context, Function setS, Function goHome) async {
 
       channel2.sink.close();
     }).onError((e) {
+      if (kDebugMode) {
+        print('error = $e');
+      }
+      EasyLoading.showToast(
+          'VİDEO YÜKLERNİRKEN BİR HATA OLUŞTU\nTEKRAR DENEYİNİZ');
+      _isWaiting = false;
       goHome();
     });
   } else if (!_isAsset) {
@@ -393,6 +413,7 @@ class _UrunImgState extends State<UrunImg> {
     if (pickedFile != null) {
       _isAsset = true;
       _video = File(pickedFile.path);
+      _videoPath = pickedFile.path;
       _imagebit = await _video!.readAsBytes();
       for (var i = 0; i < _video!.path.length; i++) {
         if (_video!.path[i] == '.') {

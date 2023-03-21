@@ -388,6 +388,8 @@ class Paket {
     this.name,
     this.sehir,
     this.day,
+    this.adet,
+    this.goruntuleme,
   });
   int? id;
   int? day;
@@ -400,8 +402,12 @@ class Paket {
   String? info;
   List<int>? cafeId;
   String? sehir;
+  int? adet;
+  int? goruntuleme;
 
   Paket.fromMap(Map<String, dynamic> json) {
+    adet = json["adet"];
+    goruntuleme = json["goruntuleme"];
     day = json["day"];
     id = json["id"];
     name = json["name"];
@@ -424,6 +430,8 @@ class Paket {
   }
 
   Map<String, dynamic> toMap() => {
+        "goruntuleme": goruntuleme,
+        "adet": adet,
         "day": day,
         "id": id,
         "name": name,

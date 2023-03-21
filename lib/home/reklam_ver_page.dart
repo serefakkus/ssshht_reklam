@@ -144,37 +144,56 @@ class _CafeSorBodyState extends State<CafeSorBody> {
         const Logo(),
         Center(
           child: Container(
-              margin: EdgeInsets.only(top: (_height / 30)),
-              child: Text(
-                'KAFELER',
-                style: GoogleFonts.farro(
-                    fontSize: _width / 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              )),
+            margin: EdgeInsets.only(top: (_height / 30)),
+            child: Text(
+              'KAFELER',
+              style: GoogleFonts.bungeeShade(
+                fontWeight: FontWeight.bold,
+                fontSize: _width / 18,
+                color: const Color(0xFF212F3C),
+              ),
+            ),
+          ),
         ),
-        Center(
-          child: Container(
-              margin: EdgeInsets.only(top: (_height / 60)),
-              child: Text(
-                _infoString(_info),
-                style: GoogleFonts.farro(
-                    fontSize: _width / 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              )),
+        Container(
+          margin: EdgeInsets.only(
+            top: _height / 50,
+            left: _width / 8,
+            right: _width / 8,
+          ),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            color: Colors.white.withOpacity(0),
+            child: Center(
+              child: Container(
+                  margin: EdgeInsets.only(top: (_height / 60)),
+                  child: Text(
+                    _infoString(_info),
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.farro(
+                      fontSize: _width / 20,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.white,
+                    ),
+                  )),
+            ),
+          ),
         ),
         const Divider(color: Colors.white),
         Center(
           child: Container(
-              margin: EdgeInsets.only(top: (_height / 40)),
-              child: Text(
-                'VİDEO',
-                style: GoogleFonts.farro(
-                    fontSize: _width / 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              )),
+            margin: EdgeInsets.only(top: (_height / 40)),
+            child: Text(
+              'VİDEO',
+              style: GoogleFonts.bungeeShade(
+                fontWeight: FontWeight.bold,
+                fontSize: _width / 18,
+                color: const Color(0xFF212F3C),
+              ),
+            ),
+          ),
         ),
         // ignore: prefer_const_constructors
         Video(_setState),
@@ -184,71 +203,116 @@ class _CafeSorBodyState extends State<CafeSorBody> {
             child: TarihSec(_setState)),
         Center(
           child: Container(
-              margin: EdgeInsets.only(top: (_height / 15)),
-              child: Text(
-                'BAŞLANGIÇ TARİHİ',
-                style: GoogleFonts.farro(
-                    fontSize: _width / 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              )),
+            margin: EdgeInsets.only(top: (_height / 15)),
+            child: Text(
+              'BAŞLANGIÇ TARİHİ',
+              style: GoogleFonts.bungeeShade(
+                fontWeight: FontWeight.bold,
+                fontSize: _width / 18,
+                color: const Color(0xFF212F3C),
+              ),
+            ),
+          ),
         ),
-        Center(
-          child: Container(
-              margin: EdgeInsets.only(top: (_height / 60)),
-              child: Text(
-                _ilkTarih.toString(),
-                style: GoogleFonts.farro(
-                    fontSize: _width / 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              )),
-        ),
-        const Divider(color: Colors.white),
-        Center(
-          child: Container(
-              margin: EdgeInsets.only(top: (_height / 15)),
-              child: Text(
-                'BİTİŞ TARİHİ',
-                style: GoogleFonts.farro(
-                    fontSize: _width / 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              )),
-        ),
-        Center(
-          child: Container(
-              margin: EdgeInsets.only(top: (_height / 60)),
-              child: Text(
-                _sonTarih.toString(),
-                style: GoogleFonts.farro(
-                    fontSize: _width / 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              )),
+        Container(
+          margin: EdgeInsets.only(
+            top: _height / 50,
+            left: _width / 5,
+            right: _width / 5,
+          ),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            color: Colors.white.withOpacity(0),
+            child: Center(
+              child: Container(
+                  margin: EdgeInsets.only(top: (_height / 60)),
+                  child: Text(
+                    _tarihString(_ilkTarih),
+                    style: GoogleFonts.farro(
+                        fontSize: _width / 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  )),
+            ),
+          ),
         ),
         const Divider(color: Colors.white),
         Center(
           child: Container(
-              margin: EdgeInsets.only(top: (_height / 15)),
-              child: Text(
-                'TOPLAM FİYAT',
-                style: GoogleFonts.farro(
-                    fontSize: _width / 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              )),
+            margin: EdgeInsets.only(top: (_height / 30)),
+            child: Text(
+              'BİTİŞ TARİHİ',
+              style: GoogleFonts.bungeeShade(
+                fontWeight: FontWeight.bold,
+                fontSize: _width / 20,
+                color: const Color(0xFF212F3C),
+              ),
+            ),
+          ),
         ),
+        Container(
+          margin: EdgeInsets.only(
+            top: _height / 50,
+            left: _width / 5,
+            right: _width / 5,
+          ),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            color: Colors.white.withOpacity(0),
+            child: Center(
+              child: Container(
+                  margin: EdgeInsets.only(top: (_height / 60)),
+                  child: Text(
+                    _tarihString(_sonTarih),
+                    style: GoogleFonts.farro(
+                        fontSize: _width / 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  )),
+            ),
+          ),
+        ),
+        const Divider(color: Colors.white),
         Center(
           child: Container(
-              margin: EdgeInsets.only(top: (_height / 60)),
-              child: Text(
-                '${_fiyatString(_fiyat)} TL',
-                style: GoogleFonts.farro(
-                    fontSize: _width / 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              )),
+            margin: EdgeInsets.only(top: (_height / 15)),
+            child: Text(
+              'TOPLAM FİYAT',
+              style: GoogleFonts.bungeeShade(
+                fontWeight: FontWeight.bold,
+                fontSize: _width / 18,
+                color: const Color(0xFF212F3C),
+              ),
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(
+            top: _height / 50,
+            left: _width / 5,
+            right: _width / 5,
+          ),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            color: Colors.white.withOpacity(0),
+            child: Center(
+              child: Container(
+                  margin: EdgeInsets.only(top: (_height / 60)),
+                  child: Text(
+                    '${_fiyatString(_fiyat)} TL',
+                    style: GoogleFonts.farro(
+                        fontSize: _width / 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  )),
+            ),
+          ),
         ),
         const Divider(color: Colors.white),
         const OnayButon(),
@@ -260,6 +324,18 @@ class _CafeSorBodyState extends State<CafeSorBody> {
   void _setState() {
     setState(() {});
   }
+}
+
+String _tarihString(String? tarih) {
+  if (_isTarihSelect == false) {
+    return '';
+  }
+  if (tarih == null) {
+    return '';
+  }
+  tarih =
+      '${tarih.substring(0, 2)}/${tarih.substring(3, 5)}/${tarih.substring(6, 10)}';
+  return tarih;
 }
 
 String _infoString(String? info) {
@@ -294,7 +370,7 @@ class _TarihSecState extends State<TarihSec> {
             children: [
               Align(
                 alignment: Alignment.centerRight,
-                child: ElevatedButton(
+                child: TextButton(
                   onPressed: () {
                     var thisDay = _suan;
                     if (_selectedDay == '') {
@@ -325,18 +401,12 @@ class _TarihSecState extends State<TarihSec> {
                     widget.resultCallback();
                     Navigator.pop(context);
                   },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.grey,
-                      elevation: 10,
-                      fixedSize: Size((_width * 0.3), (_height / 15)),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10))),
                   child: Text(
-                    'BİTTİ',
-                    style: TextStyle(
-                      color: Colors.black,
+                    'ONAY',
+                    style: GoogleFonts.farro(
+                      fontSize: _width / 18,
                       fontWeight: FontWeight.bold,
-                      fontSize: _width / 15,
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -402,7 +472,7 @@ class _VideoState extends State<Video> {
   Widget build(BuildContext context) {
     if (!_isDownloadedVideo) {
       return Container(
-        margin: EdgeInsets.only(top: _height / 4),
+        margin: EdgeInsets.only(top: _height / 10, bottom: _height / 10),
         child: const Center(
           child: CircularProgressIndicator(),
         ),

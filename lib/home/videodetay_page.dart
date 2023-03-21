@@ -129,12 +129,30 @@ class DurationSec extends StatelessWidget {
       margin: EdgeInsets.only(top: _height / 15),
       child: Column(
         children: [
-          Text(
-            'SÜRE = ${_videoDur.toString()} saniye',
-            style: GoogleFonts.farro(
-                fontSize: _width / 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white),
+          Container(
+            margin: EdgeInsets.only(
+              top: _height / 50,
+              left: _width / 5,
+              right: _width / 5,
+            ),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              color: Colors.white.withOpacity(0),
+              child: SizedBox(
+                height: _height / 20,
+                child: Center(
+                  child: Text(
+                    'SÜRE = ${_videoDur.toString()} saniye',
+                    style: GoogleFonts.farro(
+                        fontSize: _width / 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
           ),
           Container(
             margin: EdgeInsets.only(
@@ -220,7 +238,10 @@ class OnayButon extends StatelessWidget {
             fixedSize: Size((_width * 0.8), (_height / 15)),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50))),
-        child: const Text('SEÇ'),
+        child: Text(
+          'SEÇ',
+          style: TextStyle(fontSize: _width / 20),
+        ),
         onPressed: () {
           _reklamVer(context);
         },

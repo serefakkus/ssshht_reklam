@@ -122,17 +122,18 @@ class _KayitState extends State<Kayit> {
           children: [
             const Logo(),
             Container(
-              margin: EdgeInsets.only(top: _height / 30),
+              margin: EdgeInsets.only(top: _height / 20),
               child: Text(
                 'Fatura bilgileri',
-                style: GoogleFonts.farro(
-                    fontSize: _width / 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
+                style: GoogleFonts.bungeeShade(
+                  fontWeight: FontWeight.bold,
+                  fontSize: _width / 18,
+                  color: const Color(0xFF212F3C),
+                ),
               ),
             ),
             Container(
-              margin: EdgeInsets.only(top: _height / 20),
+              margin: EdgeInsets.only(top: _height / 30),
               child: Row(
                 children: [_kurumsalButon(), _bireyselButon()],
               ),
@@ -166,36 +167,42 @@ class _KayitState extends State<Kayit> {
   }
 
   _kurumsalButon() {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: _color(_isKurumsal),
-        fixedSize: Size((_width * 0.5), (_height / 15)),
+    return Container(
+      margin: EdgeInsets.only(left: _width / 15, right: _width / 40),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: _color(!_isKurumsal),
+          fixedSize: Size((_width * 0.4), (_height / 15)),
+        ),
+        child: const Text(
+          'KURUMSAL',
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
+        onPressed: () {
+          _isKurumsal = true;
+          setState(() {});
+        },
       ),
-      child: const Text(
-        'KURUMSAL',
-        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-      ),
-      onPressed: () {
-        _isKurumsal = true;
-        setState(() {});
-      },
     );
   }
 
   _bireyselButon() {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: _color(!_isKurumsal),
-        fixedSize: Size((_width * 0.5), (_height / 15)),
+    return Container(
+      margin: EdgeInsets.only(left: _width / 40, right: _width / 20),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: _color(_isKurumsal),
+          fixedSize: Size((_width * 0.4), (_height / 15)),
+        ),
+        child: const Text(
+          'BİREYSEL',
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
+        onPressed: () {
+          _isKurumsal = false;
+          setState(() {});
+        },
       ),
-      child: const Text(
-        'BİREYSEL',
-        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-      ),
-      onPressed: () {
-        _isKurumsal = false;
-        setState(() {});
-      },
     );
   }
 }
@@ -204,7 +211,7 @@ _color(bool ok) {
   if (ok) {
     return Colors.white;
   }
-  return Colors.blueAccent;
+  return Colors.indigoAccent;
 }
 
 _sendCode(BuildContext context) async {
@@ -290,20 +297,30 @@ class Kimlik extends StatelessWidget {
             margin: EdgeInsets.only(top: (_height / 20)),
             child: Text(
               "KİMLİK NUMARASI",
-              style: GoogleFonts.farro(
-                  fontSize: _width / 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
+              style: GoogleFonts.bungeeShade(
+                fontWeight: FontWeight.bold,
+                fontSize: _width / 18,
+                color: const Color(0xFF212F3C),
+              ),
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top: (_height / 20)),
-            child: Text(
-              _fatura.kimlik.toString(),
-              style: GoogleFonts.farro(
-                  fontSize: _width / 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
+            margin: EdgeInsets.only(
+                top: _height / 40, left: _width / 5, right: _width / 5),
+            child: Card(
+              color: Colors.white.withOpacity(0),
+              child: SizedBox(
+                height: _height / 20,
+                child: Center(
+                  child: Text(
+                    _fatura.kimlik.toString(),
+                    style: GoogleFonts.farro(
+                        fontSize: _width / 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                ),
+              ),
             ),
           ),
         ],
@@ -315,20 +332,30 @@ class Kimlik extends StatelessWidget {
           margin: EdgeInsets.only(top: (_height / 20)),
           child: Text(
             "VERGİ NUMARASI",
-            style: GoogleFonts.farro(
-                fontSize: _width / 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white),
+            style: GoogleFonts.bungeeShade(
+              fontWeight: FontWeight.bold,
+              fontSize: _width / 18,
+              color: const Color(0xFF212F3C),
+            ),
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: (_height / 20)),
-          child: Text(
-            _fatura.kimlik.toString(),
-            style: GoogleFonts.farro(
-                fontSize: _width / 18,
-                fontWeight: FontWeight.bold,
-                color: Colors.white),
+          margin: EdgeInsets.only(
+              top: _height / 40, left: _width / 5, right: _width / 5),
+          child: Card(
+            color: Colors.white.withOpacity(0),
+            child: SizedBox(
+              height: _height / 20,
+              child: Center(
+                child: Text(
+                  _fatura.kimlik.toString(),
+                  style: GoogleFonts.farro(
+                      fontSize: _width / 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+              ),
+            ),
           ),
         ),
       ],
@@ -345,10 +372,11 @@ class Mail extends StatelessWidget {
       margin: EdgeInsets.only(top: (_height / 20)),
       child: Text(
         'MAİL ADRESİ',
-        style: GoogleFonts.farro(
-            fontSize: _width / 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.white),
+        style: GoogleFonts.bungeeShade(
+          fontWeight: FontWeight.bold,
+          fontSize: _width / 18,
+          color: const Color(0xFF212F3C),
+        ),
       ),
     );
   }
@@ -388,10 +416,11 @@ class Name extends StatelessWidget {
       margin: EdgeInsets.only(top: (_height / 20)),
       child: Text(
         'İSİM',
-        style: GoogleFonts.farro(
-            fontSize: _width / 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.white),
+        style: GoogleFonts.bungeeShade(
+          fontWeight: FontWeight.bold,
+          fontSize: _width / 18,
+          color: const Color(0xFF212F3C),
+        ),
       ),
     );
   }
@@ -430,10 +459,11 @@ class Adres extends StatelessWidget {
       margin: EdgeInsets.only(top: (_height / 20)),
       child: Text(
         'ADRES',
-        style: GoogleFonts.farro(
-            fontSize: _width / 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.white),
+        style: GoogleFonts.bungeeShade(
+          fontWeight: FontWeight.bold,
+          fontSize: _width / 18,
+          color: const Color(0xFF212F3C),
+        ),
       ),
     );
   }
@@ -479,10 +509,11 @@ class VergiDairesi extends StatelessWidget {
       margin: EdgeInsets.only(top: (_height / 20)),
       child: Text(
         'VERGİ DAİRESİ',
-        style: GoogleFonts.farro(
-            fontSize: _width / 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.white),
+        style: GoogleFonts.bungeeShade(
+          fontWeight: FontWeight.bold,
+          fontSize: _width / 18,
+          color: const Color(0xFF212F3C),
+        ),
       ),
     );
   }
@@ -527,10 +558,11 @@ class Ilce extends StatelessWidget {
       margin: EdgeInsets.only(top: (_height / 20)),
       child: Text(
         'İLÇE',
-        style: GoogleFonts.farro(
-            fontSize: _width / 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.white),
+        style: GoogleFonts.bungeeShade(
+          fontWeight: FontWeight.bold,
+          fontSize: _width / 18,
+          color: const Color(0xFF212F3C),
+        ),
       ),
     );
   }
@@ -572,10 +604,11 @@ class Il extends StatelessWidget {
       margin: EdgeInsets.only(top: (_height / 20)),
       child: Text(
         'ŞEHİR',
-        style: GoogleFonts.farro(
-            fontSize: _width / 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.white),
+        style: GoogleFonts.bungeeShade(
+          fontWeight: FontWeight.bold,
+          fontSize: _width / 18,
+          color: const Color(0xFF212F3C),
+        ),
       ),
     );
   }

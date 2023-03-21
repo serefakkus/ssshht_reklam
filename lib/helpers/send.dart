@@ -48,7 +48,8 @@ sendDataNewSignup(BuildContext cnt, dynamic json, WebSocketChannel channel,
   );
 }
 
-sendDataSignup(BuildContext cnt, dynamic json, WebSocketChannel channel) {
+sendDataSignup(
+    BuildContext cnt, dynamic json, WebSocketChannel channel, String passwd) {
   channel.sink.add(json);
   channel.stream.listen(
     (data) {
@@ -58,6 +59,7 @@ sendDataSignup(BuildContext cnt, dynamic json, WebSocketChannel channel) {
 
       if (musteri.status == true) {
         tokensIntert(musteri.tokens!.tokenDetails!);
+        musteri.pass = passwd;
         phoneAndPassIntert(musteri);
         tokensIntert(musteri.tokens!.tokenDetails!);
         Navigator.pushNamed(cnt, '/HomePage', arguments: musteri);

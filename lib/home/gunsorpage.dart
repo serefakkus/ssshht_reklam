@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ssshht_reklam/home/home_page.dart';
 
 import '../main.dart';
@@ -81,20 +82,21 @@ class _PaketBodyState extends State<PaketBody> {
           );
         } else {
           if (index == 0) {
-            return Card(
-              color: const Color(0XFFA6D7E7),
+            return Container(
+              margin: EdgeInsets.only(top: _height / 25),
               child: SizedBox(
                 height: _height / 10,
                 child: ListTile(
                   title: Center(
-                      child: Text(
-                    'GÜN SEÇ',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: _width / 20,
-                      color: Colors.white,
+                    child: Text(
+                      'GÜN SEÇ',
+                      style: GoogleFonts.bungeeShade(
+                        fontWeight: FontWeight.bold,
+                        fontSize: _width / 15,
+                        color: const Color(0xFF212F3C),
+                      ),
                     ),
-                  )),
+                  ),
                 ),
               ),
             );
@@ -102,25 +104,35 @@ class _PaketBodyState extends State<PaketBody> {
           index--;
           var gun = _gunList![index];
 
-          return Card(
-            color: const Color(0XFFA6D7E7),
-            child: ListTile(
-              title: Text(
-                '$gun GÜNLÜK',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.bold),
+          return Container(
+            margin: EdgeInsets.only(
+              top: _height / 100,
+              left: _width / 50,
+              right: _width / 50,
+            ),
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
               ),
-              onTap: () {
-                List<Paket> paketList = [];
-                for (var i = 0; i < _cafe.paketList!.length; i++) {
-                  if (_cafe.paketList![i].day == gun) {
-                    paketList.add(_cafe.paketList![i]);
+              color: const Color(0XFFA6D7E7),
+              child: ListTile(
+                title: Text(
+                  '$gun GÜNLÜK',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.bold),
+                ),
+                onTap: () {
+                  List<Paket> paketList = [];
+                  for (var i = 0; i < _cafe.paketList!.length; i++) {
+                    if (_cafe.paketList![i].day == gun) {
+                      paketList.add(_cafe.paketList![i]);
+                    }
                   }
-                }
-                _cafe.paketList = paketList;
-                _paketSor(context);
-              },
+                  _cafe.paketList = paketList;
+                  _paketSor(context);
+                },
+              ),
             ),
           );
         }

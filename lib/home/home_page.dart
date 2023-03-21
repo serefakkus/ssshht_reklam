@@ -529,15 +529,11 @@ class ReklamVer extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          side: BorderSide(
-            color: Color(0XFF4D5262),
-            width: 1.5,
-          ),
-          backgroundColor: Color(0XFF4D5262),
+          backgroundColor: Colors.white,
           elevation: 20,
           fixedSize: Size((_width * 0.35), (_height / 6)),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(70))),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
       child: Column(
         children: [
           Container(
@@ -553,10 +549,11 @@ class ReklamVer extends StatelessWidget {
             child: Text(
               'REKLAM\nVER',
               textAlign: TextAlign.center,
-              style: GoogleFonts.farro(
-                  fontSize: _width / 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
+              style: GoogleFonts.bungeeShade(
+                fontWeight: FontWeight.bold,
+                fontSize: _width / 23,
+                color: Colors.blue[900],
+              ),
             ),
           ),
         ],
@@ -605,15 +602,11 @@ class NewVideo extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          side: BorderSide(
-            color: Color(0XFF4D5262),
-            width: 1.5,
-          ),
-          backgroundColor: Color(0XFF4D5262),
+          backgroundColor: Colors.white,
           elevation: 50,
           fixedSize: Size((_width * 0.35), (_height / 6)),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(70))),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
       child: Column(
         children: [
           Container(
@@ -630,10 +623,11 @@ class NewVideo extends StatelessWidget {
           Text(
             'VİDEO\nEKLE',
             textAlign: TextAlign.center,
-            style: GoogleFonts.farro(
-                fontSize: _width / 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.white),
+            style: GoogleFonts.bungeeShade(
+              fontWeight: FontWeight.bold,
+              fontSize: _width / 23,
+              color: Colors.blue[900],
+            ),
           ),
         ],
       ),

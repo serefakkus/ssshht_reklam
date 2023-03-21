@@ -31,23 +31,27 @@ class _NewLoginPageState extends State<NewLoginPage> {
     _height = _size.height;
     _width = _size.width;
 
-    //List<String> code =
-    //  ModalRoute.of(context)!.settings.arguments as List<String>;
-    List<String> code = [];
+    List<String> code =
+        ModalRoute.of(context)!.settings.arguments as List<String>;
     return Container(
       color: backGroundColor,
-      child: ListView(
-        children: [
-          const KimlikNumarasi(),
-          const KimlikInput(),
-          const Name(),
-          const NameInput(),
-          const Pass(),
-          const PassInput(),
-          const NewPass(),
-          const NewPassInput(),
-          SendPassButton(code),
-        ],
+      child: Flexible(
+        child: ListView(
+          children: [
+            const KimlikNumarasi(),
+            const KimlikInput(),
+            const Name(),
+            const NameInput(),
+            const Pass(),
+            const PassInput(),
+            const NewPass(),
+            const NewPassInput(),
+            SendPassButton(code),
+            SizedBox(
+              height: _height / 2,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -391,7 +395,7 @@ sendPass(BuildContext context, List<String> code) async {
     pers.phone = sign;
     var json = jsonEncode(pers.toMap());
 
-    sendDataSignup(context, json, channel);
+    sendDataSignup(context, json, channel, pers.pass!);
   } else {
     EasyLoading.showToast('GİRDİĞİNİZ ŞİFRELER\n UYUŞMUYOR');
   }

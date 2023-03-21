@@ -102,34 +102,56 @@ class VideoList extends StatelessWidget {
   }
 }
 
-SizedBox _baslikCard() {
-  return SizedBox(
-    height: _height / 10,
-    child: Card(
-      color: const Color(0XFFA6D7E7),
-      child: ListTile(
-        leading: Text(
-          'AD',
-          style: GoogleFonts.farro(
-              fontSize: _width / 18,
+Widget _baslikCard() {
+  return Column(
+    children: [
+      Container(
+        margin: EdgeInsets.only(top: _height / 20, bottom: _height / 20),
+        child: Center(
+          child: Text(
+            'VİDEO SEÇ',
+            style: GoogleFonts.bungeeShade(
               fontWeight: FontWeight.bold,
-              color: Colors.white),
-        ),
-        trailing: Text(
-          'ONAY',
-          style: GoogleFonts.farro(
-              fontSize: _width / 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white),
+              fontSize: _width / 15,
+              color: const Color(0xFF212F3C),
+            ),
+          ),
         ),
       ),
-    ),
+      SizedBox(
+        height: _height / 25,
+        child: ListTile(
+          leading: Container(
+            margin: EdgeInsets.only(left: _width / 20),
+            child: Text(
+              'İSİM',
+              style: GoogleFonts.farro(
+                fontSize: _width / 15,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFFCCD1D1),
+              ),
+            ),
+          ),
+          trailing: Container(
+            margin: EdgeInsets.only(right: _width / 20),
+            child: Text(
+              'ONAY',
+              style: GoogleFonts.farro(
+                fontSize: _width / 15,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFFCCD1D1),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ],
   );
 }
 
 Card _verifyedCard(Video video, BuildContext context) {
   return Card(
-    color: const Color(0XFFA6D7E7),
+    color: const Color(0xFFCCD1D1),
     child: ListTile(
         onTap: () async {
           var tok = await getToken(context);
@@ -171,7 +193,7 @@ Card _verifyedCard(Video video, BuildContext context) {
         ),
         trailing: const Icon(
           Icons.verified,
-          color: Colors.lightBlue,
+          color: Colors.green,
         )),
   );
 }
