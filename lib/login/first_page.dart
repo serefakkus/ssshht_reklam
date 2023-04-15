@@ -65,7 +65,11 @@ _gettoken(BuildContext context) async {
   Cafe mus = Cafe();
   var token = await tokenGet();
   if (token.accessToken == null || token.accessToken == '') {
-    Navigator.pushNamed(context, '/WelcomePage');
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      '/WelcomePage',
+      (route) => route.settings.name == '/',
+    );
   } else {
     Tokens tokens = Tokens();
     tokens.tokenDetails = token;
@@ -79,7 +83,11 @@ _gettoken(BuildContext context) async {
     } else if (date2.isAfter(DateTime.now())) {
       Navigator.pushNamed(context, '/RefTokenPage', arguments: mus);
     } else {
-      Navigator.pushNamed(context, '/WelcomePage');
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        '/WelcomePage',
+        (route) => route.settings.name == '/',
+      );
     }
   }
 }

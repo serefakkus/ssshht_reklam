@@ -293,18 +293,15 @@ class _BottomBarHakkimizda extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      //margin: EdgeInsets.only(top: _height / 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: const [
-          _Hakkimizda(),
-          _Ayrac(),
-          _GizlilikPolitikasi(),
-          _Ayrac(),
-          _Iletisim(),
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: const [
+        _Hakkimizda(),
+        _Ayrac(),
+        _GizlilikPolitikasi(),
+        _Ayrac(),
+        _Iletisim(),
+      ],
     );
   }
 }

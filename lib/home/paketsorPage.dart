@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ssshht_reklam/home/home_page.dart';
+import 'package:ssshht_reklam/home/videodetay_page.dart';
 import 'package:ssshht_reklam/model/cafe.dart';
 
 import '../main.dart';
@@ -31,6 +32,10 @@ class _PaketSorPageState extends State<PaketSorPage> {
     _cafe = _gelen[0];
     _videoId = _gelen[1];
     _videoDur = _gelen[2];
+
+    if (_videoDur == 0 || _videoDur == null || _videoDur == -163) {
+      _videoDur = videoDurFromFile;
+    }
 
     return Container(
       color: backGroundColor,

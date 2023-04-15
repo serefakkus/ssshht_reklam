@@ -20,7 +20,9 @@ sendDataSignIn(
         tokensIntert(musteri.tokens!.tokenDetails!);
         phoneAndPassIntert(mus);
         tokensIntert(musteri.tokens!.tokenDetails!);
-        Navigator.pushNamed(cnt, '/HomePage', arguments: musteri);
+        Navigator.pushNamedAndRemoveUntil(
+            cnt, '/HomePage', (route) => route.settings.name == '/FirstPage',
+            arguments: musteri);
       } else if (musteri.status == false) {
         EasyLoading.showToast('KULLANICI ADI VEYA ŞİFRE YANLIŞ');
       }
@@ -62,7 +64,9 @@ sendDataSignup(
         musteri.pass = passwd;
         phoneAndPassIntert(musteri);
         tokensIntert(musteri.tokens!.tokenDetails!);
-        Navigator.pushNamed(cnt, '/HomePage', arguments: musteri);
+        Navigator.pushNamedAndRemoveUntil(
+            cnt, '/HomePage', (route) => route.settings.name == '/FirstPage',
+            arguments: musteri);
       } else if (musteri.status == false) {
         if (musteri.phone?.code == "kimlik var") {
           EasyLoading.showToast('KİMLİK SİSTEMDE KAYITLI');
@@ -126,7 +130,9 @@ sendDataRefToken(
       musteri = Cafe.fromMap(jsonobject);
       if (musteri.status == true) {
         tokensIntert(musteri.tokens!.tokenDetails!);
-        Navigator.pushNamed(cnt, '/HomePage', arguments: musteri);
+        Navigator.pushNamedAndRemoveUntil(
+            cnt, '/HomePage', (route) => route.settings.name == '/FirstPage',
+            arguments: musteri);
       } else if (musteri.status == false) {
         Navigator.pushNamed(cnt, '/WelcomePage');
       } else {

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ssshht_reklam/home/home_page.dart';
+import 'package:ssshht_reklam/home/videodetay_page.dart';
 
 import '../main.dart';
 
 Size _size = const Size(0, 0);
 double _height = 0;
 double _width = 0;
+int? _videoDur = 0;
 
 class CreditCardPage extends StatefulWidget {
   const CreditCardPage({Key? key}) : super(key: key);
@@ -21,6 +23,9 @@ class _CreditCardPageState extends State<CreditCardPage> {
     _size = MediaQuery.of(context).size;
     _height = _size.height;
     _width = _size.width;
+    if (_videoDur == null || _videoDur == 0 || _videoDur == -163) {
+      _videoDur = videoDurFromFile;
+    }
     return Container(color: backGroundColor, child: const WebViewExample());
   }
 }
@@ -57,7 +62,7 @@ class WebViewExampleState extends State<WebViewExample> {
 }
 
 class _IyzicoLogo extends StatelessWidget {
-  const _IyzicoLogo({super.key});
+  const _IyzicoLogo();
 
   @override
   Widget build(BuildContext context) {

@@ -26,6 +26,7 @@ int _videoDur = 0;
 Size _size = const Size(0, 0);
 double _height = 0;
 double _width = 0;
+int videoDurFromFile = 0;
 
 Directory dir = Directory('');
 File _file = File('');
@@ -116,6 +117,7 @@ Future _getVideoIds(Function setS) async {
   await videoController.initialize();
   videoController.setLooping(true);
   videoController.setVolume(0);
+  videoDurFromFile = videoController.value.duration.inSeconds;
   _isDownloadedVideo = true;
   setS();
 }
@@ -144,7 +146,7 @@ class DurationSec extends StatelessWidget {
                 height: _height / 20,
                 child: Center(
                   child: Text(
-                    'SÜRE = ${_videoDur.toString()} saniye',
+                    'SÜRE = ${_sureStr(_videoDur)} saniye',
                     style: GoogleFonts.farro(
                         fontSize: _width / 18,
                         fontWeight: FontWeight.bold,
@@ -165,6 +167,15 @@ class DurationSec extends StatelessWidget {
       ),
     );
   }
+}
+
+String _sureStr(int sure) {
+  if (sure == -163 || sure == 0) {
+    String str = videoDurFromFile.toString();
+    return str;
+  }
+  String str = sure.toString();
+  return str;
 }
 
 class Video extends StatefulWidget {
@@ -243,6 +254,14 @@ class OnayButon extends StatelessWidget {
           style: TextStyle(fontSize: _width / 20),
         ),
         onPressed: () {
+          if (_videoDur == -163 || _videoDur == 0) {
+            if (videoDurFromFile == 0) {
+              EasyLoading.showToast(
+                  'VİDEO YÜKLENENE KADAR BEKLEYİN SORUN DEVAM EDERSE \n BİZE info@ssshht.com MAİL ADRESİNDEN ULAŞABİLİRSİNİZ',
+                  duration: const Duration(seconds: 6));
+              return;
+            }
+          }
           _reklamVer(context);
         },
       ),
