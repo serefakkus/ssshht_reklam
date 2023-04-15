@@ -8,7 +8,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ssshht_reklam/helpers/database.dart';
 import 'package:ssshht_reklam/home/home_page.dart';
-import 'package:ssshht_reklam/home/videodetay_page.dart';
+import 'package:ssshht_reklam/home/video_detay_page.dart';
 import 'package:ssshht_reklam/model/cafe.dart';
 import 'package:video_player/video_player.dart';
 import 'package:web_socket_channel/io.dart';
