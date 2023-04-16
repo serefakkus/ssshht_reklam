@@ -1,7 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:ssshht_reklam/home/fiyat_sor/f%C4%B1yat_sor_paket_sor_page.dart';
 import 'package:ssshht_reklam/home/fatura_page.dart';
+import 'package:ssshht_reklam/home/fiyat_sor/fiyat_sor_page.dart';
+import 'package:ssshht_reklam/home/fiyat_sor/fiyat_sor_gun_sor_page.dart';
+import 'package:ssshht_reklam/home/fiyat_sor/fiyat_sor_sehir_sor_page.dart';
+import 'package:ssshht_reklam/home/fiyat_sor/fiyat_sor_sonuc_page.dart';
 import 'package:ssshht_reklam/home/gun_sor_page.dart';
 import 'package:ssshht_reklam/home/kredit_card_page.dart';
 import 'package:ssshht_reklam/home/rejected_video_page.dart';
@@ -11,7 +16,6 @@ import 'package:ssshht_reklam/login/kod_giris_page.dart';
 import 'home/cafe_sor_page.dart';
 import 'home/home_page.dart';
 import 'home/musteri_page.dart';
-import 'home/new_musteri_page.dart';
 import 'home/new_video_page.dart';
 import 'home/paket_sor_page.dart';
 import 'home/reklam_ver_page.dart';
@@ -48,9 +52,6 @@ class RouteGenerator {
 
       case '/HomePage':
         return _rotaOlustur(const HomePage(), settings);
-
-      case '/NewMusteriPage':
-        return _rotaOlustur(const NewMusteriPage(), settings);
 
       case '/MusteriPage':
         return _rotaOlustur(const MusteriPage(), settings);
@@ -102,6 +103,21 @@ class RouteGenerator {
 
       case '/GunSorPage':
         return _rotaOlustur(const GunSorPage(), settings);
+
+      case '/FiyatHesaplaPage':
+        return _rotaOlustur(const FiyatSorPage(), settings);
+
+      case '/SehirSorFiyatPage':
+        return _rotaOlustur(const FiyatSorSehirSorPage(), settings);
+
+      case '/GunSorFiyatPage':
+        return _rotaOlustur(const FiyatSorGunSorPage(), settings);
+
+      case '/PaketSorFiyatPage':
+        return _rotaOlustur(const FiyatSorPaketSorPage(), settings);
+
+      case '/FiyatSorSonucPage':
+        return _rotaOlustur(const FiyatSorSonucPage(), settings);
 
       default:
         return (MaterialPageRoute(

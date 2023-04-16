@@ -4,25 +4,23 @@ import 'package:ssshht_reklam/home/home_page.dart';
 import 'package:ssshht_reklam/home/video_detay_page.dart';
 import 'package:ssshht_reklam/model/cafe.dart';
 
-import '../main.dart';
+import '../../main.dart';
 
 Cafe _cafe = Cafe();
 List<dynamic> _gelen = [];
-String _videoId = '';
 int? _videoDur;
 Size _size = const Size(0, 0);
 double _height = 0;
 double _width = 0;
-String? _imageId;
 
-class PaketSorPage extends StatefulWidget {
-  const PaketSorPage({Key? key}) : super(key: key);
+class FiyatSorPaketSorPage extends StatefulWidget {
+  const FiyatSorPaketSorPage({Key? key}) : super(key: key);
 
   @override
-  State<PaketSorPage> createState() => _PaketSorPageState();
+  State<FiyatSorPaketSorPage> createState() => _FiyatSorPaketSorPageState();
 }
 
-class _PaketSorPageState extends State<PaketSorPage> {
+class _FiyatSorPaketSorPageState extends State<FiyatSorPaketSorPage> {
   @override
   Widget build(BuildContext context) {
     _size = MediaQuery.of(context).size;
@@ -31,9 +29,7 @@ class _PaketSorPageState extends State<PaketSorPage> {
     _gelen = [];
     _gelen = ModalRoute.of(context)!.settings.arguments as List<dynamic>;
     _cafe = _gelen[0];
-    _videoId = _gelen[1];
-    _videoDur = _gelen[2];
-    _imageId = _gelen[3];
+    _videoDur = _gelen[1];
 
     if (_videoDur == 0 || _videoDur == null || _videoDur == -163) {
       _videoDur = videoDurFromFile;
@@ -144,9 +140,7 @@ class _PaketBodyState extends State<PaketBody> {
                   color: const Color(0XFFA6D7E7),
                   child: ListTile(
                     onTap: () {
-                      double fiyat = paket.fiyat! * _videoDur!;
-                      _paketSor(context, paket.id!, dayCount!, paket.name!,
-                          paket.info!, fiyat, paket.fiyat!);
+                      _paketSor(context, paket.fiyat!);
                     },
                     leading: Text(paket.name.toString()),
                     trailing:
@@ -235,19 +229,8 @@ class _PaketBodyState extends State<PaketBody> {
     return str;
   }
 
-  _paketSor(BuildContext context, int paketId, int day, String paketName,
-      String info, double fiyat, double paketFiyat) {
-    var giden = [
-      _cafe,
-      _videoId,
-      paketId,
-      day,
-      fiyat,
-      info,
-      _videoDur,
-      _imageId,
-      paketFiyat,
-    ];
-    Navigator.pushNamed(context, '/ReklamVerPage', arguments: giden);
+  _paketSor(BuildContext context, double fiyat) {
+    var giden = [_cafe, _videoDur, fiyat];
+    Navigator.pushNamed(context, '/FiyatSorSonucPage', arguments: giden);
   }
 }

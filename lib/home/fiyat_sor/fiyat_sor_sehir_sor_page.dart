@@ -10,7 +10,7 @@ import 'package:ssshht_reklam/model/cafe.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-import '../main.dart';
+import '../../main.dart';
 
 Cafe _cafe = Cafe();
 List<dynamic> _gelen = [];
@@ -19,16 +19,15 @@ Size _size = const Size(0, 0);
 double _height = 0;
 double _width = 0;
 int? _videoDur;
-String? _imageId;
 
-class SehirSorPage extends StatefulWidget {
-  const SehirSorPage({Key? key}) : super(key: key);
+class FiyatSorSehirSorPage extends StatefulWidget {
+  const FiyatSorSehirSorPage({Key? key}) : super(key: key);
 
   @override
-  State<SehirSorPage> createState() => _SehirSorPageState();
+  State<FiyatSorSehirSorPage> createState() => _FiyatSorSehirSorPageState();
 }
 
-class _SehirSorPageState extends State<SehirSorPage> {
+class _FiyatSorSehirSorPageState extends State<FiyatSorSehirSorPage> {
   @override
   Widget build(BuildContext context) {
     _size = MediaQuery.of(context).size;
@@ -37,9 +36,7 @@ class _SehirSorPageState extends State<SehirSorPage> {
     _gelen = [];
     _gelen = ModalRoute.of(context)!.settings.arguments as List<dynamic>;
     _cafe = _gelen[0];
-    _videoId = _gelen[1];
-    _videoDur = _gelen[2];
-    _imageId = _gelen[3];
+    _videoDur = _gelen[1];
     return Container(
       color: backGroundColor,
       child: const SehirBody(),
@@ -159,8 +156,8 @@ class _SehirBodyState extends State<SehirBody> {
         var jsonobject = jsonDecode(data);
         _cafe = Cafe.fromMap(jsonobject);
         if (_cafe.status == true) {
-          giden = [_cafe, _videoId, _videoDur, _imageId];
-          Navigator.pushNamed(context, '/GunSorPage', arguments: giden);
+          giden = [_cafe, _videoDur];
+          Navigator.pushNamed(context, '/GunSorFiyatPage', arguments: giden);
         } else {
           EasyLoading.showToast('BİR HATA OLDU');
         }

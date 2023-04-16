@@ -39,6 +39,7 @@ bool _isOnay = false;
 bool _isRead = false;
 bool _isOnay2 = false;
 bool _isRead2 = false;
+bool _resimOnay = false;
 
 class FaturaPage extends StatefulWidget {
   const FaturaPage({Key? key}) : super(key: key);
@@ -69,6 +70,7 @@ class _FaturaPageState extends State<FaturaPage> {
     _fatura = _gelen[2];
     _isRef = _gelen[3];
     _videoDur = _gelen[4];
+    _isOnay = _gelen[5];
 
     return Scaffold(
       backgroundColor: backGroundColor,
@@ -273,7 +275,7 @@ _sendCode(BuildContext context) async {
     musteri = Cafe.fromMap(jsonobject);
 
     if (musteri.status == true) {
-      List<dynamic> giden = [_cafe, _fiyat, musteri];
+      List<dynamic> giden = [_cafe, _fiyat, musteri, _isOnay];
       Navigator.pushNamedAndRemoveUntil(context, '/CreditCardPage',
           (route) => route.settings.name == '/HomePage',
           arguments: giden);

@@ -80,8 +80,20 @@ class VideoList extends StatelessWidget {
     return ListView.builder(
       itemBuilder: (context, index) {
         if (_busy == true) {
-          return const Center(
-            child: Text('HİÇ VİDEO YOK'),
+          return Column(
+            children: [
+              Container(
+                margin: EdgeInsets.only(top: _height / 10),
+                child: Center(
+                  child: Text(
+                    'HİÇ VİDEO YOK \nLÜTFEN ÖNCE VİDEO EKLEYİNİZ',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: _width / 17),
+                  ),
+                ),
+              ),
+              const NewVideo(),
+            ],
           );
         } else {
           var video = _cafe.videomongo![index];
@@ -98,6 +110,59 @@ class VideoList extends StatelessWidget {
         }
       },
       itemCount: _count,
+    );
+  }
+}
+
+class NewVideo extends StatelessWidget {
+  const NewVideo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: _height / 20),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            shadowColor: Colors.grey.shade900,
+            backgroundColor: Colors.white,
+            elevation: 50,
+            fixedSize: Size((_width * 0.33), (_height / 7)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+                side: const BorderSide(
+                  color: Colors.black,
+                ))),
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(
+                left: _height / 50,
+                top: _height / 500,
+              ),
+              child: Icon(
+                Icons.video_call_sharp,
+                color: Colors.greenAccent,
+                size: _width / 6,
+              ),
+            ),
+            Text(
+              'VİDEO\nEKLE',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.roboto(
+                fontWeight: FontWeight.bold,
+                fontSize: _width / 23,
+                color: Colors.blue[900],
+              ),
+            ),
+          ],
+        ),
+        onPressed: () {
+          Navigator.pushNamedAndRemoveUntil(context, '/NewVideoPage',
+              (route) => route.settings.name == '/HomePage',
+              arguments: _cafe);
+          return;
+        },
+      ),
     );
   }
 }
@@ -174,7 +239,12 @@ Card _verifyedCard(Video video, BuildContext context) {
               var jsonobject = jsonDecode(data);
               dur = Cafe.fromMap(jsonobject);
               if (dur.status == true) {
-                List<dynamic> gelen = [_cafe, video.videoId, dur.videoDur];
+                List<dynamic> gelen = [
+                  _cafe,
+                  video.videoId,
+                  dur.videoDur,
+                  video.url
+                ];
 
                 Navigator.pushNamed(context, '/VideoDetayPage',
                     arguments: gelen);

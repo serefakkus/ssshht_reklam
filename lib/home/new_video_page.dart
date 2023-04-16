@@ -25,9 +25,21 @@ Cafe _cafe = Cafe();
 
 bool _isWaiting = false;
 
-File? _video;
+File? _videoFile;
 String _videoPath = '';
-ImagePicker picker = ImagePicker();
+ImagePicker _pickerVideo = ImagePicker();
+bool _isAssetVideo = false;
+Uint8List _videobit = Uint8List(0);
+String _videotip = '';
+
+int _videoDurationSec = 0;
+
+File? _imgFile;
+String _imgPath = '';
+ImagePicker _pickerImg = ImagePicker();
+bool _isAssetImg = false;
+Uint8List _imgbit = Uint8List(0);
+String _imgTip = '';
 
 File _file2 = File('');
 VideoPlayerController _videoPlayerController =
@@ -44,7 +56,10 @@ class _NewVideoPageState extends State<NewVideoPage> {
   @override
   void initState() {
     _isWaiting = false;
-    _video = null;
+    _videoFile = null;
+    _imgFile = null;
+    _isAssetImg = false;
+    _isAssetVideo = false;
     // ignore: todo
     // TODO: implement initState
     super.initState();
@@ -83,6 +98,15 @@ class _NewVideoPageState extends State<NewVideoPage> {
           children: [
             const LogoNewVideoPage(),
             const NameInput(),
+            const VideoText(),
+            UrunVideo(_setS),
+            Divider(
+              thickness: 3,
+              color: Colors.grey.shade700,
+              endIndent: 40,
+              indent: 40,
+            ),
+            const ImageText(),
             UrunImg(_setS),
             OnayButon(_setS, _goHome),
             Container()
@@ -159,7 +183,7 @@ class GeriButonNewVideoPage extends StatelessWidget {
       child: IconButton(
         icon: Icon(Icons.arrow_back_ios_new, size: _width / 8),
         onPressed: () {
-          _video = null;
+          _videoFile = null;
           Navigator.pop(context);
         },
       ),
@@ -205,6 +229,48 @@ class NameInput extends StatelessWidget {
   }
 }
 
+class VideoText extends StatelessWidget {
+  const VideoText({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: _height / 20),
+      child: Center(
+          child: Text(
+        'VİDEO',
+        style: GoogleFonts.farro(
+          fontSize: _width / 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+          decoration: TextDecoration.underline,
+        ),
+      )),
+    );
+  }
+}
+
+class ImageText extends StatelessWidget {
+  const ImageText({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: _height / 20),
+      child: Center(
+          child: Text(
+        'RESİM',
+        style: GoogleFonts.farro(
+          fontSize: _width / 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+          decoration: TextDecoration.underline,
+        ),
+      )),
+    );
+  }
+}
+
 class OnayButon extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
   OnayButon(this.resultCallback, this.goHome, {Key? key}) : super(key: key);
@@ -230,127 +296,31 @@ class _OnayButonState extends State<OnayButon> {
                 borderRadius: BorderRadius.circular(50))),
         child: const Text('EKLE'),
         onPressed: () {
-          _sendImage(context, widget.resultCallback, widget.goHome);
+          _sendData(context);
         },
       ),
     );
   }
 }
 
-_sendImage(BuildContext context, Function setS, Function goHome) async {
-  if (_isAsset && _namecontroller.text.isNotEmpty) {
-    if (_imgtip == 'MOV') {
-      _imgtip = 'mov';
-    }
-    if (!(_imgtip == 'mov' || _imgtip == 'mp4')) {
-      EasyLoading.showToast(
-          'Geçersiz video lütfen yeniden deneyin sorun devam ederse info@ssshht.com mail adresine bildiriniz',
-          duration: const Duration(seconds: 10));
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        '/HomePage',
-        (route) => route.settings.name == '/HomePage',
-      );
-      return;
-    }
-    _isWaiting = true;
-    setS();
-    _cafe.video = _imagebit;
-    _cafe.videoname = _namecontroller.text;
-
-    var tok = Tokens();
-    tok.tokenDetails = await getToken(context);
-    _cafe.tokens = tok;
-
-    _cafe.istekTip = 'new_video_id';
-
-    _cafe.videoTip = _imgtip;
-
-    WebSocketChannel channel2 = IOWebSocketChannel.connect(url);
-
-    var json = jsonEncode(_cafe.toMap());
-
-    channel2.sink.add(json);
-
-    channel2.stream.listen((data) async {
-      var musteri = Cafe();
-      var jsonobject = jsonDecode(data);
-      musteri = Cafe.fromMap(jsonobject);
-
-      if (musteri.status == true) {
-        bool ok = await uploadVideoToServer(
-          _videoPath,
-          musteri.videoid!,
-          _imgtip,
-        );
-        if (!ok) {
-          EasyLoading.showToast(
-              'VİDEO YÜKLERNİRKEN BİR HATA OLUŞTU\nTEKRAR DENEYİNİZ');
-          _isWaiting = false;
-          setS();
-          return;
-        }
-        EasyLoading.showToast('KAYIT BAŞARILI');
-        _isWaiting = false;
-        goHome();
-        return;
-      } else if (musteri.status == false) {
-        EasyLoading.showToast(
-            'VİDEO YÜKLERNİRKEN BİR HATA OLUŞTU\nTEKRAR DENEYİNİZ');
-        _isWaiting = false;
-        setS();
-      } else {
-        EasyLoading.showToast(
-            'VİDEO YÜKLERNİRKEN BİR HATA OLUŞTU\nTEKRAR DENEYİNİZ');
-        _isWaiting = false;
-        setS();
-      }
-
-      channel2.sink.close();
-    }).onError((e) {
-      if (kDebugMode) {
-        print('error = $e');
-      }
-      EasyLoading.showToast(
-          'VİDEO YÜKLERNİRKEN BİR HATA OLUŞTU\nTEKRAR DENEYİNİZ');
-      _isWaiting = false;
-      goHome();
-    });
-  } else if (!_isAsset) {
-    EasyLoading.showToast('LÜTFEN VİDEO SEÇİNİZ');
-    _isWaiting = false;
-    setS();
-  } else {
-    EasyLoading.showToast('LÜTFEN İSİM GİRİNİZ');
-    _isWaiting = false;
-    setS();
-  }
-}
-
-bool _isAsset = false;
-Uint8List _imagebit = Uint8List(0);
-String _imgtip = '';
-
-class UrunImg extends StatefulWidget {
-  const UrunImg(this.resultCallback, {Key? key}) : super(key: key);
+class UrunVideo extends StatefulWidget {
+  const UrunVideo(this.resultCallback, {Key? key}) : super(key: key);
   final void Function() resultCallback;
   @override
-  State<UrunImg> createState() => _UrunImgState();
+  State<UrunVideo> createState() => _UrunVideoState();
 }
 
-class _UrunImgState extends State<UrunImg> {
+class _UrunVideoState extends State<UrunVideo> {
   @override
   void initState() {
     // ignore: todo
     // TODO: implement initState
     super.initState();
-
-    _isAsset = false;
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_video != null) {
+    if (_videoFile != null) {
       return Container(
         margin: EdgeInsets.only(bottom: _height / 50, top: _height / 20),
         child: SizedBox(
@@ -368,14 +338,14 @@ class _UrunImgState extends State<UrunImg> {
       );
     } else {
       return Container(
-        margin: EdgeInsets.only(bottom: _height / 5),
+        margin: EdgeInsets.only(bottom: _height / 15),
         child: Center(
           child: GestureDetector(
             child: Column(
               children: [
                 Container(
                   margin:
-                      EdgeInsets.only(bottom: _height / 20, top: _height / 7),
+                      EdgeInsets.only(bottom: _height / 20, top: _height / 10),
                   child: Text(
                     'VİDEO YÜKLEMEK İÇİN TIKLAYIN',
                     style: GoogleFonts.farro(
@@ -387,7 +357,7 @@ class _UrunImgState extends State<UrunImg> {
                 ClipRRect(
                     borderRadius: BorderRadius.circular(60),
                     child: const Icon(
-                      Icons.add_a_photo,
+                      Icons.video_call,
                       size: 50,
                       color: Colors.white,
                     )),
@@ -409,32 +379,33 @@ class _UrunImgState extends State<UrunImg> {
       return;
     }
 
-    XFile? pickedFile = await picker.pickVideo(source: ImageSource.gallery);
+    XFile? pickedFile =
+        await _pickerVideo.pickVideo(source: ImageSource.gallery);
     if (pickedFile != null) {
-      _isAsset = true;
-      _video = File(pickedFile.path);
+      _isAssetVideo = true;
+      _videoFile = File(pickedFile.path);
       _videoPath = pickedFile.path;
-      _imagebit = await _video!.readAsBytes();
-      for (var i = 0; i < _video!.path.length; i++) {
-        if (_video!.path[i] == '.') {
-          _imgtip = _video!.path.substring(i + 1);
+      _videobit = await _videoFile!.readAsBytes();
+      for (var i = 0; i < _videoFile!.path.length; i++) {
+        if (_videoFile!.path[i] == '.') {
+          _videotip = _videoFile!.path.substring(i + 1);
         }
       }
       if (!Platform.isIOS) {
-        if (_imgtip != 'mp4') {
+        if (_videotip != 'mp4') {
           EasyLoading.showToast('Lütfen "mp4" uzantılı bir dosya yükleyiniz!');
-          _video = null;
+          _videoFile = null;
           return;
         }
       }
 
       if (Platform.isIOS) {
-        _imgtip = 'mov';
+        _videotip = 'mov';
       }
 
-      if (_imagebit.length > 1024 * 1024 * 49) {
+      if (_videobit.length > 1024 * 1024 * 49) {
         EasyLoading.showToast('Lütfen 50 MB`tan küçük bir dosya yükleyiniz!');
-        _video = null;
+        _videoFile = null;
         return;
       }
 
@@ -444,14 +415,116 @@ class _UrunImgState extends State<UrunImg> {
         //print(e);
       }
 
-      _videoPlayerController = VideoPlayerController.file(_video!)
+      _videoPlayerController = VideoPlayerController.file(_videoFile!)
         ..initialize().then((_) {
           setState(() {});
           _videoPlayerController.play();
           _videoPlayerController.setLooping(true);
           _videoPlayerController.setVolume(0);
+          _videoDurationSec = _videoPlayerController.value.duration.inSeconds;
         });
     }
+  }
+
+  _setS() {
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    //_videoPlayerController.dispose();
+    // ignore: todo
+    // TODO: implement dispose
+    super.dispose();
+  }
+}
+
+class UrunImg extends StatefulWidget {
+  const UrunImg(this.resultCallback, {Key? key}) : super(key: key);
+  final void Function() resultCallback;
+  @override
+  State<UrunImg> createState() => _UrunImgState();
+}
+
+class _UrunImgState extends State<UrunImg> {
+  @override
+  void initState() {
+    // ignore: todo
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_imgFile != null) {
+      return Container(
+        margin: EdgeInsets.only(bottom: _height / 20, top: _height / 10),
+        child: SizedBox(
+          child: Image.file(_imgFile!),
+        ),
+      );
+    } else {
+      return Container(
+        margin: EdgeInsets.only(bottom: _height / 15),
+        child: Center(
+          child: GestureDetector(
+            child: Column(
+              children: [
+                Container(
+                  margin:
+                      EdgeInsets.only(bottom: _height / 20, top: _height / 10),
+                  child: Text(
+                    'RESİM YÜKLEMEK İÇİN TIKLAYIN',
+                    style: GoogleFonts.farro(
+                        fontSize: _width / 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                ),
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(60),
+                    child: const Icon(
+                      Icons.add_a_photo,
+                      size: 50,
+                      color: Colors.white,
+                    )),
+              ],
+            ),
+            onTap: () {
+              _pickImg(context);
+            },
+          ),
+        ),
+      );
+    }
+  }
+
+  _pickImg(BuildContext context) async {
+    bool ok = await _permissonReq(context, _setS);
+
+    if (!ok) {
+      return;
+    }
+
+    XFile? pickedFile = await _pickerImg.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      _isAssetImg = true;
+      _imgFile = File(pickedFile.path);
+      _imgPath = pickedFile.path;
+      _imgbit = await _imgFile!.readAsBytes();
+      for (var i = 0; i < _imgFile!.path.length; i++) {
+        if (_imgFile!.path[i] == '.') {
+          _imgTip = _imgFile!.path.substring(i + 1);
+        }
+      }
+
+      if (_imgbit.length > 1024 * 1024 * 50) {
+        EasyLoading.showToast('Lütfen 50 MB`tan küçük bir dosya yükleyiniz!');
+        _imgFile = null;
+        return;
+      }
+    }
+    _setS();
   }
 
   _setS() {
@@ -473,14 +546,15 @@ Future<bool> _permissonReq(BuildContext context, Function setS) async {
     return true;
   } else {
     try {
-      XFile? pickedFile = await picker.pickVideo(source: ImageSource.gallery);
+      XFile? pickedFile =
+          await _pickerVideo.pickVideo(source: ImageSource.gallery);
       if (pickedFile != null) {
-        _isAsset = true;
-        _video = File(pickedFile.path);
-        _imagebit = _video!.readAsBytesSync();
-        for (var i = 0; i < _video!.path.length; i++) {
-          if (_video!.path[i] == '.') {
-            _imgtip = _video!.path.substring(i + 1);
+        _isAssetVideo = true;
+        _videoFile = File(pickedFile.path);
+        _videobit = _videoFile!.readAsBytesSync();
+        for (var i = 0; i < _videoFile!.path.length; i++) {
+          if (_videoFile!.path[i] == '.') {
+            _videotip = _videoFile!.path.substring(i + 1);
           }
         }
 
@@ -490,12 +564,13 @@ Future<bool> _permissonReq(BuildContext context, Function setS) async {
           //print(e);
         }
 
-        _videoPlayerController = VideoPlayerController.file(_video!)
+        _videoPlayerController = VideoPlayerController.file(_videoFile!)
           ..initialize().then((_) {
             setS();
             _videoPlayerController.play();
             _videoPlayerController.setLooping(true);
             _videoPlayerController.setVolume(0);
+            _videoDurationSec = _videoPlayerController.value.duration.inSeconds;
           });
       }
       ok = true;
@@ -558,7 +633,7 @@ class MediaLibraryPermissionBackButon extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-          primary: Colors.red,
+          backgroundColor: Colors.red,
           elevation: 10,
           fixedSize: Size((_width * 0.3), (_height / 15)),
           shape:
@@ -569,4 +644,157 @@ class MediaLibraryPermissionBackButon extends StatelessWidget {
       },
     );
   }
+}
+
+_sendData(BuildContext context) async {
+  if (_videoDurationSec < 10) {
+    EasyLoading.showToast("VIDEO EN AZ 10 SANİYE OLAMLI");
+    return;
+  }
+
+  showDialog(
+    context: context,
+    builder: (context) {
+      return Container(
+        height: _height,
+        width: _width,
+        color: Colors.white12,
+        child: SizedBox(
+          height: _width / 2,
+          width: _width / 2,
+          child: const CircularProgressIndicator(),
+        ),
+      );
+    },
+  );
+
+  if (!_isAssetVideo) {
+    EasyLoading.showToast('LÜTFEN VİDEO SEÇİNİZ');
+    Navigator.pop(context);
+    return;
+  } else if (_namecontroller.text.isEmpty) {
+    EasyLoading.showToast('LÜTFEN İSİM GİRİNİZ');
+    Navigator.pop(context);
+    return;
+  }
+
+  if (_isAssetImg) {
+    _sendImage(context);
+  } else {
+    _sendVideo(context);
+  }
+}
+
+_sendImage(BuildContext context) async {
+  var tok = Tokens();
+  tok.tokenDetails = await getToken(context);
+  _cafe.tokens = tok;
+
+  _cafe.istekTip = 'new_image_id';
+  _cafe.videoTip = _imgTip;
+
+  WebSocketChannel channel2 = IOWebSocketChannel.connect(url);
+  var json = jsonEncode(_cafe.toMap());
+
+  channel2.sink.add(json);
+
+  channel2.stream.listen((data) async {
+    var musteri = Cafe();
+    var jsonobject = jsonDecode(data);
+    musteri = Cafe.fromMap(jsonobject);
+
+    if (musteri.status == true) {
+      String? videoId;
+      if (musteri.videoid != null && musteri.videoid != '') {
+        videoId = musteri.videoid;
+      } else {
+        EasyLoading.showToast(
+            'RESIM YÜKLERNİRKEN BİR HATA OLUŞTU\nTEKRAR DENEYİNİZ');
+        Navigator.pop(context);
+        return;
+      }
+      bool ok = false;
+      ok = await uploadVideoToServer(_imgPath, videoId!, _imgTip);
+      if (!ok) {
+        EasyLoading.showToast(
+            'RESIM YÜKLERNİRKEN BİR HATA OLUŞTU\nTEKRAR DENEYİNİZ');
+        // ignore: use_build_context_synchronously
+        Navigator.pop(context);
+        return;
+      }
+      _cafe.url = musteri.videoid;
+      // ignore: use_build_context_synchronously
+      _sendVideo(context);
+    } else if (musteri.status == false) {
+      EasyLoading.showToast(
+          'RESIM YÜKLERNİRKEN BİR HATA OLUŞTU\nTEKRAR DENEYİNİZ');
+      Navigator.pop(context);
+    } else {
+      EasyLoading.showToast(
+          'RESIM YÜKLERNİRKEN BİR HATA OLUŞTU\nTEKRAR DENEYİNİZ');
+      Navigator.pop(context);
+    }
+
+    channel2.sink.close();
+  });
+}
+
+_sendVideo(BuildContext context) async {
+  _cafe.videoname = _namecontroller.text;
+
+  var tok = Tokens();
+  tok.tokenDetails = await getToken(context);
+  _cafe.tokens = tok;
+
+  _cafe.istekTip = 'new_video_id';
+  _cafe.videoTip = _videotip;
+  _cafe.videoDur = _videoDurationSec;
+
+  WebSocketChannel channel2 = IOWebSocketChannel.connect(url);
+  var json = jsonEncode(_cafe.toMap());
+
+  channel2.sink.add(json);
+
+  channel2.stream.listen((data) async {
+    var musteri = Cafe();
+    var jsonobject = jsonDecode(data);
+    musteri = Cafe.fromMap(jsonobject);
+
+    if (musteri.status == true) {
+      String? videoId;
+      if (musteri.videoid != null && musteri.videoid != '') {
+        videoId = musteri.videoid;
+      } else {
+        EasyLoading.showToast(
+            'VİDEO YÜKLERNİRKEN BİR HATA OLUŞTU\nTEKRAR DENEYİNİZ');
+        Navigator.pop(context);
+        return;
+      }
+      bool ok = false;
+      ok = await uploadVideoToServer(_videoPath, videoId!, _videotip);
+      if (!ok) {
+        EasyLoading.showToast(
+            'VİDEO YÜKLERNİRKEN BİR HATA OLUŞTU\nTEKRAR DENEYİNİZ');
+        // ignore: use_build_context_synchronously
+        Navigator.pop(context);
+        return;
+      }
+      EasyLoading.showToast('KAYIT BAŞARILI');
+      musteri.video = null;
+      // ignore: use_build_context_synchronously
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/HomePage', (route) => route.settings.name == '/HomePage',
+          arguments: musteri);
+    } else if (musteri.status == false) {
+      EasyLoading.showToast(
+          'VİDEO YÜKLERNİRKEN BİR HATA OLUŞTU\nTEKRAR DENEYİNİZ');
+      Navigator.pop(context);
+    } else {
+      EasyLoading.showToast(
+          'VİDEO YÜKLERNİRKEN BİR HATA OLUŞTU\nTEKRAR DENEYİNİZ');
+      Navigator.pop(context);
+    }
+
+    channel2.sink.close();
+  });
 }

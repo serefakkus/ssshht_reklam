@@ -35,6 +35,11 @@ bool _isFirst = false;
 VideoPlayerController videoController = VideoPlayerController.file(_file2);
 bool _isDownloadedVideo = false;
 
+String? _imageId;
+
+bool _isImageDown = false;
+File? _imgFile;
+
 class VideoDetayPage extends StatefulWidget {
   const VideoDetayPage({Key? key}) : super(key: key);
 
@@ -46,6 +51,7 @@ class _VideoDetayPageState extends State<VideoDetayPage> {
   @override
   void initState() {
     _isFirst = true;
+    _isImageDown = false;
     // ignore: todo
     // TODO: implement initState
     super.initState();
@@ -60,6 +66,7 @@ class _VideoDetayPageState extends State<VideoDetayPage> {
     _cafe = _gelen[0];
     _videoid = _gelen[1];
     _videoDur = _gelen[2];
+    _imageId = _gelen[3];
     if (_isFirst) {
       _isDownloadedVideo = false;
       _isFirst = false;
@@ -72,11 +79,14 @@ class _VideoDetayPageState extends State<VideoDetayPage> {
         // ignore: prefer_const_literals_to_create_immutables
         children: [
           const Logo(),
+          const VideoText(),
           // ignore: prefer_const_constructors
           Video(),
+          const ImageText(),
+          const ReklamImage(),
+          const OnayButon(),
         ],
       ),
-      bottomNavigationBar: const OnayButon(),
     );
   }
 
@@ -242,7 +252,10 @@ class OnayButon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-          bottom: (_height / 30), left: (_width / 10), right: (_width / 10)),
+          top: _height / 20,
+          bottom: (_height / 30),
+          left: (_width / 10),
+          right: (_width / 10)),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             elevation: 10,
@@ -332,5 +345,108 @@ Future _delvideo(String videoId) async {
   } catch (e) {
     //  print(e);
 
+  }
+}
+
+class ReklamImage extends StatefulWidget {
+  const ReklamImage({super.key});
+
+  @override
+  State<ReklamImage> createState() => _ReklamImageState();
+}
+
+class _ReklamImageState extends State<ReklamImage> {
+  @override
+  void initState() {
+    _downloadReklamImageRemote(_setS);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_imageId == null || _imageId == '') {
+      return Center(
+          child: Text(
+        'HİÇ RESİM YÜKLENMEDİ !',
+        style: GoogleFonts.farro(
+          fontSize: _width / 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.red,
+          decoration: TextDecoration.underline,
+        ),
+      ));
+    }
+
+    if (!_isImageDown) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return Image.file(_imgFile!);
+  }
+
+  _setS() {
+    setState(() {});
+  }
+}
+
+class VideoText extends StatelessWidget {
+  const VideoText({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: _height / 20),
+      child: Center(
+          child: Text(
+        'VİDEO',
+        style: GoogleFonts.farro(
+          fontSize: _width / 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+          decoration: TextDecoration.underline,
+        ),
+      )),
+    );
+  }
+}
+
+class ImageText extends StatelessWidget {
+  const ImageText({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: _height / 20, bottom: _height / 20),
+      child: Center(
+          child: Text(
+        'MENÜ İÇİ RESİM',
+        style: GoogleFonts.farro(
+          fontSize: _width / 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+          decoration: TextDecoration.underline,
+        ),
+      )),
+    );
+  }
+}
+
+Future<void> _downloadReklamImageRemote(Function sets) async {
+  if (_imageId != null || _imageId == '') {
+    dir = await getApplicationDocumentsDirectory();
+
+    Dio dio = Dio();
+    try {
+      await dio.download(
+        imageUrl + _imageId!,
+        "${dir.path}/reklamimages/$_imageId",
+      );
+
+      _imgFile = File("${dir.path}/reklamimages/$_imageId");
+      _isImageDown = true;
+      sets();
+    } catch (e) {
+//
+    }
   }
 }

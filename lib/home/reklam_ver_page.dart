@@ -22,6 +22,7 @@ Cafe _cafe = Cafe();
 String _videoid = '';
 String _info = '';
 double _fiyat = 0;
+double _ilkFiyat = 0;
 bool _isTarihSelect = false;
 int _paketId = 0;
 int _day = 0;
@@ -41,6 +42,13 @@ bool _isFirst = false;
 VideoPlayerController videoController = VideoPlayerController.file(_file2);
 bool _isDownloadedVideo = false;
 
+bool _isOnay = false;
+
+String? _imageId;
+bool _isImageDown = false;
+File? _imgFile;
+double? _paketFiyat;
+
 class ReklamVerPage extends StatefulWidget {
   const ReklamVerPage({Key? key}) : super(key: key);
 
@@ -52,6 +60,8 @@ class _ReklamVerPageState extends State<ReklamVerPage> {
   @override
   void initState() {
     _isFirst = true;
+    _isOnay = false;
+    _isImageDown = false;
     // ignore: todo
     // TODO: implement initState
     super.initState();
@@ -75,6 +85,10 @@ class _ReklamVerPageState extends State<ReklamVerPage> {
     _fiyat = _gelen[4];
     _info = _gelen[5];
     _videoDur = _gelen[6];
+    _imageId = _gelen[7];
+    _paketFiyat = _gelen[8];
+
+    _ilkFiyat = _fiyat;
 
     if (_isFirst) {
       _isDownloadedVideo = false;
@@ -198,6 +212,22 @@ class _CafeSorBodyState extends State<CafeSorBody> {
         // ignore: prefer_const_constructors
         Video(_setState),
         const Divider(color: Colors.white),
+        Center(
+          child: Container(
+            margin: EdgeInsets.only(top: (_height / 40)),
+            child: Text(
+              'MENÜ İÇİ RESİM',
+              style: GoogleFonts.bungeeShade(
+                fontWeight: FontWeight.bold,
+                fontSize: _width / 18,
+                color: const Color(0xFF212F3C),
+              ),
+            ),
+          ),
+        ),
+        const Divider(color: Colors.white),
+        const ReklamImage(),
+        const Divider(color: Colors.white),
         Container(
             margin: EdgeInsets.only(left: _width / 3, right: _width / 3),
             child: TarihSec(_setState)),
@@ -315,6 +345,8 @@ class _CafeSorBodyState extends State<CafeSorBody> {
           ),
         ),
         const Divider(color: Colors.white),
+        // ignore: prefer_const_constructors
+        _ResimOnay(_setState),
         const OnayButon(),
         const _IyzicoLogo(),
       ],
@@ -515,18 +547,6 @@ class _VideoState extends State<Video> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    try {
-      videoController.dispose();
-    } catch (e) {
-      //print(e);
-    }
-    // ignore: todo
-    // TODO: implement dispose
-    super.dispose();
-  }
 }
 
 class OnayButon extends StatelessWidget {
@@ -596,7 +616,7 @@ class OnayButon extends StatelessWidget {
           pers.id = _cafe.id;
           pers.mail = _cafe.mail;
 
-          List<dynamic> giden = [pers, fiyat, _cafe, isRef, _videoDur];
+          List<dynamic> giden = [pers, fiyat, _cafe, isRef, _videoDur, _isOnay];
 
           Navigator.pushNamedAndRemoveUntil(context, '/FaturaPage',
               (route) => route.settings.name == '/HomePage',
@@ -668,7 +688,7 @@ Future _delvideo(String videoId) async {
 }
 
 class _IyzicoLogo extends StatelessWidget {
-  const _IyzicoLogo({super.key});
+  const _IyzicoLogo();
 
   @override
   Widget build(BuildContext context) {
@@ -683,5 +703,118 @@ class _IyzicoLogo extends StatelessWidget {
         fit: BoxFit.contain,
       )),
     );
+  }
+}
+
+class ReklamImage extends StatefulWidget {
+  const ReklamImage({super.key});
+
+  @override
+  State<ReklamImage> createState() => _ReklamImageState();
+}
+
+class _ReklamImageState extends State<ReklamImage> {
+  @override
+  void initState() {
+    _downloadReklamImageRemote(_setS);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_imageId == null || _imageId == '') {
+      return Center(
+          child: Text(
+        'HİÇ RESİM YÜKLENMEDİ !',
+        style: GoogleFonts.farro(
+          fontSize: _width / 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.red,
+          decoration: TextDecoration.underline,
+        ),
+      ));
+    }
+
+    if (!_isImageDown) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    return Image.file(_imgFile!);
+  }
+
+  _setS() {
+    setState(() {});
+  }
+}
+
+Future<void> _downloadReklamImageRemote(Function sets) async {
+  if (_imageId != null || _imageId == '') {
+    dir = await getApplicationDocumentsDirectory();
+
+    Dio dio = Dio();
+    try {
+      await dio.download(
+        imageUrl + _imageId!,
+        "${dir.path}/reklamimages/$_imageId",
+      );
+
+      _imgFile = File("${dir.path}/reklamimages/$_imageId");
+      _isImageDown = true;
+      sets();
+    } catch (e) {
+//
+    }
+  }
+}
+
+class _ResimOnay extends StatefulWidget {
+  const _ResimOnay(this.setS, {Key? key}) : super(key: key);
+  final void Function() setS;
+
+  @override
+  State<_ResimOnay> createState() => _ResimOnayState();
+}
+
+class _ResimOnayState extends State<_ResimOnay> {
+  @override
+  Widget build(BuildContext context) {
+    if (_videoDur < 30 && (_imageId != null && _imageId != '')) {
+      double toplam = 30 * _paketFiyat!;
+      return Row(
+        children: [
+          Checkbox(
+            value: _isOnay,
+            onChanged: (value) {
+              _isOnay = !_isOnay;
+              if (_isOnay) {
+                _fiyat = toplam;
+              } else {
+                _fiyat = _ilkFiyat;
+              }
+              widget.setS();
+              setState(() {});
+            },
+          ),
+          TextButton(
+            onPressed: () {
+              _isOnay = !_isOnay;
+              if (_isOnay) {
+                _fiyat = toplam;
+              } else {
+                _fiyat = _ilkFiyat;
+              }
+              widget.setS();
+              setState(() {});
+            },
+            child: Text(
+              'Menü içi resim istiyorum\n(Toplam Fiyat ${_fiyatString(toplam)})',
+              style: TextStyle(color: Colors.white, fontSize: _width / 20),
+            ),
+          ),
+        ],
+      );
+    }
+    _isOnay = true;
+    return Container();
   }
 }

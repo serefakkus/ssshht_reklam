@@ -67,8 +67,10 @@ class Cafe {
   String? ilce;
   int? videoCount;
   String? mail;
+  bool? isResim;
 
   Cafe.fromMap(Map<String, dynamic> json) {
+    isResim = json["is_resim"];
     mail = json["mail"];
     videoCount = json["video_count"];
     adres = json["adres"];
@@ -135,6 +137,7 @@ class Cafe {
   }
 
   Map<String, dynamic> toMap() => {
+        "is_resim": isResim,
         "mail": mail,
         "video_count": videoCount,
         "adres": adres,

@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Align(
                     alignment: Alignment.bottomCenter,
-                    heightFactor: 1.32,
+                    heightFactor: 1.38,
                     child: MusteriInfo(),
                   ),
                 ],
@@ -347,7 +347,7 @@ class MusteriInfo extends StatelessWidget {
             bottomLeft: Radius.circular(20),
             bottomRight: Radius.circular(20),
           )),
-      height: (_height / 15) * 8,
+      height: (_height / 15) * 7,
       child: Center(
         // ignore: duplicate_ignore
         child: Column(
@@ -511,11 +511,16 @@ class HomePageButtons extends StatelessWidget {
       )),
       height: (_height / 13) * 4,
       width: _width,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: const [
-          ReklamVer(),
-          NewVideo(),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: const [
+              ReklamVer(),
+              NewVideo(),
+            ],
+          ),
+          const FiyatHesapla(),
         ],
       ),
     );
@@ -531,25 +536,28 @@ class ReklamVer extends StatelessWidget {
       style: ElevatedButton.styleFrom(
           backgroundColor: Colors.white,
           elevation: 20,
-          fixedSize: Size((_width * 0.35), (_height / 6)),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
+          fixedSize: Size((_width * 0.33), (_height / 7)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+              side: BorderSide(
+                color: Colors.black,
+              ))),
       child: Column(
         children: [
           Container(
-            margin: EdgeInsets.only(top: _height / 50),
+            margin: EdgeInsets.only(top: _height / 100),
             child: Icon(
               Icons.video_collection,
-              color: Colors.blue.shade300,
-              size: 60,
+              color: Colors.greenAccent,
+              size: _width / 7,
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top: _height / 50),
+            margin: EdgeInsets.only(top: _height / 100),
             child: Text(
               'REKLAM\nVER',
               textAlign: TextAlign.center,
-              style: GoogleFonts.bungeeShade(
+              style: GoogleFonts.roboto(
                 fontWeight: FontWeight.bold,
                 fontSize: _width / 23,
                 color: Colors.blue[900],
@@ -602,28 +610,32 @@ class NewVideo extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
+          shadowColor: Colors.grey.shade900,
           backgroundColor: Colors.white,
           elevation: 50,
-          fixedSize: Size((_width * 0.35), (_height / 6)),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30))),
+          fixedSize: Size((_width * 0.33), (_height / 7)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+              side: BorderSide(
+                color: Colors.black,
+              ))),
       child: Column(
         children: [
           Container(
             margin: EdgeInsets.only(
               left: _height / 50,
-              top: _height / 100,
+              top: _height / 500,
             ),
             child: Icon(
               Icons.video_call_sharp,
-              color: Colors.blue.shade300,
-              size: _width / 5,
+              color: Colors.greenAccent,
+              size: _width / 6,
             ),
           ),
           Text(
             'VİDEO\nEKLE',
             textAlign: TextAlign.center,
-            style: GoogleFonts.bungeeShade(
+            style: GoogleFonts.roboto(
               fontWeight: FontWeight.bold,
               fontSize: _width / 23,
               color: Colors.blue[900],
@@ -645,6 +657,85 @@ class NewVideo extends StatelessWidget {
         EasyLoading.showToast(
             'YENI VİDEO YÜKLEYEBİLMEK İÇİN\n REKLAM VERMELİSİNİZ');
       },
+    );
+  }
+}
+
+class FiyatHesapla extends StatelessWidget {
+  const FiyatHesapla({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: _height / 100),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            elevation: 20,
+            fixedSize: Size((_width * 0.33), (_height / 7)),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+                side: BorderSide(
+                  color: Colors.black,
+                ))),
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: _height / 100),
+              child: Icon(
+                Icons.calculate,
+                color: Colors.greenAccent,
+                size: _width / 8,
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: _height / 100),
+              child: Text(
+                'FİYAT\nHESAPLA',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.bold,
+                  fontSize: _width / 23,
+                  color: Colors.blue[900],
+                ),
+              ),
+            ),
+          ],
+        ),
+        onPressed: () {
+          _fiyatHesapla(context);
+        },
+      ),
+    );
+  }
+
+  _fiyatHesapla(BuildContext context) async {
+    WebSocketChannel channel = IOWebSocketChannel.connect(url);
+    var tok = await getToken(context);
+    var token = Tokens();
+    token.tokenDetails = tok;
+    _cafe.tokens = token;
+    _cafe.istekTip = 'video_sor';
+
+    var json = jsonEncode(_cafe.toMap());
+    channel.sink.add(json);
+
+    channel.stream.listen(
+      (data) {
+        var jsonobject = jsonDecode(data);
+        _cafe = Cafe.fromMap(jsonobject);
+        if (_cafe.status == true) {
+          _isFirstBakiyeSor = true;
+          Navigator.pushNamedAndRemoveUntil(context, '/FiyatHesaplaPage',
+              (route) => route.settings.name == '/HomePage',
+              arguments: _cafe);
+        } else {
+          EasyLoading.showToast('BİR HATA OLDU');
+        }
+        channel.sink.close();
+      },
+      onError: (error) => EasyLoading.showToast('BAĞLANTI HATASI'),
+      onDone: () => {},
     );
   }
 }

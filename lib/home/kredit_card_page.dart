@@ -9,6 +9,7 @@ Size _size = const Size(0, 0);
 double _height = 0;
 double _width = 0;
 int? _videoDur = 0;
+bool _resimOnay = false;
 
 class CreditCardPage extends StatefulWidget {
   const CreditCardPage({Key? key}) : super(key: key);

@@ -5,7 +5,8 @@ import 'login/first_page.dart';
 
 String url = 'wss://reklam.ssshht.com/ws';
 String mediaUrl = 'https://reklam.ssshht.com/';
-Color backGroundColor = const Color(0XFF19B5E3);
+String imageUrl = 'https://reklamimage.ssshht.com/';
+Color backGroundColor = const Color(0XFF5ED2F5);
 
 main() {
   runApp(const FirstPage());
