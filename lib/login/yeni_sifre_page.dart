@@ -35,23 +35,21 @@ class _NewLoginPageState extends State<NewLoginPage> {
         ModalRoute.of(context)!.settings.arguments as List<String>;
     return Container(
       color: backGroundColor,
-      child: Flexible(
-        child: ListView(
-          children: [
-            const KimlikNumarasi(),
-            const KimlikInput(),
-            const Name(),
-            const NameInput(),
-            const Pass(),
-            const PassInput(),
-            const NewPass(),
-            const NewPassInput(),
-            SendPassButton(code),
-            SizedBox(
-              height: _height / 2,
-            ),
-          ],
-        ),
+      child: ListView(
+        children: [
+          const KimlikNumarasi(),
+          const KimlikInput(),
+          const Name(),
+          const NameInput(),
+          const Pass(),
+          const PassInput(),
+          const NewPass(),
+          const NewPassInput(),
+          SendPassButton(code),
+          SizedBox(
+            height: _height / 2,
+          ),
+        ],
       ),
     );
   }

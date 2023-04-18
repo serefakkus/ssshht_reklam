@@ -1,7 +1,7 @@
 {
 "dart.previewCommitCharacters": true,
 "cmake.sourceDirectory": "${workspaceFolder}/linux",
-"java.configuration.updateBuildConfiguration": "interactive",
+"java.configuration.updateBuildConfiguration": "automatic",
 "yaml.customTags": [
     "!upload scalar",
     "!remove scalar",

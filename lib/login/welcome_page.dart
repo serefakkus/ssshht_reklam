@@ -31,7 +31,7 @@ class _WelcomePageState extends State<WelcomePage> {
     return Scaffold(
       body: Container(
         color: backGroundColor,
-        child: ListView(
+        child: Column(
           children: const [
             QrImg(),
             GirisButon(),
@@ -56,16 +56,14 @@ class QrImg extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.fromLTRB(
-          (_width / 3.5), (_height / 20), (_width / 3.5), (_height / 6)),
-      alignment: Alignment.topCenter,
-      width: _width / 2.5,
-      height: _height / 4,
-      decoration: const BoxDecoration(
-          image: DecorationImage(
-        image: AssetImage("assets/images/QR.png"),
-        fit: BoxFit.contain,
-      )),
+      margin: EdgeInsets.only(
+        top: _width / 4,
+      ),
+      child: SizedBox(
+        width: _width / 2.5,
+        height: _height / 4,
+        child: Image.asset("assets/images/QR.png"),
+      ),
     );
   }
 }
@@ -76,13 +74,15 @@ class GirisButon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: (_height / 50), top: (_height / 20)),
+      margin: EdgeInsets.only(
+        top: _height / 6,
+      ),
       alignment: Alignment.center,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             backgroundColor: Colors.blue,
             elevation: 20,
-            fixedSize: Size((_width * 0.8), (_height / 15)),
+            fixedSize: Size(_width * 0.8, _height / 15),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50))),
         child: const Text('GİRİŞ YAP'),
@@ -100,13 +100,13 @@ class KayitButon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: (_height / 50)),
+      margin: EdgeInsets.only(top: _height / 20),
       alignment: Alignment.center,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             backgroundColor: Colors.green,
             elevation: 20,
-            fixedSize: Size((_width * 0.8), (_height / 15)),
+            fixedSize: Size(_width * 0.8, _height / 15),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50))),
         child: const Text('KAYIT OL'),
@@ -123,16 +123,19 @@ class GirissizButon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () =>
-          {Navigator.pushNamed(context, '/KodGirisPage', arguments: 'seref')},
-      child: Text(
-        "ŞİFREMİ UNUTTUM",
-        style: GoogleFonts.farro(
-          fontSize: _width / 25,
-          fontWeight: FontWeight.normal,
-          color: Colors.white,
-          fontStyle: FontStyle.italic,
+    return Container(
+      margin: EdgeInsets.only(top: _height / 20),
+      child: TextButton(
+        onPressed: () =>
+            {Navigator.pushNamed(context, '/KodGirisPage', arguments: 'seref')},
+        child: Text(
+          "ŞİFREMİ UNUTTUM",
+          style: GoogleFonts.farro(
+            fontSize: _width / 25,
+            fontWeight: FontWeight.normal,
+            color: Colors.white,
+            fontStyle: FontStyle.italic,
+          ),
         ),
       ),
     );
@@ -273,7 +276,7 @@ class _IyzicoLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.topCenter,
-      margin: EdgeInsets.only(top: _height / 20),
+      margin: EdgeInsets.only(top: _height / 100),
       width: _width,
       height: _height / 10,
       decoration: const BoxDecoration(
