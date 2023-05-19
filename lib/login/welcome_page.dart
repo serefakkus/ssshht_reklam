@@ -154,6 +154,8 @@ class _BottomBarHakkimizda extends StatelessWidget {
         _Ayrac(),
         _GizlilikPolitikasi(),
         _Ayrac(),
+        _IptalVeIade(),
+        _Ayrac(),
         _Iletisim(),
       ],
     );
@@ -248,6 +250,39 @@ class _GizlilikPolitikasi extends StatelessWidget {
                       right: _width / 20,
                     ),
                     child: Text(gizlilikText)),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class _IptalVeIade extends StatelessWidget {
+  const _IptalVeIade({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      child: const Text(
+        'TESLİMAT VE İADE',
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.white),
+      ),
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return ListView(
+              children: [
+                Container(
+                    margin: EdgeInsets.only(
+                      top: _height / 20,
+                      left: _width / 20,
+                      right: _width / 20,
+                    ),
+                    child: Text(teslimatIadeText)),
               ],
             );
           },

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,11 +18,16 @@ Size _size = const Size(0, 0);
 double _height = 0;
 double _width = 0;
 TextEditingController _namecontroller = TextEditingController();
+TextEditingController _surNamecontroller = TextEditingController();
 TextEditingController _adrescontroller = TextEditingController();
-TextEditingController _vergicontroller = TextEditingController();
-TextEditingController _ilcontroller = TextEditingController();
+TextEditingController _vergiNocontroller = TextEditingController();
+TextEditingController _vergiDairecontroller = TextEditingController();
 TextEditingController _ilcecontroller = TextEditingController();
 TextEditingController _mailcontroller = TextEditingController();
+TextEditingController _tckncontroller = TextEditingController();
+TextEditingController _ulkecontroleer = TextEditingController();
+TextEditingController _unvancontroleer = TextEditingController();
+
 Cafe _cafe = Cafe();
 double _fiyat = 0;
 bool _isRef = false;
@@ -30,6 +36,7 @@ int _videoDur = 0;
 
 bool _isKurumsal = false;
 bool _isChanged = false;
+bool? _oldIsKurumsal = false;
 
 String _mesafeliSozlesme = '';
 
@@ -40,6 +47,12 @@ bool _isRead = false;
 bool _isOnay2 = false;
 bool _isRead2 = false;
 bool _resimOnay = false;
+double _paketFiyat = 0;
+int _paketId = 0;
+
+const double _kItemExtent = 32.0;
+String _selectedSehir = 'ŞEHİR SEÇ';
+bool _isSelSehir = false;
 
 class FaturaPage extends StatefulWidget {
   const FaturaPage({Key? key}) : super(key: key);
@@ -57,6 +70,7 @@ class _FaturaPageState extends State<FaturaPage> {
     _isOnay2 = false;
     _isRead = false;
     _isRead2 = false;
+    _isSelSehir = false;
     // ignore: todo
     // TODO: implement initState
     super.initState();
@@ -70,7 +84,9 @@ class _FaturaPageState extends State<FaturaPage> {
     _fatura = _gelen[2];
     _isRef = _gelen[3];
     _videoDur = _gelen[4];
-    _isOnay = _gelen[5];
+    _resimOnay = _gelen[5];
+    _paketFiyat = _gelen[6];
+    _paketId = _gelen[7];
 
     return Scaffold(
       backgroundColor: backGroundColor,
@@ -100,12 +116,21 @@ class _KayitState extends State<Kayit> {
     }
 
     if (_isRef) {
+      _vergiNocontroller.text = _fatura.vergiNo.toString();
+      _unvancontroleer.text = _fatura.unvan.toString();
+      _tckncontroller.text = _fatura.kimlik.toString();
       _namecontroller.text = _fatura.name.toString();
-      _adrescontroller.text = _fatura.adres.toString();
-      _vergicontroller.text = _fatura.vergiDairesi.toString();
-      _ilcecontroller.text = _fatura.ilce.toString();
-      _ilcontroller.text = _fatura.il.toString();
+      _surNamecontroller.text = _fatura.surName.toString();
       _mailcontroller.text = _fatura.mail.toString();
+      _selectedSehir = _fatura.il.toString();
+      _isSelSehir = true;
+      _ilcecontroller.text = _fatura.ilce.toString();
+      _adrescontroller.text = _fatura.adres.toString();
+      _vergiDairecontroller.text = _fatura.vergiDairesi.toString();
+      _oldIsKurumsal = _fatura.isKurumsal;
+      if (_fatura.isKurumsal != null) {
+        _isKurumsal = _fatura.isKurumsal!;
+      }
     }
 
     // ignore: todo
@@ -140,26 +165,37 @@ class _KayitState extends State<Kayit> {
                 children: [_kurumsalButon(), _bireyselButon()],
               ),
             ),
-
-            const Kimlik(),
             const Divider(
               color: Colors.black,
               height: 25,
             ),
+            // ignore: prefer_const_constructors
+            VergiNo(),
+            // ignore: prefer_const_constructors
+            VergiNoInput(),
+            // ignore: prefer_const_constructors
+            Unvan(),
+            // ignore: prefer_const_constructors
+            UnvanInput(),
+            const Tckn(),
+            const TcknInput(),
             const Name(),
             const NameInput(),
+            const SurName(),
+            const SurNameInput(),
             const Mail(),
             const MailInput(),
+            const Il(),
+            const IlInput(),
+            const Ilce(),
+            const IlceInput(),
             const Adres(),
             const AdresInput(),
             // ignore: prefer_const_constructors
             VergiDairesi(),
             // ignore: prefer_const_constructors
             VergiDairesiInput(),
-            const Il(),
-            const IlInput(),
-            const Ilce(),
-            const IlceInput(),
+
             const _MesafeliSatis(),
             const FaturaButon(),
           ],
@@ -217,27 +253,61 @@ _color(bool ok) {
 }
 
 _sendCode(BuildContext context) async {
-  if (!(_namecontroller.text.isNotEmpty &&
-      _adrescontroller.text.isNotEmpty &&
+  if (!_isSelSehir) {
+    EasyLoading.showToast('LÜTFEN ŞEHİR SEÇİNİZ!');
+    return;
+  }
+
+  if (!(_tckncontroller.text.isNotEmpty &&
+      _namecontroller.text.isNotEmpty &&
+      _surNamecontroller.text.isNotEmpty &&
+      _mailcontroller.text.isNotEmpty &&
       _ilcecontroller.text.isNotEmpty &&
-      _ilcontroller.text.isNotEmpty)) {
+      _adrescontroller.text.isNotEmpty)) {
     EasyLoading.showToast('LÜTFEN TÜM ALANLARI DOLURUNUZ!');
     return;
   }
-  if (_isKurumsal && _vergicontroller.text.isEmpty) {
+
+  if (_isKurumsal &&
+      _vergiNocontroller.text.isNotEmpty &&
+      _unvancontroleer.text.isNotEmpty &&
+      _vergiDairecontroller.text.isEmpty) {
     EasyLoading.showToast('LÜTFEN TÜM ALANLARI DOLURUNUZ!');
     return;
   }
+
+  if (!_isKimlikTrue(_tckncontroller.text, false)) {
+    return;
+  }
+
+  if (_isKurumsal) {
+    if (!_isKimlikTrue(_vergiNocontroller.text, true)) {
+      return;
+    }
+  }
+
   if (!_isOnay) {
     EasyLoading.showToast('MESAFELİ SATİŞ SÖZLEŞMESİNİ ONAYLAYINIZ');
     return;
   }
+
   if (!_isOnay2) {
     EasyLoading.showToast('TESLİMAT VE İADE SÖZLEŞMESİNİ ONAYLAYINIZ');
     return;
   }
+
+  if (_oldIsKurumsal != _isKurumsal) {
+    _isChanged = true;
+  }
+
   if (!_isChanged) {
-    List<dynamic> giden = [_cafe, _fiyat, _cafe];
+    List<dynamic> giden = [
+      _cafe,
+      _fiyat,
+      _resimOnay,
+      _paketFiyat,
+      _paketId,
+    ];
     Navigator.pushNamedAndRemoveUntil(context, '/CreditCardPage',
         (route) => route.settings.name == '/HomePage',
         arguments: giden);
@@ -251,13 +321,17 @@ _sendCode(BuildContext context) async {
   tokens.tokenDetails = tok;
   pers.tokens = tokens;
 
-  pers.kimlik = _fatura.kimlik;
+  pers.isKurumsal = _isKurumsal;
+  pers.vergiNo = _vergiNocontroller.text;
+  pers.unvan = _unvancontroleer.text;
+  pers.kimlik = _tckncontroller.text;
   pers.name = _namecontroller.text;
-  pers.adres = _adrescontroller.text;
-  pers.vergiDairesi = _vergicontroller.text;
-  pers.ilce = _ilcecontroller.text;
-  pers.il = _ilcontroller.text;
+  pers.surName = _surNamecontroller.text;
   pers.mail = _mailcontroller.text;
+  pers.il = _selectedSehir;
+  pers.ilce = _ilcecontroller.text;
+  pers.adres = _adrescontroller.text;
+  pers.vergiDairesi = _vergiDairecontroller.text;
 
   if (_isRef) {
     pers.istekTip = 'fatura_bilgi_ref';
@@ -275,7 +349,13 @@ _sendCode(BuildContext context) async {
     musteri = Cafe.fromMap(jsonobject);
 
     if (musteri.status == true) {
-      List<dynamic> giden = [_cafe, _fiyat, musteri, _isOnay];
+      List<dynamic> giden = [
+        _cafe,
+        _fiyat,
+        _resimOnay,
+        _paketFiyat,
+        _paketId,
+      ];
       Navigator.pushNamedAndRemoveUntil(context, '/CreditCardPage',
           (route) => route.settings.name == '/HomePage',
           arguments: giden);
@@ -287,18 +367,74 @@ _sendCode(BuildContext context) async {
   });
 }
 
-class Kimlik extends StatelessWidget {
-  const Kimlik({Key? key}) : super(key: key);
+class Tckn extends StatelessWidget {
+  const Tckn({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (_fatura.kimlik?.length == 11) {
-      return Column(
+    return Container(
+      margin: EdgeInsets.only(top: _height / 20),
+      //margin: const EdgeInsets.only(top: 180),
+      child: Center(
+        child: Text(
+          'KİMLİK NUMARASI',
+          style: GoogleFonts.bungeeShade(
+            fontWeight: FontWeight.bold,
+            fontSize: _width / 18,
+            color: const Color(0xFF212F3C),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class TcknInput extends StatelessWidget {
+  const TcknInput({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(
+          top: (_height / 50), right: (_width / 15), left: (_width / 15)),
+      child: TextField(
+        decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            filled: true,
+            fillColor: Colors.blue.shade50),
+        keyboardType: TextInputType.number,
+        onChanged: (value) {
+          _isChanged = true;
+        },
+        controller: _tckncontroller,
+        cursorColor: Colors.blue,
+        textInputAction: TextInputAction.go,
+      ),
+    );
+  }
+}
+
+class VergiNo extends StatefulWidget {
+  const VergiNo({Key? key}) : super(key: key);
+
+  @override
+  State<VergiNo> createState() => _VergiNoState();
+}
+
+class _VergiNoState extends State<VergiNo> {
+  @override
+  Widget build(BuildContext context) {
+    if (!_isKurumsal) {
+      return Container();
+    }
+    return Container(
+      margin: EdgeInsets.only(top: _height / 20),
+      //margin: const EdgeInsets.only(top: 180),
+      child: Column(
         children: [
-          Container(
-            margin: EdgeInsets.only(top: (_height / 20)),
+          Center(
             child: Text(
-              "KİMLİK NUMARASI",
+              'VERGI NUMARASI',
               style: GoogleFonts.bungeeShade(
                 fontWeight: FontWeight.bold,
                 fontSize: _width / 18,
@@ -306,61 +442,50 @@ class Kimlik extends StatelessWidget {
               ),
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(
-                top: _height / 40, left: _width / 5, right: _width / 5),
-            child: Card(
-              color: Colors.white.withOpacity(0),
-              child: SizedBox(
-                height: _height / 20,
-                child: Center(
-                  child: Text(
-                    _fatura.kimlik.toString(),
-                    style: GoogleFonts.farro(
-                        fontSize: _width / 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                ),
-              ),
+          Center(
+            child: Text(
+              '(şahış şirketi için kimlik numarası)',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: _width / 20),
             ),
           ),
         ],
-      );
+      ),
+    );
+  }
+}
+
+class VergiNoInput extends StatefulWidget {
+  const VergiNoInput({Key? key}) : super(key: key);
+
+  @override
+  State<VergiNoInput> createState() => _VergiNoInputState();
+}
+
+class _VergiNoInputState extends State<VergiNoInput> {
+  @override
+  Widget build(BuildContext context) {
+    if (!_isKurumsal) {
+      return Container();
     }
-    return Column(
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: (_height / 20)),
-          child: Text(
-            "VERGİ NUMARASI",
-            style: GoogleFonts.bungeeShade(
-              fontWeight: FontWeight.bold,
-              fontSize: _width / 18,
-              color: const Color(0xFF212F3C),
-            ),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.only(
-              top: _height / 40, left: _width / 5, right: _width / 5),
-          child: Card(
-            color: Colors.white.withOpacity(0),
-            child: SizedBox(
-              height: _height / 20,
-              child: Center(
-                child: Text(
-                  _fatura.kimlik.toString(),
-                  style: GoogleFonts.farro(
-                      fontSize: _width / 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
+    return Container(
+      margin: EdgeInsets.only(
+          top: (_height / 50), right: (_width / 15), left: (_width / 15)),
+      child: TextField(
+        decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            filled: true,
+            fillColor: Colors.blue.shade50),
+        keyboardType: TextInputType.number,
+        onChanged: (value) {
+          _isChanged = true;
+        },
+        controller: _vergiNocontroller,
+        cursorColor: Colors.blue,
+        textInputAction: TextInputAction.go,
+      ),
     );
   }
 }
@@ -409,6 +534,55 @@ class MailInput extends StatelessWidget {
   }
 }
 
+class Unvan extends StatelessWidget {
+  const Unvan({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_isKurumsal) {
+      return Container();
+    }
+    return Container(
+      margin: EdgeInsets.only(top: (_height / 20)),
+      child: Text(
+        'ŞİRKET ÜNVANI',
+        style: GoogleFonts.bungeeShade(
+          fontWeight: FontWeight.bold,
+          fontSize: _width / 18,
+          color: const Color(0xFF212F3C),
+        ),
+      ),
+    );
+  }
+}
+
+class UnvanInput extends StatelessWidget {
+  const UnvanInput({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_isKurumsal) {
+      return Container();
+    }
+    return Container(
+      margin: EdgeInsets.only(
+          top: (_height / 50), right: (_width / 15), left: (_width / 15)),
+      child: TextField(
+        decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            filled: true,
+            fillColor: Colors.blue.shade50),
+        onChanged: (value) {
+          _isChanged = true;
+        },
+        controller: _unvancontroleer,
+        cursorColor: Colors.blue,
+        textInputAction: TextInputAction.go,
+      ),
+    );
+  }
+}
+
 class Name extends StatelessWidget {
   const Name({Key? key}) : super(key: key);
 
@@ -445,6 +619,49 @@ class NameInput extends StatelessWidget {
           _isChanged = true;
         },
         controller: _namecontroller,
+        cursorColor: Colors.blue,
+        textInputAction: TextInputAction.go,
+      ),
+    );
+  }
+}
+
+class SurName extends StatelessWidget {
+  const SurName({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: (_height / 20)),
+      child: Text(
+        'SOYAD',
+        style: GoogleFonts.bungeeShade(
+          fontWeight: FontWeight.bold,
+          fontSize: _width / 18,
+          color: const Color(0xFF212F3C),
+        ),
+      ),
+    );
+  }
+}
+
+class SurNameInput extends StatelessWidget {
+  const SurNameInput({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(
+          top: (_height / 50), right: (_width / 15), left: (_width / 15)),
+      child: TextField(
+        decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            filled: true,
+            fillColor: Colors.blue.shade50),
+        onChanged: (value) {
+          _isChanged = true;
+        },
+        controller: _surNamecontroller,
         cursorColor: Colors.blue,
         textInputAction: TextInputAction.go,
       ),
@@ -542,7 +759,7 @@ class VergiDairesiInput extends StatelessWidget {
           onChanged: (value) {
             _isChanged = true;
           },
-          controller: _vergicontroller,
+          controller: _vergiDairecontroller,
           cursorColor: Colors.blue,
           textInputAction: TextInputAction.go,
         ),
@@ -597,6 +814,52 @@ class IlceInput extends StatelessWidget {
   }
 }
 
+class Ulke extends StatelessWidget {
+  const Ulke({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: (_height / 20)),
+      child: Text(
+        'İLÇE',
+        style: GoogleFonts.bungeeShade(
+          fontWeight: FontWeight.bold,
+          fontSize: _width / 18,
+          color: const Color(0xFF212F3C),
+        ),
+      ),
+    );
+  }
+}
+
+class UlkeInput extends StatelessWidget {
+  const UlkeInput({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(
+          top: (_height / 50), right: (_width / 15), left: (_width / 15)),
+      child: Padding(
+        padding: const EdgeInsets.only(),
+        child: TextField(
+          decoration: InputDecoration(
+              border: const OutlineInputBorder(),
+              filled: true,
+              fillColor: Colors.blue.shade50),
+          onChanged: (value) {
+            _isChanged = true;
+          },
+          controller: _ulkecontroleer,
+          cursorColor: Colors.blue,
+          textInputAction: TextInputAction.go,
+        ),
+      ),
+    );
+  }
+}
+
 class Il extends StatelessWidget {
   const Il({Key? key}) : super(key: key);
 
@@ -616,31 +879,78 @@ class Il extends StatelessWidget {
   }
 }
 
-class IlInput extends StatelessWidget {
+class IlInput extends StatefulWidget {
   const IlInput({Key? key}) : super(key: key);
 
   @override
+  State<IlInput> createState() => _IlInputState();
+}
+
+class _IlInputState extends State<IlInput> {
+  @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(
-          top: (_height / 50), right: (_width / 15), left: (_width / 15)),
-      child: Padding(
-        padding: const EdgeInsets.only(),
-        child: TextField(
-          decoration: InputDecoration(
-              border: const OutlineInputBorder(),
-              filled: true,
-              fillColor: Colors.blue.shade50),
-          onChanged: (value) {
-            _isChanged = true;
-          },
-          controller: _ilcontroller,
-          cursorColor: Colors.blue,
-          textInputAction: TextInputAction.go,
+      margin: EdgeInsets.only(top: _height / 30),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.grey.shade300,
+          fixedSize: Size(_width * 0.85, _height / 13),
         ),
+        child: Text(
+          _selectedSehir,
+          style: GoogleFonts.farro(
+            fontSize: _width / 14,
+            fontWeight: FontWeight.bold,
+            color: Colors.blue.shade700,
+          ),
+        ),
+        onPressed: () {
+          _showDialog(
+              CupertinoPicker(
+                magnification: 1.22,
+                squeeze: 1.2,
+                useMagnifier: true,
+                itemExtent: _kItemExtent,
+                // This is called when selected item is changed.
+                onSelectedItemChanged: (int selectedItem) {
+                  setState(() {
+                    _selectedSehir = _sehirler[selectedItem];
+                    _isSelSehir = true;
+                  });
+                },
+                children: List<Widget>.generate(_sehirler.length, (int index) {
+                  return Center(
+                    child: Text(
+                      _sehirler[index],
+                    ),
+                  );
+                }),
+              ),
+              context);
+        },
       ),
     );
   }
+}
+
+void _showDialog(Widget child, BuildContext context) {
+  showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => Container(
+            height: 216,
+            padding: const EdgeInsets.only(top: 6.0),
+            // The Bottom margin is provided to align the popup above the system navigation bar.
+            margin: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            // Provide a background color for the popup.
+            color: CupertinoColors.systemBackground.resolveFrom(context),
+            // Use a SafeArea widget to avoid system overlaps.
+            child: SafeArea(
+              top: false,
+              child: child,
+            ),
+          ));
 }
 
 class FaturaButon extends StatelessWidget {
@@ -650,7 +960,7 @@ class FaturaButon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-        top: _height / 10,
+        top: _height / 30,
         left: (_width / 10),
         right: (_width / 10),
         bottom: _height / 20,
@@ -661,7 +971,7 @@ class FaturaButon extends StatelessWidget {
             fixedSize: Size((_width * 0.8), (_height / 15)),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50))),
-        child: const Text('KAYDET'),
+        child: const Text('ONAYLA'),
         onPressed: () {
           _sendCode(context);
         },
@@ -707,11 +1017,11 @@ class __SozlesmeState extends State<_Sozlesme> {
             if (!(_namecontroller.text.isNotEmpty &&
                 _adrescontroller.text.isNotEmpty &&
                 _ilcecontroller.text.isNotEmpty &&
-                _ilcontroller.text.isNotEmpty)) {
+                _isSelSehir)) {
               EasyLoading.showToast('LÜTFEN TÜM ALANLARI DOLURUNUZ!');
               return;
             }
-            if (_isKurumsal && _vergicontroller.text.isEmpty) {
+            if (_isKurumsal && _vergiDairecontroller.text.isEmpty) {
               EasyLoading.showToast('LÜTFEN TÜM ALANLARI DOLURUNUZ!');
               return;
             }
@@ -743,35 +1053,32 @@ class __SozlesmeState extends State<_Sozlesme> {
             if (!(_namecontroller.text.isNotEmpty &&
                 _adrescontroller.text.isNotEmpty &&
                 _ilcecontroller.text.isNotEmpty &&
-                _ilcontroller.text.isNotEmpty)) {
+                _isSelSehir)) {
               EasyLoading.showToast('LÜTFEN TÜM ALANLARI DOLURUNUZ!');
               return;
             }
-            if (_isKurumsal && _vergicontroller.text.isEmpty) {
+            if (_isKurumsal && _vergiDairecontroller.text.isEmpty) {
               EasyLoading.showToast('LÜTFEN TÜM ALANLARI DOLURUNUZ!');
               return;
             }
-            if (!_isRead) {
-              showModalBottomSheet(
-                context: context,
-                builder: (context) {
-                  return ListView(
-                    children: [
-                      Container(
-                          margin: EdgeInsets.only(
-                            top: _height / 20,
-                            left: _width / 20,
-                            right: _width / 20,
-                          ),
-                          child: _SozlesmeText(_setSt)),
-                    ],
-                  );
-                },
-              );
-              return;
-            }
-            _isOnay = !_isOnay;
-            setState(() {});
+
+            showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return ListView(
+                  children: [
+                    Container(
+                        margin: EdgeInsets.only(
+                          top: _height / 20,
+                          left: _width / 20,
+                          right: _width / 20,
+                        ),
+                        child: _SozlesmeText(_setSt)),
+                  ],
+                );
+              },
+            );
+            return;
           },
           child: const Text(
             'Mesafeli satış sözleşmesini onaylıyorum.',
@@ -856,11 +1163,11 @@ class _SozlesmeTamamButonState extends State<_SozlesmeTamamButon> {
             if (!(_namecontroller.text.isNotEmpty &&
                 _adrescontroller.text.isNotEmpty &&
                 _ilcecontroller.text.isNotEmpty &&
-                _ilcontroller.text.isNotEmpty)) {
+                _isSelSehir)) {
               EasyLoading.showToast('LÜTFEN TÜM ALANLARI DOLURUNUZ!');
               return;
             }
-            if (_isKurumsal && _vergicontroller.text.isEmpty) {
+            if (_isKurumsal && _vergiDairecontroller.text.isEmpty) {
               EasyLoading.showToast('LÜTFEN TÜM ALANLARI DOLURUNUZ!');
               return;
             }
@@ -891,11 +1198,11 @@ class _TeslimatVeIadeState extends State<_TeslimatVeIade> {
             if (!(_namecontroller.text.isNotEmpty &&
                 _adrescontroller.text.isNotEmpty &&
                 _ilcecontroller.text.isNotEmpty &&
-                _ilcontroller.text.isNotEmpty)) {
+                _isSelSehir)) {
               EasyLoading.showToast('LÜTFEN TÜM ALANLARI DOLURUNUZ!');
               return;
             }
-            if (_isKurumsal && _vergicontroller.text.isEmpty) {
+            if (_isKurumsal && _vergiDairecontroller.text.isEmpty) {
               EasyLoading.showToast('LÜTFEN TÜM ALANLARI DOLURUNUZ!');
               return;
             }
@@ -927,35 +1234,32 @@ class _TeslimatVeIadeState extends State<_TeslimatVeIade> {
             if (!(_namecontroller.text.isNotEmpty &&
                 _adrescontroller.text.isNotEmpty &&
                 _ilcecontroller.text.isNotEmpty &&
-                _ilcontroller.text.isNotEmpty)) {
+                _isSelSehir)) {
               EasyLoading.showToast('LÜTFEN TÜM ALANLARI DOLURUNUZ!');
               return;
             }
-            if (_isKurumsal && _vergicontroller.text.isEmpty) {
+            if (_isKurumsal && _vergiDairecontroller.text.isEmpty) {
               EasyLoading.showToast('LÜTFEN TÜM ALANLARI DOLURUNUZ!');
               return;
             }
-            if (!_isRead2) {
-              showModalBottomSheet(
-                context: context,
-                builder: (context) {
-                  return ListView(
-                    children: [
-                      Container(
-                          margin: EdgeInsets.only(
-                            top: _height / 20,
-                            left: _width / 20,
-                            right: _width / 20,
-                          ),
-                          child: _TeslimatVeIadeText(_setSt)),
-                    ],
-                  );
-                },
-              );
-              return;
-            }
-            _isOnay2 = !_isOnay2;
-            setState(() {});
+
+            showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return ListView(
+                  children: [
+                    Container(
+                        margin: EdgeInsets.only(
+                          top: _height / 20,
+                          left: _width / 20,
+                          right: _width / 20,
+                        ),
+                        child: _TeslimatVeIadeText(_setSt)),
+                  ],
+                );
+              },
+            );
+            return;
           },
           child: const Text(
             'Teslimat ve iade sözleşmesini onaylıyorum.',
@@ -1016,11 +1320,11 @@ class _TeslimatVeIadeTamamButonState extends State<_TeslimatVeIadeTamamButon> {
             if (!(_namecontroller.text.isNotEmpty &&
                 _adrescontroller.text.isNotEmpty &&
                 _ilcecontroller.text.isNotEmpty &&
-                _ilcontroller.text.isNotEmpty)) {
+                _isSelSehir)) {
               EasyLoading.showToast('LÜTFEN TÜM ALANLARI DOLURUNUZ!');
               return;
             }
-            if (_isKurumsal && _vergicontroller.text.isEmpty) {
+            if (_isKurumsal && _vergiDairecontroller.text.isEmpty) {
               EasyLoading.showToast('LÜTFEN TÜM ALANLARI DOLURUNUZ!');
               return;
             }
@@ -1031,4 +1335,158 @@ class _TeslimatVeIadeTamamButonState extends State<_TeslimatVeIadeTamamButon> {
           child: const Text('ONAY')),
     );
   }
+}
+
+List<String> _sehirler = [
+  "Adana",
+  "Adıyaman",
+  "Afyon",
+  "Ağrı",
+  "Amasya",
+  "Ankara",
+  "Antalya",
+  "Artvin",
+  "Aydın",
+  "Balıkesir",
+  "Bilecik",
+  "Bingöl",
+  "Bitlis",
+  "Bolu",
+  "Burdur",
+  "Bursa",
+  "Çanakkale",
+  "Çankırı",
+  "Çorum",
+  "Denizli",
+  "Diyarbakır",
+  "Edirne",
+  "Elâzığ",
+  "Erzincan",
+  "Erzurum",
+  "Eskişehir",
+  "Gaziantep",
+  "Giresun",
+  "Gümüşhane",
+  "Hakkari",
+  "Hatay",
+  "Isparta",
+  "Mersin",
+  "İstanbul",
+  "İzmir",
+  "Kars",
+  "Kastamonu",
+  "Kayseri",
+  "Kırklareli",
+  "Kırşehir",
+  "Kocaeli",
+  "Konya",
+  "Kütahya",
+  "Malatya",
+  "Manisa",
+  "Kahramanmaraş",
+  "Mardin",
+  "Muğla",
+  "Muş",
+  "Nevşehir",
+  "Niğde",
+  "Ordu",
+  "Rize",
+  "Sakarya",
+  "Samsun",
+  "Siirt",
+  "Sinop",
+  "Sivas",
+  "Tekirdağ",
+  "Tokat",
+  "Trabzon",
+  "Tunceli",
+  "Şanlıurfa",
+  "Uşak",
+  "Van",
+  "Yozgat",
+  "Zonguldak",
+  "Aksaray",
+  "Bayburt",
+  "Karaman",
+  "Kırıkkale",
+  "Batman",
+  "Şırnak",
+  "Bartın",
+  "Ardahan",
+  "Iğdır",
+  "Yalova",
+  "Karabük",
+  "Kilis",
+  "Osmaniye",
+  "Düzce",
+];
+
+bool _isKimlikTrue(String? kimlik, bool _isVergi) {
+  if (kimlik == null) {
+    if (_isVergi) {
+      EasyLoading.showToast('VERGİ KİMLİK NUMARSININ BOŞ OLAMAZ!');
+      return false;
+    }
+    EasyLoading.showToast('KİMLİK NUMARSININ BOŞ OLAMAZ!');
+    return false;
+  }
+  if (kimlik.length == 11) {
+    if (kimlik[0] == '0') {
+      if (_isVergi) {
+        EasyLoading.showToast('VERGİ KİMLİK NUMARSININ İLK HANESİ 0 OLAMAZ!');
+        return false;
+      }
+      EasyLoading.showToast('KİMLİK NUMARSININ İLK HANESİ 0 OLAMAZ!');
+      return false;
+    }
+
+    var tek = int.parse(kimlik[0]) +
+        int.parse(kimlik[2]) +
+        int.parse(kimlik[4]) +
+        int.parse(kimlik[6]) +
+        int.parse(kimlik[8]);
+    var cift = int.parse(kimlik[1]) +
+        int.parse(kimlik[3]) +
+        int.parse(kimlik[5]) +
+        int.parse(kimlik[7]);
+
+    var t10 = ((tek * 7) - cift) % 10;
+
+    var t11 = ((int.parse(kimlik[0]) +
+            int.parse(kimlik[1]) +
+            int.parse(kimlik[2]) +
+            int.parse(kimlik[3]) +
+            int.parse(kimlik[4]) +
+            int.parse(kimlik[5]) +
+            int.parse(kimlik[6]) +
+            int.parse(kimlik[7]) +
+            int.parse(kimlik[8]) +
+            int.parse(kimlik[9])) %
+        10);
+
+    var n10 = int.parse(kimlik[9]);
+    var n11 = int.parse(kimlik[10]);
+
+    if ((t10 == n10) && (t11 == n11)) {
+      return true;
+    } else {
+      if (_isVergi) {
+        EasyLoading.showToast('VERGİ KİMLİK NUMARSI GEÇERSİZ!');
+        return false;
+      }
+      EasyLoading.showToast('KİMLİK NUMARSI GEÇERSİZ!');
+      return false;
+    }
+  }
+  if (_isVergi) {
+    if (kimlik.length == 10) {
+      return true;
+    }
+  }
+  if (_isVergi) {
+    EasyLoading.showToast('VERGİ KİMLİK NUMARSI GEÇERSİZ!');
+    return false;
+  }
+  EasyLoading.showToast('KİMLİK NUMARSI GEÇERSİZ!');
+  return false;
 }

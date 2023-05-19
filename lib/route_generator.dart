@@ -10,6 +10,7 @@ import 'package:ssshht_reklam/home/fiyat_sor/fiyat_sor_sonuc_page.dart';
 import 'package:ssshht_reklam/home/gun_sor_page.dart';
 import 'package:ssshht_reklam/home/kredit_card_page.dart';
 import 'package:ssshht_reklam/home/rejected_video_page.dart';
+import 'package:ssshht_reklam/home/three_ds_page.dart';
 import 'package:ssshht_reklam/login/kayit_page.dart';
 import 'package:ssshht_reklam/login/kod_giris_page.dart';
 
@@ -118,6 +119,9 @@ class RouteGenerator {
 
       case '/FiyatSorSonucPage':
         return _rotaOlustur(const FiyatSorSonucPage(), settings);
+
+      case '/ThreeDSPage':
+        return _rotaOlustur(const ThreedsPage(), settings);
 
       default:
         return (MaterialPageRoute(

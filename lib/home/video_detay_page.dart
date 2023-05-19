@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -442,11 +443,15 @@ Future<void> _downloadReklamImageRemote(Function sets) async {
         "${dir.path}/reklamimages/$_imageId",
       );
 
+      print(imageUrl + _imageId.toString());
+
       _imgFile = File("${dir.path}/reklamimages/$_imageId");
       _isImageDown = true;
       sets();
     } catch (e) {
-//
+      if (kDebugMode) {
+        print(e.toString);
+      }
     }
   }
 }

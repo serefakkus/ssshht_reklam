@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:ssshht_reklam/helpers/send.dart';
@@ -108,6 +107,12 @@ sendCode(BuildContext context) async {
 }
 
 sendSignUp(BuildContext context) async {
+  if (isTest) {
+    _codeandphone[0] = _phonecontroller.text;
+    _codeandphone[1] = _codecontroller.text;
+    Navigator.pushNamed(context, '/NewPassPage', arguments: _codeandphone);
+    return;
+  }
   WebSocketChannel channel = IOWebSocketChannel.connect(url);
   if (_phonecontroller.text.isNotEmpty || _codecontroller.text.isNotEmpty) {
     if (_phonecontroller.text.length != 10) {
@@ -344,6 +349,8 @@ class _BottomBarHakkimizda extends StatelessWidget {
           _Ayrac(),
           _GizlilikPolitikasi(),
           _Ayrac(),
+          _IptalVeIade(),
+          _Ayrac(),
           _Iletisim(),
         ],
       ),
@@ -374,6 +381,39 @@ class _Hakkimizda extends StatelessWidget {
                       right: _width / 20,
                     ),
                     child: Text(hakkimizdaText)),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class _IptalVeIade extends StatelessWidget {
+  const _IptalVeIade({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      child: const Text(
+        'TESLİMAT VE İADE',
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.white),
+      ),
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return ListView(
+              children: [
+                Container(
+                    margin: EdgeInsets.only(
+                      top: _height / 20,
+                      left: _width / 20,
+                      right: _width / 20,
+                    ),
+                    child: Text(teslimatIadeText)),
               ],
             );
           },

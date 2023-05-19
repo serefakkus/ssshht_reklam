@@ -98,7 +98,8 @@ class _ReklamVerPageState extends State<ReklamVerPage> {
     // ignore: prefer_const_constructors
     return Container(
       color: backGroundColor,
-      child: const CafeSorBody(),
+      // ignore: prefer_const_constructors
+      child: CafeSorBody(),
     );
   }
 
@@ -616,7 +617,16 @@ class OnayButon extends StatelessWidget {
           pers.id = _cafe.id;
           pers.mail = _cafe.mail;
 
-          List<dynamic> giden = [pers, fiyat, _cafe, isRef, _videoDur, _isOnay];
+          List<dynamic> giden = [
+            pers,
+            fiyat,
+            _cafe,
+            isRef,
+            _videoDur,
+            _isOnay,
+            _paketFiyat,
+            _paketId,
+          ];
 
           Navigator.pushNamedAndRemoveUntil(context, '/FaturaPage',
               (route) => route.settings.name == '/HomePage',

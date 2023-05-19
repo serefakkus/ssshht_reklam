@@ -12,6 +12,7 @@ class Cafe {
     this.cafelist,
     this.day,
     this.name,
+    this.surName,
     this.pass,
     this.usertip,
     this.video,
@@ -33,6 +34,18 @@ class Cafe {
     this.ilce,
     this.vergiDairesi,
     this.videoCount,
+    this.ulke,
+    this.isResim,
+    this.mail,
+    this.tckn,
+    this.unvan,
+    this.vergiNo,
+    this.isKurumsal,
+    this.binNumber,
+    this.taksit,
+    this.tutar,
+    this.card,
+    this.threeDsGelen,
   });
 
   int? offset;
@@ -53,6 +66,7 @@ class Cafe {
   Phone? phone;
   int? cafeid;
   String? name;
+  String? surName;
   String? pass;
   int? usertip;
   double? bakiye;
@@ -68,8 +82,21 @@ class Cafe {
   int? videoCount;
   String? mail;
   bool? isResim;
+  String? tckn;
+  String? ulke;
+  String? unvan;
+  String? vergiNo;
+  bool? isKurumsal;
+  String? binNumber;
+  List<Taksit>? taksit;
+  double? tutar;
+  CreditCard? card;
+  ThreeDsGelen? threeDsGelen;
 
   Cafe.fromMap(Map<String, dynamic> json) {
+    tutar = double.parse(json["tutar"].toString());
+    binNumber = json["bin_number"];
+    isKurumsal = json["is_kurumsal"];
     isResim = json["is_resim"];
     mail = json["mail"];
     videoCount = json["video_count"];
@@ -84,6 +111,10 @@ class Cafe {
     kimlik = json["kimlik"];
     not = json["not"];
     url = json["url"];
+    tckn = json["tckn"];
+    ulke = json["ulke"];
+    unvan = json["unvan"];
+    vergiNo = json["vergi_no"];
     if (json["day"] != null) {
       day = (json["day"] as List<dynamic>).cast<String>();
     }
@@ -117,6 +148,7 @@ class Cafe {
 
     cafeid = json["cafe_id"];
     name = json["name"];
+    surName = json["surname"];
     pass = json["pass"];
     usertip = json["user_tip"];
     bakiye = double.parse(json["bakiye"].toString());
@@ -134,9 +166,27 @@ class Cafe {
         cafelist!.add(CafeInfo.fromJson(v));
       });
     }
+
+    if (json['taksitler'] != null) {
+      taksit = <Taksit>[];
+      json['taksitler'].forEach((v) {
+        taksit!.add(Taksit.fromMap(v));
+      });
+    }
+
+    if (json["card"] != null) {
+      card = CreditCard.fromJson(json["card"]);
+    }
+
+    if (json["three_ds"] != null) {
+      threeDsGelen = ThreeDsGelen.fromJson(json["three_ds"]);
+    }
   }
 
   Map<String, dynamic> toMap() => {
+        "tutar": tutar,
+        "bin_number": binNumber,
+        "is_kurumsal": isKurumsal,
         "is_resim": isResim,
         "mail": mail,
         "video_count": videoCount,
@@ -163,6 +213,7 @@ class Cafe {
         "video": video,
         "cafe_id": cafeid,
         "name": name,
+        "surname": surName,
         "pass": pass,
         "user_tip": usertip,
         "bakiye": bakiye,
@@ -170,6 +221,13 @@ class Cafe {
         "video_name": videoname,
         "video_mongo": videomongo,
         "cafe_list": cafelist,
+        "tckn": tckn,
+        "ulke": ulke,
+        "unvan": unvan,
+        "vergi_no": vergiNo,
+        "taksitler": taksit,
+        "card": card,
+        "three_ds": threeDsGelen,
       };
 }
 
@@ -182,14 +240,15 @@ class Tokens {
   int? istekId;
   int? istekType;
 
-  Tokens(
-      {this.id,
-      this.userType,
-      this.ok,
-      this.tokenDetails,
-      this.auth,
-      this.istekId,
-      this.istekType});
+  Tokens({
+    this.id,
+    this.userType,
+    this.ok,
+    this.tokenDetails,
+    this.auth,
+    this.istekId,
+    this.istekType,
+  });
 
   Tokens.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -498,4 +557,84 @@ class HesapArsiv {
         "paket_name": paketName,
         "tip": tip,
       };
+}
+
+class Taksit {
+  Taksit({
+    this.taksitSayisi,
+    this.taksitTutar,
+    this.toplamTutar,
+  });
+
+  double? taksitTutar;
+  double? toplamTutar;
+  int? taksitSayisi;
+
+  Taksit.fromMap(Map<String, dynamic> json) {
+    taksitSayisi = json["taksit_sayisi"];
+    toplamTutar = double.parse(json["toplam_tutar"].toString());
+    taksitTutar = double.parse(json["taksit_tutar"].toString());
+  }
+
+  Map<String, dynamic> toMap() => {
+        "taksit_sayisi": taksitSayisi,
+        "toplam_tutar": toplamTutar,
+        "taksit_tutar": taksitTutar,
+      };
+}
+
+class CreditCard {
+  String? cardHolderName;
+  String? cardNumber;
+  String? exMonth;
+  String? exYear;
+  String? cvc;
+
+  CreditCard({
+    this.cardHolderName,
+    this.cardNumber,
+    this.exMonth,
+    this.exYear,
+    this.cvc,
+  });
+
+  CreditCard.fromJson(Map<String, dynamic> json) {
+    cardHolderName = json['card_holder_name'];
+    cardNumber = json['card_number'];
+    exMonth = json['expire_month'];
+    exYear = json['expire_year'];
+    cvc = json['cvc'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['card_holder_name'] = cardHolderName;
+    data['card_number'] = cardNumber;
+    data['expire_month'] = exMonth;
+    data['expire_year'] = exYear;
+    data['cvc'] = cvc;
+    return data;
+  }
+}
+
+class ThreeDsGelen {
+  String? status;
+  String? threeDSHTMLContent;
+
+  ThreeDsGelen({
+    this.status,
+    this.threeDSHTMLContent,
+  });
+
+  ThreeDsGelen.fromJson(Map<String, dynamic> json) {
+    status = json['status'];
+    threeDSHTMLContent = json['threeDSHtmlContent'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['status'] = status;
+    data['threeDSHtmlContent'] = threeDSHTMLContent;
+    return data;
+  }
 }

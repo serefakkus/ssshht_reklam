@@ -131,7 +131,7 @@ class TelefonNumarasi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: (_height / 10)),
+      margin: EdgeInsets.only(top: (_height / 20)),
       //margin: const EdgeInsets.only(top: 180),
       child: Center(
         child: Text(
@@ -300,8 +300,43 @@ class _BottomBarHakkimizda extends StatelessWidget {
         _Ayrac(),
         _GizlilikPolitikasi(),
         _Ayrac(),
+        _IptalVeIade(),
+        _Ayrac(),
         _Iletisim(),
       ],
+    );
+  }
+}
+
+class _IptalVeIade extends StatelessWidget {
+  const _IptalVeIade({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      child: const Text(
+        'TESLİMAT VE İADE',
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.white),
+      ),
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return ListView(
+              children: [
+                Container(
+                    margin: EdgeInsets.only(
+                      top: _height / 20,
+                      left: _width / 20,
+                      right: _width / 20,
+                    ),
+                    child: Text(teslimatIadeText)),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 }

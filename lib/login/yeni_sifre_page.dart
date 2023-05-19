@@ -11,7 +11,6 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 TextEditingController _passcontroller = TextEditingController();
 TextEditingController _newpasscontroller = TextEditingController();
-TextEditingController _kimlikcontroller = TextEditingController();
 TextEditingController _namecontroller = TextEditingController();
 Size _size = const Size(0, 0);
 double _height = 0;
@@ -37,8 +36,6 @@ class _NewLoginPageState extends State<NewLoginPage> {
       color: backGroundColor,
       child: ListView(
         children: [
-          const KimlikNumarasi(),
-          const KimlikInput(),
           const Name(),
           const NameInput(),
           const Pass(),
@@ -191,54 +188,6 @@ class _NewPassInputState extends State<NewPassInput> {
   }
 }
 
-class KimlikNumarasi extends StatelessWidget {
-  const KimlikNumarasi({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: _height / 20),
-      //margin: const EdgeInsets.only(top: 180),
-      child: Center(
-        child: Text(
-          'KİMLİK NUMARASI\nVEYA\nVERGİ NUMARASI',
-          style: GoogleFonts.farro(
-              fontSize: _width / 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white),
-        ),
-      ),
-    );
-  }
-}
-
-class KimlikInput extends StatelessWidget {
-  const KimlikInput({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(
-        top: (_height / 80),
-        left: (_width / 10),
-        right: (_width / 10),
-      ),
-      child: TextField(
-        decoration: InputDecoration(
-            border: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(30))),
-            filled: true,
-            fillColor: Colors.blue.shade50),
-        controller: _kimlikcontroller,
-        cursorColor: Colors.blue,
-        keyboardType:
-            const TextInputType.numberWithOptions(signed: true, decimal: true),
-        textInputAction: TextInputAction.go,
-      ),
-    );
-  }
-}
-
 class Name extends StatelessWidget {
   const Name({Key? key}) : super(key: key);
 
@@ -322,60 +271,9 @@ sendPass(BuildContext context, List<String> code) async {
     return;
   }
 
-  if (!(_kimlikcontroller.text.length == 10 ||
-      _kimlikcontroller.text.length == 11)) {
-    EasyLoading.showToast('KİMLİK ALANI 10 VEYA 11 HANE OLAMLI');
-    return;
-  }
-
   if (_passcontroller.text.length < 6) {
     EasyLoading.showToast("ŞİFRE EN AZ 6 HANELİ OLMALIDIR!");
     return;
-  }
-
-  var kimlik = int.tryParse(_kimlikcontroller.text);
-  if (kimlik == null) {
-    EasyLoading.showToast('KİMLİK ALANI SAYILARDAN OLUŞMALIDIR!');
-    return;
-  }
-
-  if (_kimlikcontroller.text.length == 11) {
-    if (_kimlikcontroller.text[0] == '0') {
-      EasyLoading.showToast('KİMLİK NUMARSININ İLK HANESİ 0 OLAMAZ!');
-      return;
-    }
-    var tek = int.parse(_kimlikcontroller.text[0]) +
-        int.parse(_kimlikcontroller.text[2]) +
-        int.parse(_kimlikcontroller.text[4]) +
-        int.parse(_kimlikcontroller.text[6]) +
-        int.parse(_kimlikcontroller.text[8]);
-    var cift = int.parse(_kimlikcontroller.text[1]) +
-        int.parse(_kimlikcontroller.text[3]) +
-        int.parse(_kimlikcontroller.text[5]) +
-        int.parse(_kimlikcontroller.text[7]);
-
-    var t10 = ((tek * 7) - cift) % 10;
-
-    var t11 = ((int.parse(_kimlikcontroller.text[0]) +
-            int.parse(_kimlikcontroller.text[1]) +
-            int.parse(_kimlikcontroller.text[2]) +
-            int.parse(_kimlikcontroller.text[3]) +
-            int.parse(_kimlikcontroller.text[4]) +
-            int.parse(_kimlikcontroller.text[5]) +
-            int.parse(_kimlikcontroller.text[6]) +
-            int.parse(_kimlikcontroller.text[7]) +
-            int.parse(_kimlikcontroller.text[8]) +
-            int.parse(_kimlikcontroller.text[9])) %
-        10);
-
-    var n10 = int.parse(_kimlikcontroller.text[9]);
-    var n11 = int.parse(_kimlikcontroller.text[10]);
-
-    if ((t10 == n10) && (t11 == n11)) {
-    } else {
-      EasyLoading.showToast('KİMLİK NUMARSI GEÇERSİZ!');
-      return;
-    }
   }
 
   if (_passcontroller.text == _newpasscontroller.text) {
@@ -385,7 +283,6 @@ sendPass(BuildContext context, List<String> code) async {
     var sign = Phone();
     sign.no = code[0];
     sign.code = code[1];
-    pers.kimlik = _kimlikcontroller.text;
     pers.name = _namecontroller.text;
 
     pers.istekTip = 'ref_signup';

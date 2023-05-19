@@ -48,6 +48,10 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_rounded_date_picker: ^3.0.2
+  flutter_html: ^3.0.0-alpha.6
+  webview_flutter: ^2.0.9
+  flutter_widget_from_html: ^0.9.1
+  webview_flutter_plus: ^0.2.4
 
 flutter_icons:
   android: "launcher_icon"
