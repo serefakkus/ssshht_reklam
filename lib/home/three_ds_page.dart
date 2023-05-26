@@ -3,8 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 
-List<dynamic> _gelen = [];
-
 Size _size = const Size(0, 0);
 double _height = 0;
 double _width = 0;
@@ -31,7 +29,7 @@ class _ThreedsPageState extends State<ThreedsPage> {
     _size = MediaQuery.of(context).size;
     _height = _size.height;
     _width = _size.width;
-    _gelen = [];
+
     _html = ModalRoute.of(context)!.settings.arguments as String;
 
     String decoded = utf8.decode(base64.decode(_html));

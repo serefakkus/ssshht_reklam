@@ -144,7 +144,7 @@ class DurationSec extends StatelessWidget {
         children: [
           Container(
             margin: EdgeInsets.only(
-              top: _height / 50,
+              top: _height / 100,
               left: _width / 5,
               right: _width / 5,
             ),
@@ -218,7 +218,7 @@ class _VideoState extends State<Video> {
       child: Column(
         children: [
           SizedBox(
-            height: (_height / 2),
+            height: (_height / 3),
             child: videoController.value.isInitialized
                 ? AspectRatio(
                     aspectRatio: videoController.value.aspectRatio,

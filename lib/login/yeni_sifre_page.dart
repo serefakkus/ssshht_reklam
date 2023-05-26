@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ssshht_reklam/helpers/send.dart';
+import 'package:ssshht_reklam/login/giris_page.dart';
 import 'package:ssshht_reklam/main.dart';
 import 'package:ssshht_reklam/model/cafe.dart';
 import 'package:web_socket_channel/io.dart';
@@ -16,6 +17,8 @@ Size _size = const Size(0, 0);
 double _height = 0;
 double _width = 0;
 
+bool _isOnay = false;
+
 class NewLoginPage extends StatefulWidget {
   const NewLoginPage({Key? key}) : super(key: key);
 
@@ -25,6 +28,13 @@ class NewLoginPage extends StatefulWidget {
 
 class _NewLoginPageState extends State<NewLoginPage> {
   @override
+  void initState() {
+    _isOnay = false;
+    super.initState();
+    getTextS(_setS);
+  }
+
+  @override
   Widget build(BuildContext context) {
     _size = MediaQuery.of(context).size;
     _height = _size.height;
@@ -32,6 +42,7 @@ class _NewLoginPageState extends State<NewLoginPage> {
 
     List<String> code =
         ModalRoute.of(context)!.settings.arguments as List<String>;
+
     return Container(
       color: backGroundColor,
       child: ListView(
@@ -42,13 +53,16 @@ class _NewLoginPageState extends State<NewLoginPage> {
           const PassInput(),
           const NewPass(),
           const NewPassInput(),
+          const _SozlesmeOnay(),
           SendPassButton(code),
-          SizedBox(
-            height: _height / 2,
-          ),
+          const _BottomBarHakkimizda(),
         ],
       ),
     );
+  }
+
+  _setS() {
+    setState(() {});
   }
 }
 
@@ -58,7 +72,7 @@ class Pass extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: (_height / 50)),
+      margin: EdgeInsets.only(top: (_height / 10)),
       child: Center(
         child: Text(
           'YENİ ŞİFRE',
@@ -194,7 +208,7 @@ class Name extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: _height / 5),
+      margin: EdgeInsets.only(top: _height / 10),
       child: Center(
         child: Text(
           'İSİM VE SOYAD',
@@ -233,6 +247,44 @@ class NameInput extends StatelessWidget {
   }
 }
 
+class _SozlesmeOnay extends StatefulWidget {
+  const _SozlesmeOnay({Key? key}) : super(key: key);
+
+  @override
+  State<_SozlesmeOnay> createState() => _SozlesmeOnayState();
+}
+
+class _SozlesmeOnayState extends State<_SozlesmeOnay> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: _height / 7),
+      child: Row(
+        children: [
+          Checkbox(
+            value: _isOnay,
+            onChanged: (value) {
+              _isOnay = !_isOnay;
+              setState(() {});
+            },
+          ),
+          TextButton(
+            onPressed: () {
+              _isOnay = !_isOnay;
+              setState(() {});
+              return;
+            },
+            child: Text(
+              'Gizlilik Sözleşmesini okudum onaylıyorum.',
+              style: TextStyle(color: Colors.black, fontSize: _width / 25),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 // ignore: must_be_immutable
 class SendPassButton extends StatelessWidget {
   SendPassButton(this.code, {Key? key}) : super(key: key);
@@ -241,7 +293,7 @@ class SendPassButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-          top: (_height / 15),
+          top: (_height / 50),
           right: (_width / 10),
           left: (_width / 10),
           bottom: _height / 20),
@@ -266,6 +318,11 @@ class SendPassButton extends StatelessWidget {
 }
 
 sendPass(BuildContext context, List<String> code) async {
+  if (!_isOnay) {
+    EasyLoading.showToast('LÜTFEN SÖZLEŞMEYİ ONAYLAYINIZ !');
+    return;
+  }
+
   if (_namecontroller.text.length < 2) {
     EasyLoading.showToast('İSİM ALANI EN AZ 2 HANE HANE OLAMLI');
     return;
@@ -294,4 +351,195 @@ sendPass(BuildContext context, List<String> code) async {
   } else {
     EasyLoading.showToast('GİRDİĞİNİZ ŞİFRELER\n UYUŞMUYOR');
   }
+}
+
+class _BottomBarHakkimizda extends StatelessWidget {
+  const _BottomBarHakkimizda({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: const [
+        _Hakkimizda(),
+        _Ayrac(),
+        _GizlilikPolitikasi(),
+        _Ayrac(),
+        _IptalVeIade(),
+        _Ayrac(),
+        _Iletisim(),
+      ],
+    );
+  }
+}
+
+class _Hakkimizda extends StatelessWidget {
+  const _Hakkimizda({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      child: const Text(
+        'HAKKIMIZDA',
+        style: TextStyle(color: Colors.white),
+      ),
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return ListView(
+              children: [
+                Container(
+                    margin: EdgeInsets.only(
+                      top: _height / 20,
+                      left: _width / 20,
+                      right: _width / 20,
+                    ),
+                    child: Text(hakkimizdaText)),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class _Iletisim extends StatelessWidget {
+  const _Iletisim({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      child: const Text(
+        'İLETİŞİM',
+        style: TextStyle(color: Colors.white),
+      ),
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return ListView(
+              children: [
+                Container(
+                    margin: EdgeInsets.only(
+                      top: _height / 20,
+                      left: _width / 20,
+                      right: _width / 20,
+                    ),
+                    child: Text(iletisimText)),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class _GizlilikPolitikasi extends StatelessWidget {
+  const _GizlilikPolitikasi({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      child: const Text(
+        'GİZLİLİK\nPOLİTİKASI',
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.white),
+      ),
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return ListView(
+              children: [
+                Container(
+                    margin: EdgeInsets.only(
+                      top: _height / 20,
+                      left: _width / 20,
+                      right: _width / 20,
+                    ),
+                    child: Text(gizlilikText)),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class _IptalVeIade extends StatelessWidget {
+  const _IptalVeIade({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      child: const Text(
+        'TESLİMAT VE İADE',
+        textAlign: TextAlign.center,
+        style: TextStyle(color: Colors.white),
+      ),
+      onPressed: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return ListView(
+              children: [
+                Container(
+                    margin: EdgeInsets.only(
+                      top: _height / 20,
+                      left: _width / 20,
+                      right: _width / 20,
+                    ),
+                    child: Text(teslimatIadeText)),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class _Ayrac extends StatelessWidget {
+  const _Ayrac({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text(
+      '|',
+      style: TextStyle(color: Colors.black),
+    );
+  }
+}
+
+class _IyzicoLogo extends StatelessWidget {
+  const _IyzicoLogo();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.topCenter,
+      margin: EdgeInsets.only(top: _height / 100),
+      width: _width,
+      height: _height / 10,
+      decoration: const BoxDecoration(
+          //color: Colors.blueAccent,
+          image: DecorationImage(
+        image: AssetImage("assets/images/iyzico-logo.png"),
+        fit: BoxFit.contain,
+      )),
+    );
+  }
+}
+
+getTextS(Function setS) async {
+  hakkimizdaText = await getFileData('assets/texts/hakkimizda.txt');
+  gizlilikText = await getFileData('assets/texts/gizlilik-politikasi.txt');
+  iletisimText = await getFileData('assets/texts/iletisim.txt');
+  teslimatIadeText =
+      await getFileData('assets/texts/teslimat_ve_iade_sartlari.txt');
+  setS();
 }

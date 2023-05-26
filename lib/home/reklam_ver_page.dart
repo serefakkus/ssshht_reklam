@@ -227,7 +227,7 @@ class _CafeSorBodyState extends State<CafeSorBody> {
           ),
         ),
         const Divider(color: Colors.white),
-        const ReklamImage(),
+        ReklamImage(_setState),
         const Divider(color: Colors.white),
         Container(
             margin: EdgeInsets.only(left: _width / 3, right: _width / 3),
@@ -489,12 +489,12 @@ class _TarihSecState extends State<TarihSec> {
 }
 
 bool _isFirstTap = true;
-double sizeHeight = _height / 15;
+double _sizeHeight = _height / 5;
 
 class Video extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
-  Video(this.resultCallback, {Key? key}) : super(key: key);
-  final void Function() resultCallback;
+  Video(this.setS, {Key? key}) : super(key: key);
+  final void Function() setS;
 
   @override
   State<Video> createState() => _VideoState();
@@ -523,7 +523,7 @@ class _VideoState extends State<Video> {
         children: [
           GestureDetector(
             child: SizedBox(
-              height: sizeHeight,
+              height: _sizeHeight,
               child: videoController.value.isInitialized
                   ? AspectRatio(
                       aspectRatio: videoController.value.aspectRatio,
@@ -534,12 +534,12 @@ class _VideoState extends State<Video> {
             onTap: () {
               if (_isFirstTap) {
                 _isFirstTap = false;
-                sizeHeight = _height / 2;
+                _sizeHeight = _height / 2;
               } else {
                 _isFirstTap = true;
-                sizeHeight = _height / 15;
+                _sizeHeight = _height / 5;
               }
-              widget.resultCallback();
+              widget.setS();
             },
           ),
           // ignore: prefer_const_constructors
@@ -626,6 +626,9 @@ class OnayButon extends StatelessWidget {
             _isOnay,
             _paketFiyat,
             _paketId,
+            _videoid,
+            _imageId,
+            pers.day,
           ];
 
           Navigator.pushNamedAndRemoveUntil(context, '/FaturaPage',
@@ -716,8 +719,13 @@ class _IyzicoLogo extends StatelessWidget {
   }
 }
 
+bool _isFirstTapImg = true;
+double _sizeHeightImg = _height / 5;
+
 class ReklamImage extends StatefulWidget {
-  const ReklamImage({super.key});
+  // ignore: prefer_const_constructors_in_immutables
+  ReklamImage(this.setS, {Key? key}) : super(key: key);
+  final void Function() setS;
 
   @override
   State<ReklamImage> createState() => _ReklamImageState();
@@ -749,7 +757,19 @@ class _ReklamImageState extends State<ReklamImage> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    return Image.file(_imgFile!);
+    return GestureDetector(
+      child: SizedBox(height: _sizeHeightImg, child: Image.file(_imgFile!)),
+      onTap: () {
+        if (_isFirstTapImg) {
+          _sizeHeightImg = _height / 1.5;
+          _isFirstTapImg = !_isFirstTapImg;
+        } else {
+          _sizeHeightImg = _height / 5;
+          _isFirstTapImg = !_isFirstTapImg;
+        }
+        widget.setS();
+      },
+    );
   }
 
   _setS() {

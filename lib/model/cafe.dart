@@ -46,6 +46,7 @@ class Cafe {
     this.tutar,
     this.card,
     this.threeDsGelen,
+    this.taksitSayisi,
   });
 
   int? offset;
@@ -92,8 +93,10 @@ class Cafe {
   double? tutar;
   CreditCard? card;
   ThreeDsGelen? threeDsGelen;
+  int? taksitSayisi;
 
   Cafe.fromMap(Map<String, dynamic> json) {
+    taksitSayisi = json["taksit_sayisi"];
     tutar = double.parse(json["tutar"].toString());
     binNumber = json["bin_number"];
     isKurumsal = json["is_kurumsal"];
@@ -228,6 +231,7 @@ class Cafe {
         "taksitler": taksit,
         "card": card,
         "three_ds": threeDsGelen,
+        "taksit_sayisi": taksitSayisi,
       };
 }
 

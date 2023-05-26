@@ -7,6 +7,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:ssshht_reklam/helpers/database.dart';
 import 'package:ssshht_reklam/helpers/send.dart';
+import 'package:ssshht_reklam/login/yeni_sifre_page.dart';
 import 'package:ssshht_reklam/main.dart';
 import 'package:ssshht_reklam/model/cafe.dart';
 import 'package:web_socket_channel/io.dart';

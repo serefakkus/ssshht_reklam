@@ -8,7 +8,6 @@ import 'package:ssshht_reklam/helpers/credit_cart.dart';
 import 'package:ssshht_reklam/home/home_page.dart';
 import 'package:ssshht_reklam/home/video_detay_page.dart';
 import 'package:ssshht_reklam/model/cafe.dart';
-import 'package:ssshht_reklam/route_generator.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -32,6 +31,11 @@ int? _selectedTaksit;
 
 int _paketId = 0;
 
+String _imageId = '';
+String _videoId = '';
+List<String>? _days;
+int _taksitSayisi = 1;
+
 TextEditingController _creditCardController = TextEditingController();
 TextEditingController _sKtController = TextEditingController();
 TextEditingController _guvenlikController = TextEditingController();
@@ -47,6 +51,13 @@ class CreditCardPage extends StatefulWidget {
 class _CreditCardPageState extends State<CreditCardPage> {
   @override
   void initState() {
+    if (!isTest) {
+      _creditCardController.text = '';
+      _sKtController.text = '';
+      _guvenlikController.text = '';
+      _nameController.text = '';
+      _selectedTaksit = null;
+    }
     _taksitler = [];
     _selectedTaksit = null;
     _toplamTutar = null;
@@ -65,6 +76,10 @@ class _CreditCardPageState extends State<CreditCardPage> {
     _resimOnay = _gelen[2];
     _paketFiyat = _gelen[3];
     _paketId = _gelen[4];
+    _videoId = _gelen[5];
+    _imageId = _gelen[6];
+    _days = _gelen[7];
+
     _toplamTutar = _fiyat;
 
     if (_videoDur == null || _videoDur == 0 || _videoDur == -163) {
@@ -164,10 +179,14 @@ class _CreditCardInputState extends State<CreditCardInput> {
             const TextInputType.numberWithOptions(signed: true, decimal: true),
         textInputAction: TextInputAction.go,
         onChanged: (value) {
-          if (value.length == 7 || value.length == 18 || value.length == 19) {
-            _taksitSor(widget.setS, context, value);
-          }
           _cardContol(_creditCardController.text);
+          if (value.length == 7 ||
+              value.length == 18 ||
+              value.length == 19 ||
+              value.length == 15 ||
+              value.length == 16) {
+            _taksitSor(widget.setS, context, _creditCardController.text);
+          }
         },
       ),
     );
@@ -765,6 +784,7 @@ class _TaksitlerState extends State<Taksitler> {
                   setState(() {
                     _selectedTaksit = index;
                     _toplamTutar = _taksitler![index].toplamTutar;
+                    _taksitSayisi = _taksitler![index].taksitSayisi!;
                     widget.setS();
                   });
                 },
@@ -882,6 +902,12 @@ Future<void> _odemeSend(BuildContext context) async {
     return;
   }
 
+  if (_selectedTaksit == null) {
+    EasyLoading.showToast('Lütfen taksit seçiniz !',
+        duration: const Duration(seconds: 5));
+    return;
+  }
+
   WebSocketChannel channel = IOWebSocketChannel.connect(url);
   Cafe pers = Cafe();
   var tok = await getToken(context);
@@ -903,6 +929,9 @@ Future<void> _odemeSend(BuildContext context) async {
   pers.paketId = _paketId;
   pers.videoDur = _videoDur;
   pers.tutar = _toplamTutar;
+  pers.videoid = _videoId;
+  pers.day = _days;
+  pers.taksitSayisi = _taksitSayisi;
 
   var json = jsonEncode(pers.toMap());
 

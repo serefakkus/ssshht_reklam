@@ -129,7 +129,7 @@ class FiyatInfo extends StatelessWidget {
               style: GoogleFonts.roboto(
                   fontSize: _width / 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white),
+                  color: const Color(0xff147d1e)),
             ),
           ],
         ),
@@ -257,7 +257,7 @@ class FiyatInfoWithBrosur extends StatelessWidget {
         style: GoogleFonts.roboto(
           fontSize: _width / 18,
           fontWeight: FontWeight.bold,
-          color: Colors.white,
+          color: const Color(0xff147d1e),
         ),
         textAlign: TextAlign.center,
       ),
@@ -272,10 +272,10 @@ class GirisButon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(
-        top: _height / 8,
+        top: _height / 20,
         left: _width / 10,
         right: _width / 10,
-        bottom: _height / 8,
+        bottom: _height / 20,
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(

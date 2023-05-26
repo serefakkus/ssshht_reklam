@@ -50,6 +50,10 @@ bool _resimOnay = false;
 double _paketFiyat = 0;
 int _paketId = 0;
 
+String _videoId = '';
+String _imageId = '';
+List<String>? _days = [];
+
 const double _kItemExtent = 32.0;
 String _selectedSehir = 'ŞEHİR SEÇ';
 bool _isSelSehir = false;
@@ -87,6 +91,9 @@ class _FaturaPageState extends State<FaturaPage> {
     _resimOnay = _gelen[5];
     _paketFiyat = _gelen[6];
     _paketId = _gelen[7];
+    _videoId = _gelen[8];
+    _imageId = _gelen[9];
+    _days = _gelen[10];
 
     return Scaffold(
       backgroundColor: backGroundColor,
@@ -307,6 +314,9 @@ _sendCode(BuildContext context) async {
       _resimOnay,
       _paketFiyat,
       _paketId,
+      _videoId,
+      _imageId,
+      _days,
     ];
     Navigator.pushNamedAndRemoveUntil(context, '/CreditCardPage',
         (route) => route.settings.name == '/HomePage',
@@ -355,6 +365,9 @@ _sendCode(BuildContext context) async {
         _resimOnay,
         _paketFiyat,
         _paketId,
+        _videoId,
+        _imageId,
+        _days,
       ];
       Navigator.pushNamedAndRemoveUntil(context, '/CreditCardPage',
           (route) => route.settings.name == '/HomePage',

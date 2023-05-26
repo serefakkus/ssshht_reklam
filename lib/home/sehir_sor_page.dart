@@ -62,7 +62,7 @@ class _SehirBodyState extends State<SehirBody> {
     if (_cafe.sehir != null) {
       var uniqSehir = <String>{};
       for (var i = 0; i < _cafe.sehir!.length; i++) {
-        if (_cafe.sehir![i] != 'DENEME') {
+        if (!(!isTest && _cafe.sehir![i] == "deneme")) {
           uniqSehir.add(_cafe.sehir![i]);
         }
       }
