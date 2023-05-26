@@ -20,9 +20,7 @@ double _width = 0;
 int? _videoDur = 0;
 
 List<dynamic> _gelen = [];
-Cafe _cafe = Cafe();
 double _fiyat = 0;
-double _paketFiyat = 0;
 bool _resimOnay = false;
 List<Taksit>? _taksitler = [];
 double? _toplamTutar;
@@ -71,10 +69,9 @@ class _CreditCardPageState extends State<CreditCardPage> {
     _width = _size.width;
     _gelen = ModalRoute.of(context)!.settings.arguments as List<dynamic>;
 
-    _cafe = _gelen[0];
     _fiyat = _gelen[1];
     _resimOnay = _gelen[2];
-    _paketFiyat = _gelen[3];
+
     _paketId = _gelen[4];
     _videoId = _gelen[5];
     _imageId = _gelen[6];
@@ -928,7 +925,7 @@ Future<void> _odemeSend(BuildContext context) async {
   pers.isResim = _resimOnay;
   pers.paketId = _paketId;
   pers.videoDur = _videoDur;
-  pers.tutar = _toplamTutar;
+  pers.tutar = _fiyat;
   pers.videoid = _videoId;
   pers.day = _days;
   pers.taksitSayisi = _taksitSayisi;
